@@ -37,7 +37,7 @@
                             							
                             <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross.1007116223" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
                             							
-                            <builder buildPath="${workspace_loc:/Chessboard-camera-cali-project}/Debug" id="cdt.managedbuild.builder.gnu.cross.1883706546" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
+                            <builder buildPath="${workspace_loc:/Plantae-camera-cali-project}/Debug" id="cdt.managedbuild.builder.gnu.cross.1883706546" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.303741668" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
                                 								
@@ -227,7 +227,7 @@
     	
     <storageModule moduleId="cdtBuildSystem" version="4.0.0">
         		
-        <project id="Chessboard-camera-cali-project.cdt.managedbuild.target.gnu.cross.exe.965838852" name="Executable" projectType="cdt.managedbuild.target.gnu.cross.exe"/>
+        <project id="Plantae-camera-cali-project.cdt.managedbuild.target.gnu.cross.exe.965838852" name="Executable" projectType="cdt.managedbuild.target.gnu.cross.exe"/>
         	
     </storageModule>
     	

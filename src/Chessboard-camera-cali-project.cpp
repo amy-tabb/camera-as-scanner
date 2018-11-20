@@ -31,9 +31,17 @@ int main(int argc, char **argv) {
 	/// case B: aruco tags, same pattern.
 	//      image filename, directory with the cali object specs, as well as the sensor specs, write directory
 
+
+	/// arguments: executable_name type read_directory write_directory image_name(caseB only)
+
 	string scasea = "a";
 	string scaseb = "b";
-	bool caseA = false;  bool caseB = false; // potentially confusing;
+	bool caseA = false;  bool caseB = false;
+	string read_directory = "";
+	string write_directory = "";
+	string image_filename = "";
+
+
 	if (argc > 2){
 		if (scasea.compare(string(argv[1])) == 0){
 			caseA = true;
@@ -45,10 +53,41 @@ int main(int argc, char **argv) {
 	}
 
 	if (!caseA && !caseB){
-		cout << "Bad case entered.  Quitting." << endl;
+		cout << "Bad case entered.  Quitting." << argv[1] << endl;
 		exit(1);
 		// TODO -- example of good argument strings.
 	}
+
+	/// do caseB first.
+	if (caseB){
+		if (argc != 5){
+			cout << "For case B, the arguments are executable_name caseb read_directory write_directory image_name" << endl;
+			cout << "You only provided " << argc-1 << " arguments instead of 4.  Quitting " << endl;
+			exit(1);
+		}
+		read_directory = argv[2];
+		write_directory = argv[3];
+		image_filename = argv[4];
+
+		/// can we read the dictionary as well?  Yes, this is enumerated, so write that in the specification file.
+
+//		CameraCali* C = new CameraCali(id_camera_dir, &P_Class);
+//		/// read exif information.
+//		if (is_strawberry){
+//			C->ReadExifInformationStrawberry(id_camera_dir);
+//		}
+
+
+	}
+
+
+	if (caseA){
+
+
+
+	}
+
+
 
 
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
@@ -56,7 +95,7 @@ int main(int argc, char **argv) {
 }
 
 //
-//string read_directory = argv[1];
+// string read_directory = argv[1];
 //	string write_directory = argv[2];
 ////
 ////

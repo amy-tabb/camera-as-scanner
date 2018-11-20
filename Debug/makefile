@@ -38,19 +38,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: Chessboard-camera-cali-project
+all: Plantae-camera-cali-project
 
 # Tool invocations
-Chessboard-camera-cali-project: $(OBJS) $(USER_OBJS)
+Plantae-camera-cali-project: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++  -o "Chessboard-camera-cali-project" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "Plantae-camera-cali-project" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) Chessboard-camera-cali-project
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) Plantae-camera-cali-project
 	-@echo ' '
 
 .PHONY: all clean dependents
