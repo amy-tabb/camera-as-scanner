@@ -26,6 +26,7 @@
 #include <vector>
 #include <set>
 #include <cmath>
+#include <omp.h>
 
 
 #include <opencv2/core/core.hpp>
@@ -107,7 +108,7 @@ public:
 	int internalx, internaly; /// remove todo
 
 	//PatternsCreated(string read_dir);
-	PatternsCreated(string read_dir, bool aruco_markers);
+	PatternsCreated(string read_dir, string write_directory, bool aruco_markers);
 
 
 	void DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen);
@@ -151,6 +152,9 @@ public:
 	vector<MatrixXd> internal_two_d_point_coordinates_dense;
 	int count_internal_ids_present;
 	vector<bool> id_bool;
+	vector<double> focal_lengths;
+	vector<double> pix_widths;
+	double sensor_width;
 	double pixel_width;
 	int rows;
 	int cols;
@@ -201,9 +205,15 @@ public:
 
 	void ReadExifInformationStrawberry(string read_dir);
 
+	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir);
+
 	void ReadStrawberryInternalCorners(string read_dir);
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
+
+	void CalibrateArucoGeneralID(string write_dir);
+
+	void FindCornersArucoGeneral(string write_dir);
 
 
 };

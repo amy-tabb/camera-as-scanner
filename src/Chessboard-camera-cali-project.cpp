@@ -71,17 +71,24 @@ int main(int argc, char **argv) {
 		EnsureDirHasTrailingBackslash(write_directory);
 
 
-		PatternsCreated P_Class(read_directory, true);
+		PatternsCreated P_Class(read_directory, write_directory, true);
 
 		/// can we read the dictionary as well?  Yes, this is enumerated, so write that in the specification file.
+		string id_directory = read_directory + "images/";
 
-//		CameraCali* C = new CameraCali(id_camera_dir, &P_Class);
+		CameraCali* C = new CameraCali(id_directory, &P_Class);
 //		/// read exif information.
 //		if (is_strawberry){
 //			C->ReadExifInformationStrawberry(id_camera_dir);
 //		}
 
+		C->ReadExifInformationForAllImages(id_directory, read_directory);
 
+		C->FindCornersAruco(id_directory);
+		//C->ReadExifInformationGeneric(id_camera_dir);
+
+
+		delete C;
 	}
 
 
