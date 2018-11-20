@@ -95,19 +95,19 @@ class PatternsCreated{
 public:
 	vector<vector<int> > double_to_single;
 	vector< cv::Point3f> three_d_points;
-	vector< cv::Point3f> three_d_points_internal; // for strawberry case
+	vector< cv::Point3f> three_d_points_internal; // for strawberry case-- TODO get rid of
 	Ptr<aruco::Dictionary> dictionary;
-	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards; /// for refining the estimate of corner locations
+	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards; /// for refining the estimate of corner locations -- todo get rid of
 	vector< vector<int> > display_colors;
 	vector<pair<int, int> > min_max_id_pattern;
 	vector<pair<int, int> > min_max_id_squares;
 	bool single_aruco_markers;
 	vector<int> single_aruco_ids;
 	int max_internal_patterns;
-	int internalx, internaly;
+	int internalx, internaly; /// remove todo
 
 	//PatternsCreated(string read_dir);
-	PatternsCreated(string read_dir, bool strawberry_class);
+	PatternsCreated(string read_dir, bool aruco_markers);
 
 
 	void DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen);

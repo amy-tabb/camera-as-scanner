@@ -8,6 +8,7 @@
 
 
 #include "Includes.hpp"
+#include "camera_calibration.hpp"
 #include <iostream>
 using namespace std;
 
@@ -25,9 +26,7 @@ void EnsureDirHasTrailingBackslash(string& write_directory){
 
 int main(int argc, char **argv) {
 
-	/// Two cases:
-	/// case A: standard chessboard calibration situation
-	///    directory of images, internal and external (optional)
+	/// One case:
 	/// case B: aruco tags, same pattern.
 	//      image filename, directory with the cali object specs, as well as the sensor specs, write directory
 
@@ -36,38 +35,43 @@ int main(int argc, char **argv) {
 
 	string scasea = "a";
 	string scaseb = "b";
-	bool caseA = false;  bool caseB = false;
+	//bool caseA = false;  bool caseB = false;
 	string read_directory = "";
 	string write_directory = "";
 	string image_filename = "";
 
 
-	if (argc > 2){
-		if (scasea.compare(string(argv[1])) == 0){
-			caseA = true;
-		}	else {
-			if (scaseb.compare(string(argv[1])) == 0){
-				caseB = true;
-			}
-		}
-	}
-
-	if (!caseA && !caseB){
-		cout << "Bad case entered.  Quitting." << argv[1] << endl;
-		exit(1);
-		// TODO -- example of good argument strings.
-	}
+//	if (argc > 2){
+//		if (scasea.compare(string(argv[1])) == 0){
+//			caseA = true;
+//		}	else {
+//			if (scaseb.compare(string(argv[1])) == 0){
+//				caseB = true;
+//			}
+//		}
+//	}
+//
+//	if (!caseA && !caseB){
+//		cout << "Bad case entered.  Quitting." << argv[1] << endl;
+//		exit(1);
+//		// TODO -- example of good argument strings.
+//	}
 
 	/// do caseB first.
-	if (caseB){
-		if (argc != 5){
+	{
+		if (argc != 3){
 			cout << "For case B, the arguments are executable_name caseb read_directory write_directory image_name" << endl;
 			cout << "You only provided " << argc-1 << " arguments instead of 4.  Quitting " << endl;
 			exit(1);
 		}
-		read_directory = argv[2];
-		write_directory = argv[3];
-		image_filename = argv[4];
+		read_directory = argv[1];
+		write_directory = argv[2];
+
+		EnsureDirHasTrailingBackslash(read_directory);
+		EnsureDirHasTrailingBackslash(write_directory);
+
+
+		PatternsCreated P_Class(read_directory, true);
 
 		/// can we read the dictionary as well?  Yes, this is enumerated, so write that in the specification file.
 
@@ -81,11 +85,11 @@ int main(int argc, char **argv) {
 	}
 
 
-	if (caseA){
-
-
-
-	}
+//	if (caseA){
+//
+//
+//
+//	}
 
 
 
