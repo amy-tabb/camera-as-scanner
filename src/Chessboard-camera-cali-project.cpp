@@ -84,7 +84,11 @@ int main(int argc, char **argv) {
 
 		C->ReadExifInformationForAllImages(id_directory, read_directory);
 
-		C->FindCornersAruco(id_directory);
+		C->FindCornersArucoGeneral(write_directory);
+
+		C->CalibrateArucoSinglyAndUndistort(write_directory);
+
+		// now, calibrate and undistort ....
 		//C->ReadExifInformationGeneric(id_camera_dir);
 
 
