@@ -215,6 +215,7 @@ public:
 
 	void FindCornersArucoGeneral(string write_dir);
 
+	void CalibrateArucoSinglyAndUndistort(string write_dir);
 
 };
 

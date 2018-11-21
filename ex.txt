@@ -1,11 +1,11 @@
-ExifTool Version Number         : 10.80
-File Name                       : IMG_0431.JPG
-Directory                       : /home/atabb/DemoData/PlantaeSeminar/iphone6/images
-File Size                       : 1309 kB
-File Modification Date/Time     : 2018:11:19 17:54:34-05:00
-File Access Date/Time           : 2018:11:20 14:37:10-05:00
-File Inode Change Date/Time     : 2018:11:20 14:04:47-05:00
-File Permissions                : rw-rw-r--
+ExifTool Version Number         : 10.10
+File Name                       : IMG_0434.JPG
+Directory                       : /home/atabb/DemoData/Calibration/iphone6/images
+File Size                       : 1364 kB
+File Modification Date/Time     : 2018:11:20 20:22:11-05:00
+File Access Date/Time           : 2018:11:20 20:22:11-05:00
+File Inode Change Date/Time     : 2018:11:20 20:22:11-05:00
+File Permissions                : rw-rw----
 File Type                       : JPEG
 File Type Extension             : jpg
 MIME Type                       : image/jpeg
@@ -18,31 +18,30 @@ X Resolution                    : 72
 Y Resolution                    : 72
 Resolution Unit                 : inches
 Software                        : 12.0
-Modify Date                     : 2018:11:06 14:20:53
+Modify Date                     : 2018:11:06 14:21:08
 Y Cb Cr Positioning             : Centered
-Exposure Time                   : 1/30
+Exposure Time                   : 1/40
 F Number                        : 2.2
 Exposure Program                : Program AE
 ISO                             : 32
 Exif Version                    : 0221
-Date/Time Original              : 2018:11:06 14:20:53
-Create Date                     : 2018:11:06 14:20:53
+Date/Time Original              : 2018:11:06 14:21:08
+Create Date                     : 2018:11:06 14:21:08
 Components Configuration        : Y, Cb, Cr, -
-Shutter Speed Value             : 1/30
+Shutter Speed Value             : 1/40
 Aperture Value                  : 2.2
-Brightness Value                : 4.814877425
+Brightness Value                : 4.98967393
 Exposure Compensation           : 0
 Metering Mode                   : Multi-segment
 Flash                           : Auto, Did not fire
 Focal Length                    : 4.2 mm
 Subject Area                    : 1631 1223 1795 1077
 Run Time Flags                  : Valid
-Run Time Value                  : 9042275951041
+Run Time Value                  : 9057350990416
 Run Time Scale                  : 1000000000
 Run Time Epoch                  : 0
-Acceleration Vector             : -0.1159872264 -0.02228360439 -1.002498508
-Sub Sec Time Original           : 356
-Sub Sec Time Digitized          : 356
+Sub Sec Time Original           : 282
+Sub Sec Time Digitized          : 282
 Flashpix Version                : 0100
 Color Space                     : sRGB
 Exif Image Width                : 3264
@@ -55,7 +54,7 @@ Focal Length In 35mm Format     : 29 mm
 Scene Capture Type              : Standard
 Compression                     : JPEG (old-style)
 Thumbnail Offset                : 1692
-Thumbnail Length                : 11280
+Thumbnail Length                : 15133
 Image Width                     : 3264
 Image Height                    : 2448
 Encoding Process                : Baseline DCT, Huffman coding
@@ -65,14 +64,14 @@ Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
 Aperture                        : 2.2
 Image Size                      : 3264x2448
 Megapixels                      : 8.0
-Run Time Since Power Up         : 2:30:42
+Run Time Since Power Up         : 2:30:57
 Scale Factor To 35 mm Equivalent: 7.0
-Shutter Speed                   : 1/30
-Create Date                     : 2018:11:06 14:20:53.356
-Date/Time Original              : 2018:11:06 14:20:53.356
-Thumbnail Image                 : (Binary data 11280 bytes, use -b option to extract)
+Shutter Speed                   : 1/40
+Create Date                     : 2018:11:06 14:21:08.282
+Date/Time Original              : 2018:11:06 14:21:08.282
+Thumbnail Image                 : (Binary data 15133 bytes, use -b option to extract)
 Circle Of Confusion             : 0.004 mm
 Field Of View                   : 63.7 deg
 Focal Length                    : 4.2 mm (35 mm equivalent: 29.0 mm)
 Hyperfocal Distance             : 1.82 m
-Light Value                     : 8.8
+Light Value                     : 9.2
