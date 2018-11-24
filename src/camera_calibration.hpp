@@ -211,7 +211,7 @@ public:
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 
-	void CalibrateArucoGeneralID(string write_dir);
+	//void CalibrateArucoGeneralID(string write_dir);
 
 	void FindCornersArucoGeneral(string write_dir);
 
