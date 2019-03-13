@@ -9,6 +9,8 @@
 #include "DirectoryFunctions.hpp"
 
 
+
+
 //class PatternsCreated{
 //public:
 //	vector<vector<int> > double_to_single;
