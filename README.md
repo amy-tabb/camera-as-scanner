@@ -5,7 +5,7 @@
 
 Currently
 
-This code uses the OpenCV 4.0, the OpenCV 4.0 extra modules and is written in C++.  
+This code uses the OpenCV 4.0, the OpenCV 4.0 extra modules, Eigen, and is written in C++.  
 
 To get the OpenCV4.0 extra modules to build, our experience is that you need to build *both* OpenCV and the extra modules together from source.  Instructions are here:
 

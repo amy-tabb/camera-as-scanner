@@ -22,213 +22,6 @@ string CreatePaddedNumberString(int number, int length){
 	return temp_string;
 }
 
-//
-//
-//int CreateStrawberryImages(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength, int margins, int id_start_number){
-//
-//	std::ofstream out;
-//	string filename = "specification_file.txt";
-//	out.open(filename.c_str());
-//
-//	Ptr<aruco::Dictionary> dictionary =
-//			aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//
-//	Size imageSize;
-//
-//	imageSize.width = squaresX * squareLength;
-//	imageSize.height = squaresY * squareLength;
-//
-//
-//	Mat markerImg;
-//	Mat boardImage = Mat::zeros(imageSize.height, imageSize.width, CV_8UC1);
-//	boardImage.setTo(255);
-//	int x0, y0;
-//
-//	for (int x = 0, count = 0; x < squaresX; x++){
-//		for (int y = 0; y < squaresY; y++, count++){
-//			aruco::drawMarker(dictionary, count, markerLength, markerImg, 1);
-//
-//			/// where to place?
-//			x0 = x*squareLength + margins/2;
-//			y0 = y*squareLength + margins/2;
-//
-//			Rect R = Rect(x0, y0, markerLength, markerLength);
-//			//cout << "x0, y0 " << x0 << ", " << y0 << endl;
-//
-//			markerImg.copyTo(boardImage(R));
-//		}
-//		images.push_back(boardImage);
-//	}
-//
-//
-//	//filename = "backstop" + ToString<int>(squaresX) + "by" + ToString<int>(squaresY) + ".png";
-//	//cv::imwrite(filename, boardImage);
-//
-//	Mat markerImageLarge = Mat::zeros(squareLength, squareLength, CV_8UC1);
-//	markerImageLarge.setTo(255);
-//	for (int id = id_start_number, count  = 0; count < 8; count++, id++){
-//
-//		aruco::drawMarker(dictionary, id, markerLength, markerImg, 1);
-//		Rect R = Rect(margins/2, margins/2, markerLength, markerLength);
-//		markerImg.copyTo(markerImageLarge(R));
-//		filename = "markerID" + ToString<int>(id) + ".png";
-//		//cv::imwrite(filename, markerImageLarge);
-//		images.push_back(markerImageLarge);
-//	}
-//
-//	return 0;
-//}
-//
-//int CreateStrawberryImagesCharuco(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
-//		int margins, int id_start_number){
-//
-//	///seriously considering a charuco board for the background too....
-//
-//	//https://docs.opencv.org/3.4.1/df/d4a/tutorial_charuco_detection.html
-//	/// mainCreate creates the backstop, some in as well as the individual markers.
-//
-//	/// Print out a file the registers the markers on the board
-//	/// everything is written to the current directory ... probably not the best design.
-//	//	std::ofstream out;
-//	//	string filename = write_directory + "specification_file.txt";
-//	//	out.open(filename.c_str());
-//
-//	/// 5x5 bits, 250 markers in this dictionary.,
-//	Ptr<aruco::Dictionary> dictionary =
-//			aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//
-//	Size imageSize;
-//	//	int squaresX = 7;
-//	//	int squaresY = 9;
-//	//	int squareLength = 48;
-//	//	int markerLength = 24;
-//	//	int margins = squareLength - markerLength;
-//	int number_markers = (squaresX/2)*((squaresY + 1)/2) + ((squaresX + 1)/2)*(squaresY/2);
-//	int number_boards = 3;
-//
-//
-//	imageSize.width = squaresX * squareLength;
-//	imageSize.height = squaresY * squareLength;
-//
-//
-//	//////////// this creates the aruco board.
-//	Mat markerImg;
-//	Mat boardImage = Mat::zeros(imageSize.height, imageSize.width, CV_8UC1);
-//	boardImage.setTo(255);
-//	int x0, y0;
-//
-//	for (int x = 0, count = 0; x < squaresX; x++){
-//		for (int y = 0; y < squaresY; y++, count++){
-//			aruco::drawMarker(dictionary, count, markerLength, markerImg, 1);
-//
-//			/// where to place?
-//			x0 = x*squareLength + margins/2;
-//			y0 = y*squareLength + margins/2;
-//
-//			Rect R = Rect(x0, y0, markerLength, markerLength);
-//			//cout << "x0, y0 " << x0 << ", " << y0 << endl;
-//
-//			markerImg.copyTo(boardImage(R));
-//		}
-//
-//	}
-//	images.push_back(boardImage);
-//
-//
-//
-//
-//
-//	// the problem is here.  I want the square length in pixels.  How to ensure this?  detect, and then write.
-//
-//	//cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(squaresX, squaresY, 0.04, 0.02, dictionary);
-//	//cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(squaresX, squaresY, squareLength, markerLength, dictionary);
-//
-//	markerLength = squareLength*.9;
-//	int ss = 3;
-//	cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.9*0.04, dictionary);
-//
-//	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards;
-//	boards.push_back(cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.02, dictionary));
-//	//Mat markerImg;
-//	imageSize.width = 1 * squareLength;
-//	imageSize.height = 1 * squareLength;
-//	boardImage = Mat::zeros(imageSize.height, imageSize.width, CV_8UC1);
-//	boardImage.setTo(255);
-//	//cv::Mat boardImage;
-//	boards[0]->ids[0] = id_start_number;
-//	board->ids[0] = id_start_number;
-//	board->draw( imageSize, boardImage, 10, 1 );
-//
-//	images.push_back(boardImage.clone());
-//
-//
-//
-//	for (int j  = 1; j < 8; j++){
-//
-//		boards.push_back(cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.02, dictionary));
-//		boards[j]->ids[0] = id_start_number + j;
-//
-//		board->ids[0]++;
-//		board->draw( imageSize, boardImage, 10, 1 );
-//
-//		images.push_back(boardImage.clone());
-//
-//	}
-//
-//
-//	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
-//
-//	// detectorParams->ccornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX; // do corner refinement in markers
-//	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-//	if(!readOk) {
-//		cout << "Invalid detector parameters file" << endl;
-//		return 0;
-//	}
-//
-//	int board_selected;
-//
-//	for (int i = 1, in = images.size(); i < in; i++){
-//		Mat image, imageCopy;
-//
-//		image = images[i].clone();
-//
-//		vector< int > ids;
-//		vector< vector< Point2f > > corners, rejected;
-//		vector< Vec3d > rvecs, tvecs;
-//
-//		// detect markers and estimate pose
-//		aruco::detectMarkers(image, dictionary, corners, ids, detectorParams, rejected);
-//
-//		// draw results
-//		image.copyTo(imageCopy);
-//		if(ids.size() > 0) {
-//			cout << ids[0] << endl;
-//			aruco::drawDetectedMarkers(imageCopy, corners, ids);
-//
-//			std::vector<cv::Point2f> charucoCorners;
-//			std::vector<int> charucoIds;
-//			/// can choose which board to use here ...
-//			board_selected = ids[0]/number_markers;
-//			cv::aruco::interpolateCornersCharuco(corners, ids, image, boards[board_selected], charucoCorners, charucoIds);
-//			// if at least one charuco corner detected
-//			if(charucoIds.size() > 0)
-//			{
-//				/// corners (2d) are linked to the Ids
-//				cv::aruco::drawDetectedCornersCharuco(imageCopy, charucoCorners, charucoIds, cv::Scalar(255, 0, 0));
-//			}
-//
-//			cout << "board " << board_selected << endl;
-//
-//			images.push_back(imageCopy.clone());
-//
-//			//filename = write_dir + "/" + image_names[i];
-//			//cv::imwrite(filename, imageCopy);
-//		}
-//	}
-//
-//	return 0;
-//}
-
 
 int CreateTemplateArucoImages(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
 		int margins, int arc_code){
@@ -270,867 +63,6 @@ int CreateTemplateArucoImages(vector<Mat>& images, int squaresX, int squaresY, i
 
 
 
-
-
-int CreateStrawberryImagesCharucoExp(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
-		int margins, int id_start_number){
-
-	/// write the spec file?
-
-	///seriously considering a charuco board for the background too....
-
-	//https://docs.opencv.org/3.4.1/df/d4a/tutorial_charuco_detection.html
-	/// mainCreate creates the backstop, some in as well as the individual markers.
-
-	/// Print out a file the registers the markers on the board
-	/// everything is written to the current directory ... probably not the best design.
-	//	std::ofstream out;
-	//	string filename = write_directory + "specification_file.txt";
-	//	out.open(filename.c_str());
-
-	/// 5x5 bits, 250 markers in this dictionary.,
-	// squares are 2cm x 2cm, 28 x 28 background.  so we need a board with 18x18 markers.
-
-	Ptr<aruco::Dictionary> dictionary =
-			aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-
-	Size imageSize;
-	//	int squaresX = 7;
-	//	int squaresY = 9;
-	//	int squareLength = 48;
-	//	int markerLength = 24;
-	//	int margins = squareLength - markerLength;
-	int number_markers = (squaresX/2)*((squaresY + 1)/2) + ((squaresX + 1)/2)*(squaresY/2);
-	int number_boards = 3;
-
-
-	imageSize.width = squaresX * squareLength;
-	imageSize.height = squaresY * squareLength;
-
-
-	//////////// this creates the aruco board.
-	Mat markerImg;
-	Mat boardImage = Mat::zeros(imageSize.height, imageSize.width, CV_8UC1);
-	boardImage.setTo(255);
-	int x0, y0;
-
-	int count = 0;
-	for (int x = 0; x < squaresX; x++){
-		for (int y = 0; y < squaresY; y++, count++){
-			aruco::drawMarker(dictionary, count, markerLength, markerImg, 1);
-
-			/// where to place?
-			x0 = x*squareLength + margins/2;
-			y0 = y*squareLength + margins/2;
-
-			Rect R = Rect(x0, y0, markerLength, markerLength);
-			//cout << "x0, y0 " << x0 << ", " << y0 << endl;
-
-			markerImg.copyTo(boardImage(R));
-		}
-
-	}
-	images.push_back(boardImage);
-
-
-
-
-
-	// the problem is here.  I want the square length in pixels.  How to ensure this?  detect, and then write.
-
-	//cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(squaresX, squaresY, 0.04, 0.02, dictionary);
-	//cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(squaresX, squaresY, squareLength, markerLength, dictionary);
-
-	markerLength = squareLength*.9;
-	int ss = 3;
-	cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.03, dictionary);
-
-	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards;
-	//boards.push_back(cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.02, dictionary));
-	//Mat markerImg;
-	imageSize.width = 1 * squareLength;
-	imageSize.height = 1 * squareLength;
-	boardImage = Mat::zeros(imageSize.height, imageSize.width, CV_8UC1);
-	boardImage.setTo(255);
-	//cv::Mat boardImage;
-	//	boards[0]->ids[0] = id_start_number;
-	//	board->ids[0] = id_start_number;
-	board->draw( imageSize, boardImage, 10, 1 );
-
-	//images.push_back(boardImage.clone());
-
-	Mat boardImageSmall = Mat::zeros(squareLength + margins, squareLength + margins, CV_8UC1);
-	boardImageSmall.setTo(255);
-
-
-	/// do the singles.
-	int start_count = count;
-	for (int j  = 0; j < 8; j++, count++){
-		for (int x = 0; x < 1; x++){
-			for (int y = 0; y < 1; y++){
-				cout << "count " << count << endl;
-				aruco::drawMarker(dictionary, count, markerLength, markerImg, 1);
-
-				/// where to place?
-				x0 = x*squareLength + margins/2;
-				y0 = y*squareLength + margins/2;
-
-				Rect R = Rect(x0, y0, markerLength, markerLength);
-				//cout << "x0, y0 " << x0 << ", " << y0 << endl;
-
-				markerImg.copyTo(boardImageSmall(R));
-			}
-
-		}
-		images.push_back(boardImageSmall.clone());
-	}
-
-
-
-
-	for (int j  = 0; j < 8; j++){
-
-		boards.push_back(cv::aruco::CharucoBoard::create(ss, ss, 0.04, 0.03, dictionary));
-
-		for (int i = 0; i < 4; i++, start_count++){
-
-			boards[j]->ids[i] = start_count;
-			cout << "Start count " << start_count << endl;
-
-			//board->ids[i]++;
-		}
-		boards[j]->draw( imageSize, boardImage, 10, 1 );
-
-		images.push_back(boardImage.clone());
-
-	}
-
-
-	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
-
-	// detectorParams->ccornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX; // do corner refinement in markers
-	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-	if(!readOk) {
-		cout << "Invalid detector parameters file" << endl;
-		return 0;
-	}
-
-	int board_selected;
-
-	for (int i = 0, in = images.size(); i < in; i++){
-		Mat image, imageCopy;
-
-		image = images[i].clone();
-
-		vector< int > ids;
-		vector< vector< Point2f > > corners, rejected;
-		vector< Vec3d > rvecs, tvecs;
-
-		// detect markers and estimate pose
-		aruco::detectMarkers(image, dictionary, corners, ids, detectorParams, rejected);
-
-		// draw results
-		image.copyTo(imageCopy);
-		if(ids.size() > 0) {
-			cout << ids[0] << endl;
-			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(125, 125, 125));
-
-			std::vector<cv::Point2f> charucoCorners;
-			std::vector<int> charucoIds;
-			/// can choose which board to use here ...
-
-			if (i >= 9){
-				board_selected = i-9;
-				cv::aruco::interpolateCornersCharuco(corners, ids, image, boards[board_selected], charucoCorners, charucoIds);
-				// if at least one charuco corner detected
-				if(charucoIds.size() > 0)
-				{
-					/// corners (2d) are linked to the Ids
-					cv::aruco::drawDetectedCornersCharuco(imageCopy, charucoCorners, charucoIds, cv::Scalar(125, 125, 125));
-				}
-
-				cout << "board " << board_selected << endl;
-			}
-
-			//images.push_back(imageCopy.clone());
-
-			string filename = "temp_file" + ToString<int>(i) + ".jpg";
-			cv::imwrite(filename, imageCopy);
-		}
-	}
-
-	return 0;
-}
-
-
-
-//
-//PatternsCreated::PatternsCreated(string read_dir){
-//
-//	vector<int> squaresX;
-//	vector<int> squaresY;
-//	vector<int> pixelSquareLength;
-//	vector<int> pixelMarkerLength;
-//	vector<double> squareLength;
-//	vector<int> number_markers;
-//	int number_boards;
-//
-//	/// 5x5 bits, 250 markers in this dictionary.,
-//	dictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//
-//	/// read spec file,
-//	string filename = read_dir + "pattern_spec_id.txt";;
-//	ifstream in;
-//
-//	in.open(filename.c_str());
-//	if (!in.good()){
-//		cout << "Input file is bad -- abort." << filename << endl;
-//		exit(1);
-//	}
-//
-//	//
-//	string temp;
-//	in >> temp >> temp;
-//	number_boards = FromString<int>(temp);
-//	for (int i = 0; i < number_boards; i++){
-//		in >> temp >> temp; squaresX.push_back(FromString<int>(temp));
-//		in >> temp >> temp; squaresY.push_back(FromString<int>(temp));
-//		in >> temp >> temp; pixelSquareLength.push_back(FromString<int>(temp));
-//		in >> temp >> temp; pixelMarkerLength.push_back(FromString<int>(temp));
-//		in >> temp >> temp; number_markers.push_back(FromString<int>(temp));
-//	}
-//	in.close();
-//
-//
-//	for (int i = 0, m = 0, s = 0; i < number_boards; i++){
-//		/// the dimensions of the board are linked in here ....
-//		boards.push_back(cv::aruco::CharucoBoard::create(squaresX[i], squaresY[i], pixelSquareLength[i], pixelMarkerLength[i], dictionary));
-//
-//		min_max_id_pattern.push_back(pair<int, int>(m, m));
-//
-//		for (int j = 0; j < number_markers[i]; j++, m++){
-//			boards[i]->ids[j] = m;
-//		}
-//
-//		min_max_id_pattern[i].second = min_max_id_pattern[i].first + number_markers[i] - 1;
-//		min_max_id_squares.push_back(pair<int, int>(s, s));
-//		s = s + (squaresX[i] - 1)*(squaresY[i] - 1) - 1;
-//		min_max_id_squares[i].second = s;
-//		s = s + 1;
-//	}
-//
-//	// this is all inane, but want to avoid re-computing it and making a mistake later.
-//	number_total_squares = min_max_id_squares[number_boards - 1].second  + 1;
-//	int_number_markers = min_max_id_pattern[number_boards - 1].second + 1;
-//	//number_markers = 0;
-//
-//
-//	// then open up all of the physical measurement files, add to square length.
-//	for (int i = 0; i < number_boards; i++){
-//		filename = read_dir + "pattern_square_mm" + ToString<int>(i) + ".txt";
-//		in.open(filename.c_str());
-//		if (!in.good()){
-//			cout << "Input file is bad for physical measurements of the patterns -- abort." << filename << endl;
-//			exit(1);
-//		}
-//
-//		in >> temp >> temp;
-//		squareLength.push_back(FromString<double>(temp));
-//
-//		in.close();
-//
-//	}
-//
-//	// convert everything to the class members.
-//	//////////////////////// double to single.//////////////////////////////
-//	double mm;
-//	three_d_points = vector< cv::Point3f >(number_total_squares, cv::Point3f());
-//	int sm = 0;
-//	for (int i = 0, sc = 0; i < number_boards; i++){
-//		mm = squareLength[i];
-//
-//		vector<int> current_index(number_markers[i], 0);
-//
-//		for (int m = 0; m < number_markers[i]; m++, sc++){
-//			current_index[m] = sc;
-//		}
-//
-//		for (int r = 0; r < squaresY[i] - 1; r++){
-//			for (int c = 0; c < squaresX[i] - 1; c++, sm++){
-//				Point3f p(mm*float(c), float(r)*mm, 0);
-//				three_d_points[sm] = p;
-//			}
-//		}
-//
-//		double_to_single.push_back(current_index);
-//	}
-//
-//
-//	vector<int> color0(3, 0);
-//	vector<int> color1(3, 0);
-//	vector<int> color2(3, 0);
-//
-//	color0[2] = 255;
-//	color1[1] = 255;
-//	color2[0] = 255;
-//	display_colors.push_back(color0);
-//	display_colors.push_back(color1);
-//	display_colors.push_back(color2);
-//	color0[1] = 255;
-//	display_colors.push_back(color0);
-//	color0[1] = 0;
-//	color0[1] = 255;
-//	display_colors.push_back(color0);
-//	color2[1] = 255;
-//	display_colors.push_back(color2);
-//
-//	number_patterns = number_boards;
-//
-//
-//}
-
-
-//
-//PatternsCreated::PatternsCreated(string read_dir, bool strawberry_class){
-//
-//	vector<int> squaresX;
-//	vector<int> squaresY;
-//	vector<int> pixelSquareLength;
-//	vector<int> pixelMarkerLength;
-//	vector<double> squareLength;
-//	vector<int> number_markers;
-//	int number_boards;
-//	single_aruco_markers = strawberry_class;
-//
-//	if (strawberry_class == false){
-//		max_internal_patterns = 0;
-//		internalx = 0;  internaly = 0;
-//
-//		/// 5x5 bits, 250 markers in this dictionary.,
-//		dictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//
-//		/// read spec file,
-//		string filename = read_dir + "pattern_spec_id.txt";;
-//		ifstream in;
-//
-//		in.open(filename.c_str());
-//		if (!in.good()){
-//			cout << "Input file is bad -- abort." << filename << endl;
-//			exit(1);
-//		}
-//
-//		//
-//		string temp;
-//		in >> temp >> temp;
-//		number_boards = FromString<int>(temp);
-//		for (int i = 0; i < number_boards; i++){
-//			in >> temp >> temp; squaresX.push_back(FromString<int>(temp));
-//			in >> temp >> temp; squaresY.push_back(FromString<int>(temp));
-//			in >> temp >> temp; pixelSquareLength.push_back(FromString<int>(temp));
-//			in >> temp >> temp; pixelMarkerLength.push_back(FromString<int>(temp));
-//			in >> temp >> temp; number_markers.push_back(FromString<int>(temp));
-//		}
-//		in.close();
-//
-//
-//		for (int i = 0, m = 0, s = 0; i < number_boards; i++){
-//			/// the dimensions of the board are linked in here ....
-//			boards.push_back(cv::aruco::CharucoBoard::create(squaresX[i], squaresY[i], pixelSquareLength[i], pixelMarkerLength[i], dictionary));
-//
-//			min_max_id_pattern.push_back(pair<int, int>(m, m));
-//
-//			for (int j = 0; j < number_markers[i]; j++, m++){
-//				boards[i]->ids[j] = m;
-//			}
-//
-//			min_max_id_pattern[i].second = min_max_id_pattern[i].first + number_markers[i] - 1;
-//			min_max_id_squares.push_back(pair<int, int>(s, s));
-//			s = s + (squaresX[i] - 1)*(squaresY[i] - 1) - 1;
-//			min_max_id_squares[i].second = s;
-//			s = s + 1;
-//		}
-//
-//		// this is all inane, but want to avoid re-computing it and making a mistake later.
-//		number_total_squares = min_max_id_squares[number_boards - 1].second  + 1;
-//		int_number_markers = min_max_id_pattern[number_boards - 1].second + 1;
-//		//number_markers = 0;
-//
-//
-//		// then open up all of the physical measurement files, add to square length.
-//		for (int i = 0; i < number_boards; i++){
-//			filename = read_dir + "pattern_square_mm" + ToString<int>(i) + ".txt";
-//			in.open(filename.c_str());
-//			if (!in.good()){
-//				cout << "Input file is bad for physical measurements of the patterns -- abort." << filename << endl;
-//				exit(1);
-//			}
-//
-//			in >> temp >> temp;
-//			squareLength.push_back(FromString<double>(temp));
-//
-//			in.close();
-//
-//		}
-//
-//		// convert everything to the class members.
-//		//////////////////////// double to single.//////////////////////////////
-//		double mm;
-//		three_d_points = vector< cv::Point3f >(number_total_squares, cv::Point3f());
-//		int sm = 0;
-//		for (int i = 0, sc = 0; i < number_boards; i++){
-//			mm = squareLength[i];
-//
-//			vector<int> current_index(number_markers[i], 0);
-//
-//			for (int m = 0; m < number_markers[i]; m++, sc++){
-//				current_index[m] = sc;
-//			}
-//
-//			for (int r = 0; r < squaresY[i] - 1; r++){
-//				for (int c = 0; c < squaresX[i] - 1; c++, sm++){
-//					Point3f p(mm*float(c), float(r)*mm, 0);
-//					three_d_points[sm] = p;
-//				}
-//			}
-//
-//			double_to_single.push_back(current_index);
-//		}
-//
-//
-//		vector<int> color0(3, 50);
-//		vector<int> color1(3, 50);
-//		vector<int> color2(3, 50);
-//
-//		color0[2] = 255;
-//		color1[1] = 255;
-//		color2[0] = 255;
-//		display_colors.push_back(color0);
-//		display_colors.push_back(color1);
-//		display_colors.push_back(color2);
-//		color0[1] = 255;
-//		display_colors.push_back(color0);
-//		color0[1] = 150;
-//		color0[2] = 150;
-//		display_colors.push_back(color0);
-//		color2[1] = 255;
-//		display_colors.push_back(color2);
-//
-//		number_patterns = number_boards;
-//	}	else {
-//
-//		cout << "Got to the strawberry case ... " << endl;
-//		/// FOR THE STRAWBERRY CASE
-//
-//		/// 5x5 bits, 250 markers in this dictionary.,
-//		dictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//
-//		/// read spec file,
-//		string filename = read_dir + "specification_file.txt";;
-//		ifstream in;
-//
-//		in.open(filename.c_str());
-//		if (!in.good()){
-//			cout << "Input file is bad -- abort." << filename << endl;
-//			exit(1);
-//		}
-//
-//
-//		cout << "After open" << endl;
-//		//
-//		string temp;
-//		//		in >> temp >> temp;
-//		//		number_boards = FromString<int>(temp);
-//		//		for (int i = 0; i < number_boards; i++){
-//		int sX, sY, sL, mL, margin, id_start, id_end;
-//
-//
-//		in >> temp >> sX; cout << temp << endl;
-//		in >> temp >> sY; cout << temp << endl;
-//		in >> temp >> sL; cout << temp << endl;
-//		in >> temp >> mL; cout << temp << endl;
-//		in >> temp >> margin; cout << temp << endl;
-//		in >> temp >> id_start; cout << temp << endl;
-//		in >> temp >> id_end; cout << temp << endl;
-//		internalx = sX;
-//		internaly = sY;
-//		/// now, read in mm for external
-//		// now, read in mm for internal
-//
-//		cout << "temp last " << temp << endl;
-//
-//		number_boards = id_end - id_start + 1;
-//		cout << "After read " << number_boards << endl;
-//		//}
-//		in.close();
-//
-//
-//		for (int i = 0, m = id_start, s = 0; i < number_boards; i++){
-//			/// the dimensions of the board are linked in here ....
-//			//boards.push_back(cv::aruco::CharucoBoard::create(squaresX[i], squaresY[i], pixelSquareLength[i], pixelMarkerLength[i], dictionary));
-//
-//			min_max_id_pattern.push_back(pair<int, int>(m, m));
-//
-//			single_aruco_ids.push_back(m); m++;
-//
-//
-//			min_max_id_pattern[i].second = min_max_id_pattern[i].first;
-//			min_max_id_squares.push_back(pair<int, int>(s, s));
-//			s = s + 4 - 1;
-//			min_max_id_squares[i].second = s;
-//			s = s + 1;
-//		}
-//
-//		cout << "After squares " << endl;
-//
-//		// this is all inane, but want to avoid re-computing it and making a mistake later.
-//		number_total_squares = min_max_id_squares[number_boards - 1].second  + 1;
-//		int_number_markers = min_max_id_pattern[number_boards - 1].second + 1;
-//		//number_markers = 0;
-//		cout << "Number boards " << number_boards << endl;
-//		cout << "Number total squares " << number_total_squares << endl;
-//
-//
-//		// then open up all of the physical measurement files, add to square length.
-//		//
-//		filename = read_dir + "pattern_square_mm_external.txt";
-//		in.open(filename.c_str());
-//		if (!in.good()){
-//			cout << "Input file is bad for physical measurements of the patterns -- abort." << filename << endl;
-//			exit(1);
-//		}
-//
-//		//double external_mm = 0;
-//		in >> temp >> temp;
-//		for (int i = 0; i < number_boards; i++){
-//			squareLength.push_back(FromString<double>(temp));
-//		}
-//		in.close();
-//
-//		//}
-//
-//		cout << "Before 3d points " << endl;
-//		// convert everything to the class members.
-//		//////////////////////// double to single.//////////////////////////////
-//		double mm;
-//		three_d_points = vector< cv::Point3f >(number_total_squares, cv::Point3f());
-//		int sm = 0;
-//
-//		/// external markers
-//		for (int i = 0, sc = 0; i < number_boards; i++){
-//			mm = squareLength[i];
-//
-//			vector<int> current_index(1, 0);
-//
-//			for (int m = 0; m < 1; m++, sc++){
-//				current_index[m] = sc;
-//			}
-//
-//			//			for (int r = 0; r < 2; r++){
-//			//				for (int c = 0; c < 2; c++, sm++){
-//			//					Point3f p(mm*float(c), float(r)*mm, 0);
-//			//					three_d_points[sm] = p;
-//			//				}
-//			//			}
-//
-//			three_d_points[sm] = Point3f(mm*float(0), float(0)*mm, 0); sm++;
-//			three_d_points[sm] = Point3f(mm*float(1), float(0)*mm, 0); sm++;
-//			three_d_points[sm] = Point3f(mm*float(1), float(1)*mm, 0); sm++;
-//			three_d_points[sm] = Point3f(mm*float(0), float(1)*mm, 0); sm++;
-//
-//			//
-//
-//
-//
-//			//			for (int r = 0; r < 2squaresY[i] - 1; r++){
-//			//				for (int c = 0; c < squaresX[i] - 1; c++, sm++){
-//			//					Point3f p(mm*float(c), float(r)*mm, 0);
-//			//					three_d_points[sm] = p;
-//			//				}
-//			//			}
-//
-//			double_to_single.push_back(current_index);
-//		}
-//		cout << "After 3d points " << endl;
-//
-//
-//		/// internal markers.
-//		filename = read_dir + "pattern_square_mm_internal.txt";
-//		in.open(filename.c_str());
-//		if (!in.good()){
-//			cout << "Input file is bad for internal physical measurements of the patterns -- abort." << filename << endl;
-//			exit(1);
-//		}
-//
-//		double internal_mm = 0;
-//		in >> temp >> temp;
-//		internal_mm =  FromString<double>(temp);
-//
-//		in.close();
-//
-//		cout << "Before create images " << endl;
-//		// detect pattern locations on the image..
-//		vector<Mat> images;
-//		//CreateStrawberryImages(images, sX, sY, sL, mL, margin, id_start);
-//
-//		CreateStrawberryImagesCharuco(images, sX, sY, sL, mL, margin, id_start);
-//		filename = read_dir + "created_backstop.png";
-//		imwrite(filename.c_str(), images[0]);
-//		for (int j = 1; j < 9; j++){
-//			filename = read_dir + "Marker" + ToString<int>(j-1) + ".png";
-//			imwrite(filename.c_str(), images[j]);
-//		}
-//		cout << "After create images " << endl;
-//
-//		/// detect the locations of the tags.  Come up with a way to map the tag locations to the 3D locations -- will copy and paste this regime into the cali regime.
-//
-//		// for each tag, generate where it should be in 3D space.  so indices are tag0 corner0-3 tag1 corner0-3 etc., .etc.  not on a grid necessarily.
-//		Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
-//
-//		cout << "Before create detector " << endl;
-//		//
-//		//	// detectorParams->ccornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX; // do corner refinement in markers
-//		bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-//		if(!readOk) {
-//			cout << "Invalid detector parameters file, quitting" << endl;
-//			exit(1);
-//		}
-//		// already defined appropriately
-//		//
-//		//	Ptr<aruco::Dictionary> dictionary =
-//		//			aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME(cv::aruco::DICT_6X6_250));
-//		//
-//		//
-//
-//		cout << "Line 478 " << endl;
-//		//int internal_image = 0;
-//
-//		vector< int > ids;
-//		vector< vector< Point2f > > corners, rejected;
-//		aruco::detectMarkers(images[0], dictionary, corners, ids, detectorParams, rejected);
-//
-//		//int number_internal_ids = sX*sY;
-//
-//		Mat imageCopy;
-//
-//		//images[0].copyTo(imageCopy);
-//
-//		cvtColor(images[0], imageCopy, cv::COLOR_GRAY2RGB);
-//
-//		if(ids.size() > 0) {
-//			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(255, 255, 0));
-//			filename = read_dir + "internal_with_labels.png";
-//			cv::imwrite(filename, imageCopy);
-//		}
-//
-//		//images[0].copyTo(imageCopy);
-//
-//
-//		//imageCopy.setTo(255);
-//
-//		// internal_mm is the measurement per square edge.
-//		// how far apart are the squares?
-//		if (ids.size() > 0 && int(ids.size()) == sX*sY){
-//			vector<int> mapping_to_id(sX*sY, 0);
-//			// are the ids in order?
-//			for (int i = 0, in = ids.size(); i < in; i++){
-//				mapping_to_id[ids[i]] = i;
-//			}
-//
-//			//			cout << "sX, sY " << sX << ", " << sY << endl;
-//			//			for (int i = 0, in = ids.size(); i < in; i++){
-//			//				cout << mapping_to_id[ids[i]] << endl;
-//			//			}
-//
-//			// indices go Y first, X second. /// inverse of the way they are usually stored, but okay.
-//			// markerLength is the length of the square in pixels.
-//			// then squarelength is the distance from one corner to the other.
-//
-//			// now -- just do with pixel coordinates.
-//
-//			//	internal_mm = 100;
-//
-//			double distance_between_squares = internal_mm*double(sL)/double(mL);
-//
-//			cout << "Current settings, square length, distance bewteen squares froms start to finish " << internal_mm << ", " << distance_between_squares << endl;
-//
-//			//double x_coord;
-//			//double y_coord;
-//
-//			int current_index;
-//			int x_value, y_value;
-//			vector< Point2f > current_corners;
-//
-//			int internal_squares = 4*sX*sY;
-//			three_d_points_internal = vector< cv::Point3f >(internal_squares, cv::Point3f());
-//			max_internal_patterns = sX*sY;
-//
-//			//			for (int i = 0, in = ids.size(); i < in; i++){
-//			//				current_index = mapping_to_id[ids[i]];
-//			//				current_corners = corners[current_index];
-//			//
-//			//				x_value = sX - current_index%sX - 1;
-//			//				y_value = current_index/sX;
-//			//
-//			//				//string coords = ToString<int>(x_value) + ", " + ToString<int>(y_value);
-//			//				//putText(imageCopy, coords, Point(current_corners[0].x,current_corners[0].y), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-//			//
-//			//
-//			//				// assign the value -- clockwise
-//			//				Point3f p0(distance_between_squares*double(x_value), distance_between_squares*double(y_value) + internal_mm, 0);
-//			//				Point3f p1(distance_between_squares*double(x_value) + internal_mm, distance_between_squares*double(y_value) + internal_mm, 0);
-//			//				Point3f p2(distance_between_squares*double(x_value) + internal_mm, distance_between_squares*double(y_value), 0);
-//			//				Point3f p3(distance_between_squares*double(x_value), distance_between_squares*double(y_value), 0);
-//			//
-//			//				//Point3f p(mm*float(c), float(r)*mm, 0);
-//			//				three_d_points_internal[4*current_index] = p0; // would correspond to current corners[0]
-//			//				three_d_points_internal[4*current_index + 1] = p1;
-//			//				three_d_points_internal[4*current_index + 2] = p2;
-//			//				three_d_points_internal[4*current_index + 3] = p3;
-//			//
-//			//				for (int j = 0; j < 4; j++){
-//			//					string coords = ToString<float>(three_d_points_internal[4*current_index + j].x) + ", " + ToString<float>(three_d_points_internal[4*current_index + j].y);
-//			//					putText(imageCopy, coords, Point(current_corners[j].x,current_corners[j].y), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 0, 0), 1);
-//			//
-//			//				}
-//			//
-//			//			}
-//
-//
-//			for (int i = 0, in = ids.size(); i < in; i++){
-//				cout << "Pattern creation, in this order: " << ids[i] << endl;
-//				current_index = ids[i];
-//				current_corners = corners[i];
-//
-//				//x_value = sX - current_index%sX - 1;
-//				//y_value = current_index/sX;
-//
-//				x_value = current_index/sY;
-//				y_value = sY - current_index%sY - 1;
-//
-//				//string coords = ToString<int>(x_value) + ", " + ToString<int>(y_value);
-//				//putText(imageCopy, coords, Point(current_corners[0].x,current_corners[0].y), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-//
-//
-//				// assign the value -- clockwise
-//				Point3f p0(distance_between_squares*double(x_value), distance_between_squares*double(y_value) + internal_mm, 0);
-//				Point3f p1(distance_between_squares*double(x_value) + internal_mm, distance_between_squares*double(y_value) + internal_mm, 0);
-//				Point3f p2(distance_between_squares*double(x_value) + internal_mm, distance_between_squares*double(y_value), 0);
-//				Point3f p3(distance_between_squares*double(x_value), distance_between_squares*double(y_value), 0);
-//
-//				//Point3f p(mm*float(c), float(r)*mm, 0);
-//				three_d_points_internal[4*current_index] = p0; // would correspond to current corners[0]
-//				three_d_points_internal[4*current_index + 1] = p1;
-//				three_d_points_internal[4*current_index + 2] = p2;
-//				three_d_points_internal[4*current_index + 3] = p3;
-//
-//
-//				string coords = ToString<float>(x_value) + ", " + ToString<float>(y_value);
-//				putText(imageCopy, coords, Point(current_corners[0].x,current_corners[0].y), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 0, 0), 1);
-//				for (int j = 1; j < 4; j++){
-//					string coords = ToString<float>(three_d_points_internal[4*current_index + j].x) + ", " + ToString<float>(three_d_points_internal[4*current_index + j].y);
-//					putText(imageCopy, coords, Point(current_corners[j].x,current_corners[j].y), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 0, 0), 1);
-//
-//				}
-//
-//			}
-//
-//
-//			filename = read_dir + "internal_with_morelabels.png";
-//			cv::imwrite(filename, imageCopy);
-//
-//
-//
-//
-//			cout << "A test ... what is the value of id 23 after everyone goes through? " << endl;
-//			current_index = 23;
-//			for (int j = 0; j < 4; j++){
-//				string coords = ToString<float>(three_d_points_internal[4*current_index + j].x) + ", " + ToString<float>(three_d_points_internal[4*current_index + j].y);
-//				cout << coords << endl;
-//			}
-//
-//
-//
-//		}	else {
-//			cout << "not finding all of the elements .... squareX, Y is wrong?  Double check specification file" << endl;
-//			exit(1);
-//		}
-//
-//
-//
-//		//putText(image, "opencv-hub", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-//
-//		//cout << "Quitting while ahead here .... "<< endl;
-//		//exit(1);
-//
-//		// TODO need to write three_d_points_internal;
-//
-//
-//		//
-//		//	for (int i = 0, in = image_names.size(); i < in; i++){
-//		//		Mat image, imageCopy;
-//		//		string filename = read_dir + image_names[i];
-//		//		cout << "filename " << filename << endl;
-//		//		image = imread(filename.c_str());
-//		//
-//
-//		//		vector< Vec3d > rvecs, tvecs;
-//		//
-//		//		// detect markers and estimate pose
-//		//
-//		//
-//		//		// draw results
-//		//		image.copyTo(imageCopy);
-//		//		if(ids.size() > 0) {
-//		//			aruco::drawDetectedMarkers(imageCopy, corners, ids);
-//		//			filename = write_dir + image_names[i];
-//		//			cv::imwrite(filename, imageCopy);
-//		//		}
-//		//	}
-//
-//
-//
-//
-//
-//
-//		//			for (int r = 0; r < 2squaresY[i] - 1; r++){
-//		//				for (int c = 0; c < squaresX[i] - 1; c++, sm++){
-//		//					Point3f p(mm*float(c), float(r)*mm, 0);
-//		//					three_d_points[sm] = p;
-//		//				}
-//		//			}
-//
-//
-//
-//		vector<int> color0(3, 0);
-//		vector<int> color1(3, 0);
-//		vector<int> color2(3, 0);
-//
-//		color0[2] = 255;
-//		color1[1] = 255;
-//		color2[0] = 255;
-//		display_colors.push_back(color0);
-//		display_colors.push_back(color1);
-//		display_colors.push_back(color2);
-//		color0[1] = 255;
-//		display_colors.push_back(color0);
-//		color0[1] = 0;
-//		color0[1] = 255;
-//		display_colors.push_back(color0);
-//		color2[1] = 255;
-//		display_colors.push_back(color2);
-//
-//
-//		vector<int> color3(3, 0);
-//		vector<int> color4(3, 150);
-//		display_colors.push_back(color3);
-//		display_colors.push_back(color4);
-//
-//
-//		number_patterns = number_boards;
-//
-//
-//	}
-//}
 
 
 string FindValueOfFieldInFile(string filename, string fieldTag, bool seperator){
@@ -1187,48 +119,6 @@ string FindValueOfFieldInFile(string filename, string fieldTag, bool seperator){
 
 }
 
-//
-//int line_with_camera = 200;
-//int line_with_focal_length = 200;
-//string str1 = "Camera Model Name";
-//string str2 = "Focal Length";
-//string str3 = "ILCE-6000";
-//string cmp_str;
-//
-//
-//int line_counter = 0;
-//while (in){
-//	getline(in, read_str);
-//
-//	if (line_with_camera == 200){
-//		std::size_t found = read_str.find(str1);
-//		if (found!=std::string::npos){
-//			line_with_camera = line_counter;
-//
-//			std::size_t found = read_str.find(str3);
-//
-//			if (found==std::string::npos){
-//				cout << "Camera manufacturer and model not ILCE-6000! " << endl;
-//				cout<< "read str  " << read_str << endl;
-//				exit(1);
-//			}
-//		}
-//	}
-//
-//	if (line_with_focal_length == 200){
-//		std::size_t found = read_str.find(str2);
-//		if (found!=std::string::npos){
-//			line_with_focal_length = line_counter;
-//			in.close();
-//		}
-//
-//	}
-//
-//	line_counter++;
-//
-//}
-
-
 
 
 PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool aruco_markers){
@@ -1262,7 +152,7 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 	cout << "After open" << endl;
 
 	// margin is not needed, neither is the id for this one.
-	int sX, sY, sL, mL, margin, id_start, id_end, ac;
+	int sX, sY, sL, mL, margin, ac;
 
 	/// find everything we need ....
 	string return_string;
@@ -1316,17 +206,11 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 	cout << "After squares " << endl;
 
-	// this is all inane, but want to avoid re-computing it and making a mistake later.
-	//number_total_squares = min_max_id_squares[number_boards - 1].second  + 1;
 	int_number_markers = 0;
-	//number_markers = 0;
-	//cout << "Number boards " << number_boards << endl;
+
 	number_total_squares = sX*sY;
 	cout << "Number total squares " << number_total_squares << endl;
-	//
 
-	// then open up all of the physical measurement files, add to square length.
-	//
 	filename = read_dir + "calibration_object_info.txt";
 	in.open(filename.c_str());
 	if (!in.good()){
@@ -1379,9 +263,7 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 	cout << "Before create images " << endl;
 	// detect pattern locations on the image..
 	vector<Mat> images;
-	//CreateStrawberryImages(images, sX, sY, sL, mL, margin, id_start);
 
-	/// maybe need this???
 	CreateTemplateArucoImages(images, sX, sY, sL, mL, margin, ac);
 
 	filename = read_dir + "created_template.png";
@@ -1389,23 +271,15 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 	cout << "After create image " << endl;
 
-	/// detect the locations of the tags.  Come up with a way to map the tag locations to the 3D locations -- will copy and paste this regime into the cali regime.
-
-	// for each tag, generate where it should be in 3D space.  so indices are tag0 corner0-3 tag1 corner0-3 etc., .etc.  not on a grid necessarily.
 	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
 
-	cout << "Before create detector " << endl;
-	//
-	//	// detectorParams->ccornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX; // do corner refinement in markers
+
 	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
 	if(!readOk) {
 		cout << "Invalid detector parameters file, quitting" << endl;
 		exit(1);
 	}
 
-
-	cout << "Line 478 " << endl;
-	//int internal_image = 0;
 
 	vector< int > ids;
 	vector< vector< Point2f > > corners, rejected;
@@ -1543,68 +417,22 @@ int PatternsCreated::NumberSquares(){
 	return number_total_squares;
 }
 
-//vector<vector<bool> > points_present;
-//
-//	vector<Mat> images; // the calibration images in the set;
-//
-//	Matrix3d internal_parameters;
-//	VectorXd distortion;
-//	vector<Matrix4d> external_parameters;
-//
-//	//?? how should do this, with gaps or not, how best to organize this so that it makes sense?
-//	// probably with gaps, so that it matches points present for each image.  To calibrate, just line up with a fresh copy, no gaps.
-//	// vector< vector< cv::Point2f> > internal_points;
-//
-//	CameraCali(string read_dir);
-//static bool readDetectorParameters(string filename, Ptr<aruco::DetectorParameters> &params) {
-//	FileStorage fs(filename, FileStorage::READ);
-//	if(!fs.isOpened())
-//		return false;
-//	fs["adaptiveThreshWinSizeMin"] >> params->adaptiveThreshWinSizeMin;
-//	fs["adaptiveThreshWinSizeMax"] >> params->adaptiveThreshWinSizeMax;
-//	fs["adaptiveThreshWinSizeStep"] >> params->adaptiveThreshWinSizeStep;
-//	fs["adaptiveThreshConstant"] >> params->adaptiveThreshConstant;
-//	fs["minMarkerPerimeterRate"] >> params->minMarkerPerimeterRate;
-//	fs["maxMarkerPerimeterRate"] >> params->maxMarkerPerimeterRate;
-//	fs["polygonalApproxAccuracyRate"] >> params->polygonalApproxAccuracyRate;
-//	fs["minCornerDistanceRate"] >> params->minCornerDistanceRate;
-//	fs["minDistanceToBorder"] >> params->minDistanceToBorder;
-//	fs["minMarkerDistanceRate"] >> params->minMarkerDistanceRate;
-//	//fs["doCornerRefinement"] >> params->doCornerRefinement;
-//	fs["cornerRefinementWinSize"] >> params->cornerRefinementWinSize;
-//	fs["cornerRefinementMaxIterations"] >> params->cornerRefinementMaxIterations;
-//	fs["cornerRefinementMinAccuracy"] >> params->cornerRefinementMinAccuracy;
-//	fs["markerBorderBits"] >> params->markerBorderBits;
-//	fs["perspectiveRemovePixelPerCell"] >> params->perspectiveRemovePixelPerCell;
-//	fs["perspectiveRemoveIgnoredMarginPerCell"] >> params->perspectiveRemoveIgnoredMarginPerCell;
-//	fs["maxErroneousBitsInBorderRate"] >> params->maxErroneousBitsInBorderRate;
-//	fs["minOtsuStdDev"] >> params->minOtsuStdDev;
-//	fs["errorCorrectionRate"] >> params->errorCorrectionRate;
-//	return true;
-//}
-
-// this is the only function changed.
 CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 	pixel_width = 0;
 	count_internal_ids_present = 0;
 	sensor_width  = 0;
-	//straw_pattern_x = 0;
-	//straw_pattern_y = 0;
 
 	P_class = P; // have a ptr to all the full information about the patterns.
 
 	// load the images ...
 
-	//vector<string> im_names;
 	string filename;
 	string txt_ext = "txt";
 	Mat im;
-	//int count;
 
 	string ext_dir = read_dir + "/external/";
 	cout << "Ext dir! " << ext_dir << endl;
 
-	// TODO -- sub in code from aruco read ...
 	bool dir_exists = IsDirectory(ext_dir);
 	if (dir_exists){
 		vector<string> new_names;
@@ -1629,8 +457,6 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 		ReadDirectory(read_dir, im_names);
 
 		number_external_images_max = im_names.size();
-		//number_external_images_max = 5;
-
 
 		//for (int i = 0, in = im_names.size(); i < in; i++){
 		for (int i = 0; i < number_external_images_max; i++){
@@ -1659,12 +485,9 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 		new_names.swap(im_names);
 	}
 
-
-
 	/// read the internal dir.
 	string int_dir = read_dir + "/internal/";
 	dir_exists = IsDirectory(int_dir);
-	//im_names.clear();
 	vector<string> aux_names;
 	if (dir_exists){
 		ReadDirectory(int_dir, aux_names);
@@ -1681,100 +504,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 
 	cout << "Number max images " << number_external_images_max << endl;
 
-	//char gh; cin >> gh;
-
 }
-
-
-//void CameraCali::ReadExifInformationStrawberry(string read_dir){
-//
-//	vector<string> im_names;
-//	string filename;
-//	ReadDirectory(read_dir, im_names);
-//
-//
-//	filename = read_dir + "/" + im_names[0];
-//
-//	string command;
-//
-//	command = "exiftool " + filename + " > ../ex.txt";
-//	system(command.c_str());
-//
-//	double SONY_sensor_width = 23.5;
-//	double SONY_sensor_height = 15.6;
-//	double focal_length = 16.0;
-//
-//
-//	string read_str;
-//
-//	ifstream in;
-//	in.open("../ex.txt");
-//
-//	//// redo --- read through and find
-//	/// Camera Model Name tag
-//	/// Focal Length tag
-//	int line_with_camera = 200;
-//	int line_with_focal_length = 200;
-//	string str1 = "Camera Model Name";
-//	string str2 = "Focal Length";
-//	string str3 = "ILCE-6000";
-//	string cmp_str;
-//
-//
-//	int line_counter = 0;
-//	while (in){
-//		getline(in, read_str);
-//
-//		if (line_with_camera == 200){
-//			std::size_t found = read_str.find(str1);
-//			if (found!=std::string::npos){
-//				line_with_camera = line_counter;
-//
-//				std::size_t found = read_str.find(str3);
-//
-//				if (found==std::string::npos){
-//					cout << "Camera manufacturer and model not ILCE-6000! " << endl;
-//					cout<< "read str  " << read_str << endl;
-//					exit(1);
-//				}
-//			}
-//		}
-//
-//		if (line_with_focal_length == 200){
-//			std::size_t found = read_str.find(str2);
-//			if (found!=std::string::npos){
-//				line_with_focal_length = line_counter;
-//				in.close();
-//			}
-//
-//		}
-//
-//		line_counter++;
-//
-//	}
-//
-//	in.open("ex.txt");
-//	cout << "line counter " << line_counter << endl;
-//	for (int m = 0; m < line_counter - 2; m++){
-//		getline(in, read_str);
-//	}
-//	//		getline(in, read_str);
-//	cout << "result " << read_str << endl;
-//
-//	for (int m = 0; m < 3; m++){
-//		in >> read_str;
-//
-//	}
-//	in >> focal_length;
-//	cout << "focal length " << focal_length << endl;
-//	in.close();
-//
-//
-//	// b/c these are tilted..
-//	pixel_width = double(images[0].rows)*SONY_sensor_width/focal_length;
-//	cout << "pixel width " << pixel_width << endl;
-//
-//}
 
 
 void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string parent_dir){
@@ -1831,17 +561,6 @@ void PatternsCreated::DetermineBoardsPresentFromMarkerList(vector<int>& markers,
 
 	int np = NumberPatterns();
 
-	//	// initialize
-	//	if (int(boards_seen.size()) != np){
-	//		boards_seen.resize(np, false);
-	//	}	else {
-	//
-	//		for (int j = 0; j < np; j++){
-	//			boards_seen[j] = false;
-	//		}
-	//	}
-
-
 	for (int i = 0, in = markers.size(); i < in; i++){
 		for (int j = 0;  j < np; j++){ // don't walk this one if it is already occupied.
 			if (markers[i] >= min_max_id_pattern[j].first && markers[i] <= min_max_id_pattern[j].second){
@@ -1854,17 +573,6 @@ void PatternsCreated::DetermineBoardsPresentFromMarkerList(vector<int>& markers,
 int PatternsCreated::MappingArucoIDToPatternNumber(int id){
 	int np = NumberPatterns();
 
-	//	// initialize
-	//	if (int(boards_seen.size()) != np){
-	//		boards_seen.resize(np, false);
-	//	}	else {
-	//
-	//		for (int j = 0; j < np; j++){
-	//			boards_seen[j] = false;
-	//		}
-	//	}
-
-
 	for (int j = 0;  j < np; j++){ // don't walk this one if it is already occupied.
 		if (id >= min_max_id_pattern[j].first && id <= min_max_id_pattern[j].second){
 			return j;
@@ -1875,438 +583,14 @@ int PatternsCreated::MappingArucoIDToPatternNumber(int id){
 }
 
 
-//int PatternsCreated::SelectPattern(int CharucoID){
-//
-//	bool found = false;
-//	int id = number_patterns;
-//
-//	for (int i = 0; i < number_patterns && found == false; i++){
-//		if (CharucoID >= min_max_id_pattern[i].first && CharucoID <= min_max_id_pattern[i].second){
-//			id = i;
-//			found  = true;
-//		}
-//	}
-//
-//	return id;
-//
-//}
-
 Scalar PatternsCreated::Color(int index){
 
-	if (index >= display_colors.size() ){
+	if (index >= int(display_colors.size()) ){
 		index = display_colors.size() % index;
 	}
 	return Scalar(display_colors[index][0], display_colors[index][1],display_colors[index][2]);
 }
 
-
-float euclideanDist(Point2f& p, Point2f& q) {
-	Point2f diff = p - q;
-	return sqrt(diff.x*diff.x + diff.y*diff.y);
-}
-
-void ComputeStats(vector<double>& ds, double& mu, double& var){
-
-	mu = 0;
-	double n = ds.size();
-	var = 0;
-
-	for (int i = 0, nn = ds.size(); i < nn; i++){
-		mu += ds[i];
-	}
-
-	mu /= n;
-
-	for (int i = 0, nn = ds.size(); i < nn; i++){
-		var += pow(mu - ds[i], 2);
-	}
-
-	var /= n;
-
-	cout << "mu is " << mu << ", variance is " << var << endl;
-}
-
-double ComputePDF(double mu, double var, double x){
-
-	double pdf = (1.0/sqrt(2.0*3.14*var))*exp(-0.5*(pow(x - mu, 2)/(var)));
-
-	return pdf;
-}
-
-void FilterLargerDuplicates( vector< int >& ids, vector< vector< Point2f > >& corners, int max_internal){
-
-	int n = ids.size();
-	vector<bool> keep(n, false);
-
-	vector< Point2f > current_cornersi;
-	vector< Point2f > current_corners0;
-
-	vector<int> ids_new;
-	vector< vector< Point2f > > corners_new;
-
-	// don't keep until verify that is 1) unique number or 2) is smallest.
-	bool found;
-	int other_index;
-
-	for (int i = 0; i < n; i++){
-
-		if (keep[i] == false){
-			found = false; other_index = -1;
-
-			for (int j  = i + 1; j < n && found == false; j++){
-				if (ids[j] == ids[i]){
-					other_index = j;  found = true;
-				}
-			}
-
-			if (found == false){
-				keep[i] = true;
-			}	else {
-				// need to decide which one to keep.
-				current_cornersi = corners[i];
-				current_corners0 = corners[other_index];
-
-				/// diagonal
-				int di = euclideanDist(current_cornersi[0], current_cornersi[2]);
-				int d0 = euclideanDist(current_corners0[0], current_corners0[2]);
-
-				if (di < d0){
-					keep[i] = true;
-				}	else {
-					keep[other_index] = true;
-				}
-
-			}
-		}
-	}
-
-	/// now create new list ....
-	for (int i = 0; i < n; i++){
-		if (keep[i] == true){
-			ids_new.push_back(ids[i]);
-			corners_new.push_back(corners[i]);
-		}
-	}
-
-	corners_new.swap(corners);
-	ids_new.swap(ids);
-
-	corners_new.clear();
-	ids_new.clear();
-
-	vector<double> distances;
-	double mu, var;
-	double pdf;
-
-
-	/// find out the size of the internals ....
-	for (int i = 0; i < n; i++){
-		if (ids[i] < max_internal){
-			current_cornersi = corners[i];
-			int di = euclideanDist(current_cornersi[0], current_cornersi[2]);
-			distances.push_back(di);
-		}
-	}
-
-	ComputeStats( distances, mu, var);
-	double std = sqrt(var);
-	for (int i = 0; i < n; i++){
-		if (ids[i] < max_internal){
-			current_cornersi = corners[i];
-			int di = euclideanDist(current_cornersi[0], current_cornersi[2]);
-			cout << "Distance " << di  << endl;
-
-			if (fabs(mu - di) < 0.20*mu ){
-				ids_new.push_back(ids[i]);
-				corners_new.push_back(corners[i]);
-			}
-
-		}	else {
-			ids_new.push_back(ids[i]);
-			corners_new.push_back(corners[i]);
-		}
-	}
-
-
-
-	corners_new.swap(corners);
-	ids_new.swap(ids);
-
-	//char ch; cin >> ch;
-
-}
-
-//
-//void CameraCali::FindCornersAruco(string write_dir){
-//
-//	/// first, need to find the patterns.
-//	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
-//
-//	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-//	if(!readOk) {
-//		cout << "Cannot read in Calibrate -- Invalid detector parameters file" << endl;
-//		exit(1);
-//	}else {
-//		cout << "Read the detector parameters ..." << endl;
-//	}
-//
-//	int number_patterns = P_class->NumberPatterns();
-//	int number_markers = P_class->NumberMarkers();
-//	int number_squares = P_class->NumberSquares();
-//
-//	string filename;
-//	int number_images = images.size();
-//	Mat imageCopy;
-//	Scalar b_color;
-//	MatrixXd twod(number_squares, 2);
-//	twod.setConstant(0);
-//	int global_index;
-//
-//	boards_detected.resize(number_images, vector<bool>(P_class->NumberPatterns(), false));
-//
-//
-//	std::ofstream out;
-//	filename = write_dir + "points.txt";
-//	out.open(filename.c_str());
-//
-//	// we have external 0, 1, 2, 3, 4, 5, 6, 7
-//	// only get internal squares for one image .. the rest will be the same.
-//
-//	/// also, read exif.
-//	int internal_pattern_max_squares = P_class->max_internal_patterns*4;
-//	MatrixXd twod_internal(internal_pattern_max_squares, 2);
-//
-//
-//	/// seg faul about access -- double check this
-//	//	./Box-Calibration-home-project /home/atabb/DemoData/Strawberry/Strawberry/dataset1/ /home/atabb/DemoData/Strawberry/Strawberry/dataset1results/ strawcali
-//	//
-//	//	P_class->three_d_points_internal[4*current_index + j].x)
-//	//cvtColor(src, bwsrc, cv::COLOR_RGB2GRAY);
-//
-//	if (images.size() == 0){
-//		cout << "the number of images is 0, quitting " << endl;
-//		exit(1);
-//	}	else {
-//		cout << "Number of images " << images.size() << endl;
-//	}
-//
-//
-//	//	points_present.push_back(vector<bool>(number_squares, false));
-//	//			points_per_board.push_back(vector<int>(number_patterns, 0));
-//	//			two_d_point_coordinates_dense.push_back(twod);
-//
-//	// cjharuco ... need to do something similar for this context.  internal and external will be handled differently.
-//	//	for (int i = 0; i < number_images; i++){
-//	//
-//	//			out << "image " << i << endl;
-//	//			// initialize per image.
-//	//			points_present.push_back(vector<bool>(number_squares, false));
-//	//			points_per_board.push_back(vector<int>(number_patterns, 0));
-//	//			two_d_point_coordinates_dense.push_back(twod);
-//
-//	int current_index;
-//	int x_value;
-//	int y_value;
-//
-//
-//
-//	//Mat gray;
-//	for (int i = 0; i < 1; i++){
-//		imageCopy = images[i].clone();
-//
-//		/// already know the number of points per board.
-//		internal_two_d_point_coordinates_dense.push_back(twod_internal);
-//		//internal_ids_present.push_back(vector<bool>(P_class->max_internal_patterns, false));
-//
-//
-//
-//		count_internal_ids_present = 0;
-//		vector< int > ids;
-//		vector< vector< Point2f > > corners, rejected;
-//		//vector< Vec3d > rvecs, tvecs;
-//
-//		//cout << "Before detect " << P_class->max_internal_patterns << endl;
-//		id_bool.resize(P_class->max_internal_patterns, false);
-//
-//		// detect markers and estimate pose
-//		aruco::detectMarkers(images[i], P_class->dictionary, corners, ids, detectorParams, rejected);
-//		cout << "After detect " << endl;
-//		// draw results -- dealing with the possibility of more than one board per image.
-//		if(ids.size() > 0) {
-//			//P_class->DetermineBoardsPresentFromMarkerList(ids, boards_detected[i]); /// fills this in for all the ids, external patterns.
-//			//
-//			// need to make sure that the list is unique ....can take out later.
-//			FilterLargerDuplicates(ids, corners, P_class->max_internal_patterns);
-//
-//			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(0, 255, 255));
-//			cout << "Id size " << ids.size() << endl;
-//			/// walk through the ids -- only process those that are in the range we're interested in.
-//			for (int id_count = 0, idn = ids.size(); id_count < idn; id_count++){
-//
-//				cout << "Current id " << ids[id_count] << endl;
-//				// if this particular arUco pattern is within the internal range ...
-//				if (ids[id_count] < P_class->max_internal_patterns){
-//
-//
-//
-//					vector< Point2f > current_corners;
-//					current_index = ids[id_count];
-//
-//					count_internal_ids_present++;
-//					id_bool[current_index] = true;
-//
-//
-//					/// not all corners were found, so use id_count for this index.
-//					current_corners = corners[id_count];
-//					x_value = P_class->internalx - current_index%P_class->internalx - 1;
-//					y_value = current_index/P_class->internalx;
-//
-//
-//					for (int j = 0; j < 3; j++){
-//						line(imageCopy, Point(current_corners[j].x,current_corners[j].y), Point(current_corners[j+1].x,current_corners[j+1].y), Scalar(255, 255, 0), 10);
-//					}
-//
-//					string coords = ToString<int>(current_index);
-//					putText(imageCopy, coords, Point(current_corners[0].x,current_corners[0].y), FONT_HERSHEY_DUPLEX, 2, Scalar(255, 0, 0), 2);
-//
-//					for (int j = 0; j < 4; j++){
-//						internal_two_d_point_coordinates_dense[i](4*current_index + j, 0) = current_corners[j].x;
-//						internal_two_d_point_coordinates_dense[i](4*current_index + j, 1) = current_corners[j].y;
-//
-//						string coords = ToString<float>(P_class->three_d_points_internal[4*current_index + j].x) + ", " + ToString<float>(P_class->three_d_points_internal[4*current_index + j].y);
-//						putText(imageCopy, coords, Point(current_corners[j].x,current_corners[j].y), FONT_HERSHEY_DUPLEX, 2, Scalar(255, 0, 0), 2);
-//					}
-//				}	else {
-//
-//				}
-//			}
-//		}
-//
-//		filename = write_dir + "internal_initial_detect" + ToString<int>(i) + ".jpg";
-//		imwrite(filename.c_str(), imageCopy);
-//
-//		//out << endl << "end " << i << endl;
-//	}
-//
-//
-//
-//
-//	/// THEN READ > internal aruco number for all of the external files.  We only need one internal image per camera.
-//	for (int i = 0; i < number_images; i++){
-//		out << "image " << i << endl;
-//		imageCopy = images[i].clone();
-//
-//		patterns_present.push_back(vector<bool>(number_patterns, false));
-//		points_per_board.push_back(vector<int>(number_patterns, 0));
-//		points_present.push_back(vector<bool>(number_squares, false));
-//		two_d_point_coordinates_dense.push_back(twod);
-//
-//		vector< int > ids;
-//		vector< vector< Point2f > > corners, rejected;
-//
-//
-//		// detect markers and estimate pose
-//		aruco::detectMarkers(images[i], P_class->dictionary, corners, ids, detectorParams, rejected);
-//		cout << "After detect " << endl;
-//		// draw results -- dealing with the possibility of more than one board per image.
-//		if(ids.size() > 0) {
-//
-//
-//
-//			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(0, 255, 255));
-//			cout << "Id size " << ids.size() << endl;
-//			/// walk through the ids -- only process those that are in the range we're interested in.
-//			for (int id_count = 0, idn = ids.size(); id_count < idn; id_count++){
-//
-//
-//
-//				cout << "Current id " << ids[id_count] << endl;
-//				// if this particular arUco pattern is within the internal range ...
-//				if (ids[id_count] >= P_class->max_internal_patterns){
-//
-//					// need to record where these external patterns are ....
-//					//single_aruco_ids
-//					// TODO something else.
-//					// for now, figure out how to calibrate for internal characteristics.
-//
-//					/// which pattern is it?
-//					// P_class single_arUco_ids tells us which pattern goes with which id.
-//					int pattern_index = P_class->MappingArucoIDToPatternNumber(ids[id_count]);
-//
-//					cout << "This is pattern " << pattern_index << endl;
-//					b_color = P_class->Color(pattern_index);
-//
-//					vector< Point2f > current_corners;
-//					current_corners = corners[id_count];
-//					current_index = ids[id_count];
-//
-//					for (int j = 0; j < 3; j++){
-//						line(imageCopy, Point(current_corners[j].x,current_corners[j].y), Point(current_corners[j+1].x,current_corners[j+1].y), b_color, 10);
-//					}
-//
-//
-//					string coords = ToString<int>(pattern_index);
-//					putText(imageCopy, coords, Point(current_corners[0].x,current_corners[0].y), FONT_HERSHEY_DUPLEX, 2, b_color, 2);
-//
-//					patterns_present[i][pattern_index] = true;
-//					points_per_board[i][pattern_index] = 4;
-//
-//
-//					for (int j = 0; j < 4; j++){
-//
-//						points_present[i][4*pattern_index + j] = true;
-//						//	cout << "Writing to index " << 4*pattern_index + j << endl;
-//						two_d_point_coordinates_dense[i](4*pattern_index + j, 0) = current_corners[j].x;
-//						two_d_point_coordinates_dense[i](4*pattern_index + j, 1) = current_corners[j].y;
-//
-//						global_index = 4*pattern_index + j;
-//						out << global_index << " " << std::setprecision(9) << current_corners[j].x << " " << std::setprecision(9) << current_corners[j].y << " ";
-//
-//						if (j > 0){
-//							string coords = ToString<float>(P_class->three_d_points[4*pattern_index + j].x) + ", " + ToString<float>(P_class->three_d_points[4*pattern_index + j].y);
-//							putText(imageCopy, coords, Point(current_corners[j].x,current_corners[j].y), FONT_HERSHEY_DUPLEX, 1, b_color, 2);
-//						}
-//					}
-//				}
-//			}
-//		}
-//
-//		out << endl << "end " << i << endl;
-//
-//		filename = write_dir + "external_initial_detect" + ToString<int>(i) + ".jpg";
-//		//imwrite(filename.c_str(), imageCopy);
-//
-//
-//
-//		Mat im_small;
-//		Size si;
-//
-//		si.width = imageCopy.cols/8;
-//		si.height = imageCopy.rows/8;
-//
-//		resize(imageCopy, im_small, si);
-//
-//		imwrite(filename.c_str(), im_small);
-//
-//	}
-//
-//
-//
-//	// make it easy for self ... fill in everything computed in this function.
-//	out << "Image-board truth table " << endl;
-//	for (int i = 0; i < number_images; i++){
-//		out << "Image " << i << " : ";
-//		for (int p = 0; p < number_patterns; p++){
-//			out << 	points_per_board[i][p] << " " ;
-//		}
-//		out << endl;
-//	}
-//
-//
-//	out.close();
-//
-//	//char ch; cin >> ch;
-//}
 
 
 void CameraCali::FindCornersArucoGeneral(string write_dir){
@@ -2322,8 +606,6 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 		cout << "Read the detector parameters ..." << endl;
 	}
 
-	int number_patterns = P_class->NumberPatterns();
-	int number_markers = P_class->NumberMarkers();
 	int number_squares = P_class->NumberSquares();
 
 	string filename;
@@ -2332,9 +614,7 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 	Scalar b_color;
 	MatrixXd twod(number_squares, 2);
 	twod.setConstant(0);
-	int global_index;
 
-	// TODO is this necessary?? Probably not.
 	boards_detected.resize(number_images, vector<bool>(P_class->NumberPatterns(), false));
 
 
@@ -2348,12 +628,6 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 	MatrixXd twod_internal(internal_pattern_max_squares, 2);
 
 
-	/// seg faul about access -- double check this
-	//	./Box-Calibration-home-project /home/atabb/DemoData/Strawberry/Strawberry/dataset1/ /home/atabb/DemoData/Strawberry/Strawberry/dataset1results/ strawcali
-	//
-	//	P_class->three_d_points_internal[4*current_index + j].x)
-	//cvtColor(src, bwsrc, cv::COLOR_RGB2GRAY);
-
 	if (images.size() == 0){
 		cout << "the number of images is 0, quitting " << endl;
 		exit(1);
@@ -2362,22 +636,9 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 	}
 
 
-	//	points_present.push_back(vector<bool>(number_squares, false));
-	//			points_per_board.push_back(vector<int>(number_patterns, 0));
-	//			two_d_point_coordinates_dense.push_back(twod);
-
-	// cjharuco ... need to do something similar for this context.  internal and external will be handled differently.
-	//	for (int i = 0; i < number_images; i++){
-	//
-	//			out << "image " << i << endl;
-	//			// initialize per image.
-	//			points_present.push_back(vector<bool>(number_squares, false));
-	//			points_per_board.push_back(vector<int>(number_patterns, 0));
-	//			two_d_point_coordinates_dense.push_back(twod);
-
 	int current_index;
-	int x_value;
-	int y_value;
+	int x_value = 0;
+	int y_value = 0;
 
 	//Mat gray;
 	for (int i = 0, nimages = images.size(); i < nimages; i++){
@@ -2385,27 +646,19 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 
 		/// already know the number of points per board.
 		internal_two_d_point_coordinates_dense.push_back(twod_internal);
-		//internal_ids_present.push_back(vector<bool>(P_class->max_internal_patterns, false));
+
 
 		count_internal_ids_present = 0;
 		vector< int > ids;
 		vector< vector< Point2f > > corners, rejected;
-		//vector< Vec3d > rvecs, tvecs;
 
-		//cout << "Before detect " << P_class->max_internal_patterns << endl;
 		patterns_present.push_back(vector<bool>(P_class->max_internal_patterns, false));
-		//id_bool.resize(P_class->max_internal_patterns, false);
 
 		// detect markers and estimate pose
 		aruco::detectMarkers(images[i], P_class->dictionary, corners, ids, detectorParams, rejected);
 		cout << "After detect " << endl;
-		// draw results -- dealing with the possibility of more than one board per image.
-		if(ids.size() > 0) {
-			//P_class->DetermineBoardsPresentFromMarkerList(ids, boards_detected[i]); /// fills this in for all the ids, external patterns.
-			//
-			// need to make sure that the list is unique ....can take out later.
-			FilterLargerDuplicates(ids, corners, P_class->max_internal_patterns);
 
+		if(ids.size() > 0) {
 			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(0, 255, 255));
 			cout << "Id size " << ids.size() << endl;
 			/// walk through the ids -- only process those that are in the range we're interested in.
@@ -2451,7 +704,6 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 		filename = write_dir + "internal_initial_detect" + ToString<int>(i) + ".jpg";
 		imwrite(filename.c_str(), imageCopy);
 
-		//out << endl << "end " << i << endl;
 	}
 
 	out.close();
@@ -2516,7 +768,7 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 		cout << "i "  << i << endl;
 		rows = images[i].rows;
 		cols = images[i].cols;
-		int last_added = 0;
+		//int last_added = 0;
 		int s = 0;
 		int total_needed = 0;;
 		for (int p = 0; p < number_patterns; p++){
@@ -2537,12 +789,6 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 					mapping_from_limited_to_full_images.push_back(i);
 					mapping_from_limited_to_full_patterns.push_back(p);
 
-					/// each board is a new observation, as is each image.  Get to finer resolution-figuring or transformations later if there are two on the same image.
-
-
-					/// then, walk through all of the possibles ONLY AT THIS PATTERN/BOARD.
-					//s = 0;
-					//cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << " Total samples " << last_added << endl;
 					for (int j = 0; j < 4; j++){
 						//cout << "Pattern indices in calibrate " << p*4 + j << endl;
 						twod_points_wo_blanks[0][s].x = internal_two_d_point_coordinates_dense[i](p*4 + j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
@@ -2590,20 +836,10 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 		cameraMatrix.at<double>(0, 2) = cols/2;
 		cameraMatrix.at<double>(1, 2) = rows/2;
 
-		//	cout << "initial camera matrix " << endl;
-		//
-		//	for (int i = 0; i < 3; i++){
-		//		for (int j = 0; j < 3; j++){
-		//			cout << cameraMatrix.at<double>(i, j) << " ";
-		//		}
-		//		cout << endl;
-		//	}
 
 		cout << "Running calibration " << endl;
-		//cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
 
 		double rms = 0;
-		char ch;
 
 		rms = calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs_internal, tvecs_internal,
 				CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
@@ -2685,13 +921,10 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 			cout << caliObjectPointsPlanar[m].x << ", " << caliObjectPointsPlanar[m].y << endl;
 
 
-		//			drawMarker(rview, undistorted_points[m], Scalar(255, 0,0), 0, 20, 20, 0);
-
 		}
 
 		Mat H = findHomography(undistorted_points, caliObjectPointsPlanar);
 		out << "H:" << endl << H << endl;
-
 
 
 		/// this image needs to be as big as the 3d space... -- in other words, the largest coordinate in the 3d coords.
@@ -2705,19 +938,6 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 out.close();
 
 }
-
-
-int ReturnOption(string entry, vector<string>& comps){
-
-	for (int i = 0, in = comps.size(); i < in; i++){
-		if (entry.compare(comps[i]) == 0){
-			return i;
-		}
-	}
-
-	return -1;
-}
-
 
 
 
@@ -2734,7 +954,7 @@ void CameraCali::CalibrateBasic(string write_dir){
 
 
 	int number_images = images.size();
-	int number_squares = P_class->NumberSquares();
+	//int number_squares = P_class->NumberSquares();
 	int number_patterns = P_class->NumberPatterns();
 	int s;
 	//	number_images = 2;
@@ -2764,14 +984,10 @@ void CameraCali::CalibrateBasic(string write_dir){
 
 					/// then, walk through all of the possibles ONLY AT THIS PATTERN/BOARD.
 					s = 0;
-					last_added = twod_points_wo_blanks.size();
-					last_added--;
-					//	cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << endl;
+					last_added = twod_points_wo_blanks.size() - 1;
 					for (int j = P_class->min_max_id_squares[p].first; j <= P_class->min_max_id_squares[p].second; j++){
 						if (points_present[i].at(j) == true){
-							//cout << "s, j " << s << ", " << j << endl;
-							/// invalid write here .   Check it out.
-							twod_points_wo_blanks[last_added][s].x = two_d_point_coordinates_dense[i](j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
+							twod_points_wo_blanks[last_added][s].x = two_d_point_coordinates_dense[i](j, 0);
 							twod_points_wo_blanks[last_added][s].y = two_d_point_coordinates_dense[i](j, 1);
 
 							threed_points_wo_blanks[last_added][s].x = P_class->three_d_points[j].x;
@@ -2810,14 +1026,6 @@ void CameraCali::CalibrateBasic(string write_dir){
 	//cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
 
 	double rms = 0;
-	char ch;
-	//	cout << "Before first " << endl; cin >> ch;
-	//	rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-	//							CV_CALIB_RATIONAL_MODEL);
-
-
-	//if (text_file.size() == 0){
-
 
 	rms = cv::calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
 
