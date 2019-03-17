@@ -4,18 +4,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/Chessboard-camera-cali-project.cpp \
 ../src/DirectoryFunctions.cpp \
+../src/camera-as-scanner.cpp \
 ../src/camera_calibration.cpp 
 
 OBJS += \
-./src/Chessboard-camera-cali-project.o \
 ./src/DirectoryFunctions.o \
+./src/camera-as-scanner.o \
 ./src/camera_calibration.o 
 
 CPP_DEPS += \
-./src/Chessboard-camera-cali-project.d \
 ./src/DirectoryFunctions.d \
+./src/camera-as-scanner.d \
 ./src/camera_calibration.d 
 
 

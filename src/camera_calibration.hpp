@@ -110,10 +110,10 @@ public:
 	//PatternsCreated(string read_dir);
 	PatternsCreated(string read_dir, string write_directory, bool aruco_markers);
 
-
+	// remove
 	void DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen);
+
 	int MappingArucoIDToPatternNumber(int id);
-	//int SelectPattern(int CharucoID);
 
 	Scalar Color(int index);
 
@@ -158,12 +158,6 @@ public:
 	double pixel_width;
 	int rows;
 	int cols;
-	//int straw_pattern_x;
-	//int straw_pattern_y;
-
-	//vector< vector< cv::Point2f> > twod_points_wo_blanks_class;
-	//vector< vector< cv::Point3f> > threed_points_wo_blanks_class;
-
 
 	vector<Mat> images; // the calibration images in the set
 	int number_external_images_max;
@@ -185,13 +179,13 @@ public:
 
 	CameraCali(string read_dir, PatternsCreated* P);
 
-	void FindCornersCharuco(string write_dir);
+	//void FindCornersCharuco(string write_dir);
 
-	void FindCornersAruco(string write_dir);
+	//void FindCornersAruco(string write_dir);
 
-	void ReadCorners(string read_dir);
+	//void ReadCorners(string read_dir);
 
-	void ReadCalibration(string read_dir);
+	//void ReadCalibration(string read_dir);
 
 	// only for really bad problems
 	//void Compare(CameraCali* C);
@@ -200,29 +194,32 @@ public:
 
 	void CalibrateStrawberrySet(string write_dir);
 
-	double ComputeReprojectionErrorOneImagePattern(Matrix4d& ExtParameters, int camera_number, int image_number,
-			int pattern_number, int type, string write_directory, bool write, int equation_number, bool is_strawberry, Matrix3d* IntParameters = 0);
+	//double ComputeReprojectionErrorOneImagePattern(Matrix4d& ExtParameters, int camera_number, int image_number,
+	//		int pattern_number, int type, string write_directory, bool write, int equation_number, bool is_strawberry, Matrix3d* IntParameters = 0);
 
-	void ReadExifInformationStrawberry(string read_dir);
+//	void ReadExifInformationStrawberry(string read_dir);
 
 	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir);
 
+	//?
 	void ReadStrawberryInternalCorners(string read_dir);
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 
-	//void CalibrateArucoGeneralID(string write_dir);
 
+
+	// use
 	void FindCornersArucoGeneral(string write_dir);
 
+	//use
 	void CalibrateArucoSinglyAndUndistort(string write_dir);
 
 };
 
-string CreatePaddedNumberString(int number, int length);
+//string CreatePaddedNumberString(int number, int length);
 
-int CreateStrawberryImagesCharucoExp(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
-		int margins, int id_start_number);
+//int CreateStrawberryImagesCharucoExp(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
+	//	int margins, int id_start_number);
 
 
 
