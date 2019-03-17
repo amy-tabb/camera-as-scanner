@@ -1631,6 +1631,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 	string ext_dir = read_dir + "/external/";
 	cout << "Ext dir! " << ext_dir << endl;
 
+	// TODO -- sub in code from aruco read ...
 	bool dir_exists = IsDirectory(ext_dir);
 	if (dir_exists){
 		vector<string> new_names;
@@ -1641,7 +1642,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 			filename = ext_dir + im_names[i];
 			cout << "Image name " << filename << ", " << im_names[i] << endl;
 			if (filename.size() > 3 && filename.substr(filename.size() - 3, filename.size()) != txt_ext){
-				im = imread(filename.c_str(), CV_LOAD_IMAGE_COLOR);
+				im = imread(filename.c_str(), IMREAD_COLOR);
 				rows = im.rows;
 				cols = im.cols;
 				images.push_back(im.clone());
@@ -1668,7 +1669,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 		}
 
 		if (new_names.size() > 0){
-			im = imread(new_names[0].c_str(), CV_LOAD_IMAGE_COLOR);
+			im = imread(new_names[0].c_str(), IMREAD_COLOR);
 			rows = im.rows;
 			cols = im.cols;
 			images.resize(new_names.size());
@@ -1678,7 +1679,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 #pragma omp parallel for
 		for (int i = 0; i < number_external_images_max; i++){
 
-			images[i] = imread(new_names[i].c_str(), CV_LOAD_IMAGE_COLOR);
+			images[i] = imread(new_names[i].c_str(), IMREAD_COLOR);
 
 		}
 
@@ -1700,7 +1701,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 		filename = int_dir + aux_names[i];
 		cout << "Image name " << filename << ", " << aux_names[i] << endl;
 		if (filename.size() > 3 && filename.substr(filename.size() - 3, filename.size()) != txt_ext){
-			im = imread(filename.c_str(), CV_LOAD_IMAGE_COLOR);
+			im = imread(filename.c_str(), IMREAD_COLOR);
 			images.push_back(im.clone());
 		}
 	}
@@ -5436,7 +5437,7 @@ double CameraCali::ComputeReprojectionErrorOneImagePattern(Matrix4d& ExtParamete
 
 		//Mat im_copy = images[image_number].clone();
 		cout << "Size of im names " << im_names.size() << endl;
-		Mat im_copy = imread(im_names[image_number].c_str(), CV_LOAD_IMAGE_COLOR);
+		Mat im_copy = imread(im_names[image_number].c_str(), IMREAD_COLOR);
 		int number_p = imagePoints2.size();
 
 		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
