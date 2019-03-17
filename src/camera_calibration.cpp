@@ -3495,73 +3495,73 @@ int ReturnOption(string entry, vector<string>& comps){
 }
 
 
-void CameraCali::ReadStrawberryInternalCorners(string read_dir){
-
-	//vector<MatrixXd> two_d_point_coordinates_segmentation_external;
-	//vector<MatrixXd> two_d_point_coordinates_segmentation_internal;
-	cout << "Starting read " << endl;
-	string filename = read_dir + "image_points_first_image.txt";
-
-	string filename2 = read_dir + "image_points_first_image_confirm.txt";
-	ifstream in;
-	in.open(filename.c_str());
-
-
-	//std::ofstream out;
-	//out.open(filename2.c_str());
-
-	if(!in.good()) {
-		cout << "Cannot read in image points from first image " << filename << endl;
-		cout << "Exiting " << endl;
-		exit(1);
-	}
-
-
-	MatrixXd twod(4, 2);
-
-	/// while can read in, read in.
-
-	string EXT = "EXTERNAL";
-	string INT = "INTERNAL";
-	string neg1 = "-1";
-
-	vector<string> options;  options.push_back(EXT);  options.push_back(INT); options.push_back(neg1);
-
-	string temp;
-
-	in >> temp;
-	double x, y;
-	int val;
-	int internal_index;
-
-	while (ReturnOption(temp, options) != 2){
-		// read in the entries ....
-		val = ReturnOption(temp, options);
-
-		if (val == 1){
-			in >> internal_index;
-			internal_pattern_indices.push_back(internal_index);
-		}
-		for (int i = 0; i < 4; i++){
-			in >> x >> y;
-			twod(i, 0) = x; twod(i, 1) = y;
-		}
-
-		if (val == 0){
-			two_d_point_coordinates_segmentation_external.push_back(twod);
-		}	else {
-			two_d_point_coordinates_segmentation_internal.push_back(twod);
-		}
-
-		in >> temp;
-	}
-
-
-
-	in.close();
-
-	//char ch; cin >> ch;
-}
+//void CameraCali::ReadStrawberryInternalCorners(string read_dir){
+//
+//	//vector<MatrixXd> two_d_point_coordinates_segmentation_external;
+//	//vector<MatrixXd> two_d_point_coordinates_segmentation_internal;
+//	cout << "Starting read " << endl;
+//	string filename = read_dir + "image_points_first_image.txt";
+//
+//	string filename2 = read_dir + "image_points_first_image_confirm.txt";
+//	ifstream in;
+//	in.open(filename.c_str());
+//
+//
+//	//std::ofstream out;
+//	//out.open(filename2.c_str());
+//
+//	if(!in.good()) {
+//		cout << "Cannot read in image points from first image " << filename << endl;
+//		cout << "Exiting " << endl;
+//		exit(1);
+//	}
+//
+//
+//	MatrixXd twod(4, 2);
+//
+//	/// while can read in, read in.
+//
+//	string EXT = "EXTERNAL";
+//	string INT = "INTERNAL";
+//	string neg1 = "-1";
+//
+//	vector<string> options;  options.push_back(EXT);  options.push_back(INT); options.push_back(neg1);
+//
+//	string temp;
+//
+//	in >> temp;
+//	double x, y;
+//	int val;
+//	int internal_index;
+//
+//	while (ReturnOption(temp, options) != 2){
+//		// read in the entries ....
+//		val = ReturnOption(temp, options);
+//
+//		if (val == 1){
+//			in >> internal_index;
+//			internal_pattern_indices.push_back(internal_index);
+//		}
+//		for (int i = 0; i < 4; i++){
+//			in >> x >> y;
+//			twod(i, 0) = x; twod(i, 1) = y;
+//		}
+//
+//		if (val == 0){
+//			two_d_point_coordinates_segmentation_external.push_back(twod);
+//		}	else {
+//			two_d_point_coordinates_segmentation_internal.push_back(twod);
+//		}
+//
+//		in >> temp;
+//	}
+//
+//
+//
+//	in.close();
+//
+//	//char ch; cin >> ch;
+//}
 //
 //void CameraCali::ReadCalibration(string read_dir){
 //
@@ -4780,489 +4780,489 @@ void CameraCali::CalibrateBasic(string write_dir){
 
 
 
-void CameraCali::CalibrateStrawberrySet(string write_dir){
-
-
-	/// want to recover pose after calibration ...need a map.
-	vector<int> mapping_from_limited_to_full_images;
-	vector<int> mapping_from_limited_to_full_patterns;
-	// create a collection of the points for each image -- hopefully this will work. map -- .
-	vector< vector< cv::Point2f> > twod_points_wo_blanks;
-	vector< vector< cv::Point3f> > threed_points_wo_blanks;
-
-
-
-	// work on this!  Add the patterns as well and find a way to write.
-
-	/// take all of the points we have for the one image, with the estimate of the internal parameters, and see what we get!
-	// class members to use here
-	//vector<MatrixXd> internal_two_d_point_coordinates_dense;
-	//vector<vector<bool> > internal_ids_present;
-	//double pixel_width;
-	//P_class->three_d_points_internal[4*current_index + j].x
-
-	/// need to run valgrind to find out what is going on here ....
-
-
-	//	twod_points_wo_blanks.push_back(vector< cv::Point2f>(count_internal_ids_present*4));
-	//	threed_points_wo_blanks.push_back(vector< cv::Point3f>(count_internal_ids_present*4));
-	//	// then, we can also do the rest of the external items too, and grab all of that good data.  For now, just internals.
-	//	cout << "Filled in ... " << count_internal_ids_present*4 << endl;
-	//
-	//	/// the first one will be from the internal pattern ....
-	//
-	int last_added = 0;
-	int s = 0;
-	//	for (int i = 0; i < P_class->max_internal_patterns; i++){
-	//		if (id_bool[i] == true){
-	//			for (int j =0 ; j < 4; j++){
-	//				//twod_points_wo_blanks[last_added][i].x;
-	//				twod_points_wo_blanks[last_added][s].x = internal_two_d_point_coordinates_dense[0](i*4 + j, 0);
-	//				twod_points_wo_blanks[last_added][s].y = internal_two_d_point_coordinates_dense[0](i*4 + j, 1);
-	//
-	//				threed_points_wo_blanks[last_added][s].x = P_class->three_d_points_internal[i*4 + j].x;
-	//				threed_points_wo_blanks[last_added][s].y = P_class->three_d_points_internal[i*4 + j].y;
-	//				threed_points_wo_blanks[last_added][s].z = P_class->three_d_points_internal[i*4 + j].z;
-	//				s++;
-	//			}
-	//		}
-	//	}
-
-
-	int number_images = images.size();
-	int number_squares = P_class->NumberSquares();
-	int number_patterns = P_class->NumberPatterns();
-
-	has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
-	//int s;
-	//	//	number_images = 2;
-	cv::Size image_size;
-	//	int last_added;
-	//	has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
-	//
-
-	//rows = images[0].rows;
-	//cols = images[0].cols;
-
-
-	/// external points.
-	for (int i = 0; i < number_images; i++){
-		cout << "i "  << i << endl;
-		rows = images[i].rows;
-		cols = images[i].cols;
-		for (int p = 0; p < number_patterns; p++){
-
-			if (patterns_present[i][p] == true){ /// 4 points per board.  Will this be enough?  We'll see.
-				//if (boards_detected[i][p] == true)
-				{   // why both?
-					has_calibration_estimate[i][p] = true;
-					cout << "Image, Pattern " << i << ", " << p << endl;
-					//cout << "Points per " << points_per_board[i][p] << endl;
-					//cout << "Board number " << p << " detected" << endl;
-					mapping_from_limited_to_full_images.push_back(i);
-					mapping_from_limited_to_full_patterns.push_back(p);
-
-					/// each board is a new observation, as is each image.  Get to finer resolution-figuring or transformations later if there are two on the same image.
-					twod_points_wo_blanks.push_back(vector< cv::Point2f>(4));
-					threed_points_wo_blanks.push_back(vector< cv::Point3f>(4));
-
-					/// then, walk through all of the possibles ONLY AT THIS PATTERN/BOARD.
-					s = 0;
-					last_added = twod_points_wo_blanks.size();
-					last_added--;
-					//cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << " Total samples " << last_added << endl;
-					for (int j = 0; j < 4; j++){
-						//cout << "Pattern indices in calibrate " << p*4 + j << endl;
-						twod_points_wo_blanks[last_added][s].x = two_d_point_coordinates_dense[i](p*4 + j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
-						twod_points_wo_blanks[last_added][s].y = two_d_point_coordinates_dense[i](p*4 + j, 1);
-
-						threed_points_wo_blanks[last_added][s].x = P_class->three_d_points[p*4 + j].x;
-						threed_points_wo_blanks[last_added][s].y = P_class->three_d_points[p*4 + j].y;
-						threed_points_wo_blanks[last_added][s].z = P_class->three_d_points[p*4 + j].z;
-
-						s++;
-					}
-				}
-			}
-		}
-	}
-
-
-	vector<vector< cv::Point2f> > twod_points_wo_blanks_internal;
-	vector< vector< cv::Point3f> > threed_points_wo_blanks_internal;
-
-
-
-	twod_points_wo_blanks_internal.push_back(vector< cv::Point2f>(count_internal_ids_present*4));
-	threed_points_wo_blanks_internal.push_back(vector< cv::Point3f>(count_internal_ids_present*4));
-	// then, we can also do the rest of the external items too, and grab all of that good data.  For now, just internals.
-	cout << "Filled in ... " << count_internal_ids_present*4 << endl;
-
-	/// the first one will be from the internal pattern ....
-
-	last_added = twod_points_wo_blanks.size();
-	last_added--;
-
-	last_added = 0;
-	s = 0;
-	for (int i = 0; i < P_class->max_internal_patterns; i++){
-		if (id_bool[i] == true){
-			for (int j =0 ; j < 4; j++){
-				//twod_points_wo_blanks[last_added][i].x;
-				twod_points_wo_blanks_internal[last_added][s].x = internal_two_d_point_coordinates_dense[0](i*4 + j, 0);
-				twod_points_wo_blanks_internal[last_added][s].y = internal_two_d_point_coordinates_dense[0](i*4 + j, 1);
-
-				threed_points_wo_blanks_internal[last_added][s].x = P_class->three_d_points_internal[i*4 + j].x;
-				threed_points_wo_blanks_internal[last_added][s].y = P_class->three_d_points_internal[i*4 + j].y;
-				threed_points_wo_blanks_internal[last_added][s].z = P_class->three_d_points_internal[i*4 + j].z;
-				s++;
-			}
-		}
-	}
-
-	//twod_points_wo_blanks_internal.push_back(twod_points_wo_blanks[twod_points_wo_blanks.size() - 1]);
-	//threed_points_wo_blanks_internal.push_back(threed_points_wo_blanks[twod_points_wo_blanks.size() - 1]);
-
-
-
-
-	image_size = Size(cols, rows);
-
-
-	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-
-	cv::Mat distCoeffs = cv::Mat::zeros(4, 1, CV_64F);
-
-
-	vector<cv::Mat> rvecs, tvecs;
-
-	vector<cv::Mat> rvecs_internal, tvecs_internal;
-
-	cameraMatrix.at<double>(0, 0) = pixel_width;
-	cameraMatrix.at<double>(1, 1) = pixel_width;;
-
-	cameraMatrix.at<double>(0, 2) = cols/2;
-	cameraMatrix.at<double>(1, 2) = rows/2;
-
-	//	cout << "initial camera matrix " << endl;
-	//
-	//	for (int i = 0; i < 3; i++){
-	//		for (int j = 0; j < 3; j++){
-	//			cout << cameraMatrix.at<double>(i, j) << " ";
-	//		}
-	//		cout << endl;
-	//	}
-
-	cout << "Running calibration " << endl;
-	//cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
-
-	double rms = 0;
-	char ch;
-	//	cout << "Before first " << endl; cin >> ch;
-	//	rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-	//							CV_CALIB_RATIONAL_MODEL);
-
-
-	//if (text_file.size() == 0){
-
-	// experiment -- write input
-	//rms = cv::calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
-
-	//cout << "rms " << rms << endl;
-
-
-	//rms = calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-	//		CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
-	//		CALIB_FIX_FOCAL_LENGTH);
-
-	rms = calibrateCamera(threed_points_wo_blanks_internal, twod_points_wo_blanks_internal, image_size, cameraMatrix, distCoeffs, rvecs_internal, tvecs_internal,
-			CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
-			CALIB_FIX_FOCAL_LENGTH);
-
-	//rms = calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-	//					CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
-	//					CALIB_FIX_FOCAL_LENGTH);
-
-	cout << "rms " << rms << endl;
-
-	// want to reproject and see how bad it is ... this is not really giving us that satisfaction.
-	int number_from_external = twod_points_wo_blanks.size();
-
-	cout << "Before external" << endl;
-	for (int i = 0; i < number_from_external; i++){
-		cv::Mat rv; cv::Mat tv;
-		solvePnP(threed_points_wo_blanks[i], twod_points_wo_blanks[i], cameraMatrix, distCoeffs, rv, tv, false);
-
-		rvecs.push_back(rv);
-		tvecs.push_back(tv);
-
-	}
-
-	cout << "After external" << endl;
-	rvecs.push_back(rvecs_internal[0]);
-	tvecs.push_back(tvecs_internal[0]);
-
-
-	//bool solvePnP(InputArray objectPoints, InputArray imagePoints, InputArray cameraMatrix, InputArray distCoeffs, OutputArray rvec, OutputArray tvec, bool useExtrinsicGuess=false, int flags=SOLVEPNP_ITERATIVE )
-	//SOLVEPNP_ITERATIVE Iterative method is based on Levenberg-Marquardt optimization. In this case the function finds such a pose that minimizes reprojection error, that is the sum of squared distances between the observed projections imagePoints and the projected (using projectPoints() ) objectPoints .
-	//SOLVEPNP_P3P Method is based on the paper of X.S. Gao, X.-R. Hou, J. Tang, H.-F. Chang “Complete Solution Classification for the Perspective-Three-Point Problem”. In this case the function requires exactly four object and image points.
-
-
-
-
-	/// write calibration details now.  Also, transfer to the Eigen format.
-
-	for (int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++){
-			internal_parameters(i, j) = cameraMatrix.at<double>(i, j);
-		}
-	}
-
-	distortion.resize(distCoeffs.rows);
-	for (int i = 0; i < distCoeffs.rows; i++){
-		distortion(i) = distCoeffs.at<double>(i, 0);
-
-	}
-
-	cout << "distortion " << distortion << endl;
-	cout << "Camera matrix " << endl << cameraMatrix << endl;
-
-	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
-	vector< vector <double> > tempRt(3, vector<double>(4, 0));
-
-
-	double reproj_error = 0;
-	vector<cv::Point2f> imagePoints2;
-	double err;
-	int correct_image;
-	int correct_pattern;
-
-	for (int i = 0; i < number_images; i++){
-		reproject_cam_cali_images.push_back(images[i].clone());
-	}
-
-	//vector< vector<cv::Point2f> > reproj_image_points;
-
-	// TODO keep these repo errors per image/per pattern ... then do not need to redo.
-	// These will form a basis of which hypotheses to use first when we start tightening things up.
-	// ESPECIALLY when there are two or more patterns per frame.
-	//
-
-	/// internal only
-	int number_cali_items = twod_points_wo_blanks.size();
-	for (int m = number_cali_items - 1; m < number_cali_items; m++){
-
-		cv::projectPoints( cv::Mat(threed_points_wo_blanks[m]), rvecs[m], tvecs[m], cameraMatrix,  // project
-				distCoeffs, imagePoints2);
-		err = cv::norm(cv::Mat(twod_points_wo_blanks[m]), cv::Mat(imagePoints2), CV_L2);              // difference
-		reproj_error        += err*err;
-
-		//reproj_image_points.push_back(imagePoints2);
-		//		correct_image = mapping_from_limited_to_full_images[m];
-		//		correct_pattern = mapping_from_limited_to_full_patterns[m];
-		//		reproj_error_per_board[correct_image][correct_pattern] = err*err;
-
-		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
-			line(reproject_cam_cali_images[0], twod_points_wo_blanks[m][j],imagePoints2[j], Scalar(255, 0, 255), 6 );
-		}
-
-	}
-
-
-
-	vector<double> temp_repro(number_patterns, 0);
-	reproj_error_per_board.resize(number_images, temp_repro);
-
-	for (int m = 0; m < number_cali_items - 1; m++){
-
-		cv::projectPoints( cv::Mat(threed_points_wo_blanks[m]), rvecs[m], tvecs[m], cameraMatrix,  // project
-				distCoeffs, imagePoints2);
-		err = cv::norm(cv::Mat(twod_points_wo_blanks[m]), cv::Mat(imagePoints2), CV_L2);              // difference
-		reproj_error        += err*err;
-
-		//reproj_image_points.push_back(imagePoints2);
-		correct_image = mapping_from_limited_to_full_images[m];
-		correct_pattern = mapping_from_limited_to_full_patterns[m];
-		reproj_error_per_board[correct_image][correct_pattern] = err*err;
-
-		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
-			line(reproject_cam_cali_images[correct_image], twod_points_wo_blanks[m][j],imagePoints2[j], Scalar(255, 0, 255), 10 );
-		}
-
-	}
-
-
-
-	////////////////////// External -- write into class variables ///////////////////////////////////////////
-	/// need to prep the matrix of rotations ...
-	Matrix4d I;  I.setIdentity();
-
-	// initialize
-	vector<Matrix4d> patterns_base(number_patterns, I);
-	// whether or not the board is present tells us whether to look at the value there.
-	external_parameters.resize(number_images, patterns_base);
-
-	int image_index;
-	int pattern_index;
-
-
-
-	/// convert from the calibration to saved values.
-	/// So the information is going to be with respect treating each observation as if it is from individual images.
-	// Here, we are going to rearrange.
-	for (int stre = 0, stre_total = number_cali_items - 1; stre < stre_total; stre++){
-
-		cv::Rodrigues(rvecs[stre], rotMatrix);
-
-		image_index = mapping_from_limited_to_full_images[stre];
-		pattern_index = mapping_from_limited_to_full_patterns[stre];
-
-
-		for (int i = 0; i < 3; i++){
-			for (int j = 0; j < 3; j++){
-				external_parameters[image_index][pattern_index](i, j) = rotMatrix.at<double>(i, j);
-			}
-
-			external_parameters[image_index][pattern_index](i, 3) = tvecs[stre].at<double>(i);
-		}
-	}
-
-
-	//	/////////////////////////////// UNDISTORT, WRITE REPROJECTION ////////////////////////////////////
-	cv::Mat view, rview, map1, map2;
-	//	cv::Mat gray;
-	string filename;
-	cv::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
-			cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, image_size, 1, image_size, 0),
-			image_size, CV_16SC2, map1, map2);
-
-	for (int i = 0; i < number_images; i++){
-		cout << "Writing external " << i << endl;
-		cv::remap(reproject_cam_cali_images[i], rview, map1, map2, cv::INTER_LINEAR);
-
-		if (i > 1){
-			filename  = write_dir + "/ext" + ToString<int>(i) + ".jpg";
-			cv::imwrite(filename.c_str(), rview);
-
-			Mat im_small;
-			Size si;
-
-			si.width = rview.cols/8;
-			si.height = rview.rows/8;
-
-			resize(rview, im_small, si);
-
-			imwrite(filename.c_str(), im_small);
-		}
-	}
-
-
-	cout << "internal parameters in function : " << internal_parameters << endl;
-	///////////////////////////////// WRITE CALIBRATION INFORMATION ///////////////////////////
-	std::ofstream out;
-	filename = write_dir + "cali_results.txt";
-	out.open(filename.c_str());
-
-	out << "Number_patterns " << number_cali_items - 1 << endl;
-	out << "rms " << rms << endl;
-	out << "internal_matrix " << endl;
-	for (int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++){
-			out << internal_parameters(i, j) << " ";
-		}
-		out << endl;
-	}
-
-
-	//<< internal_parameters << endl;
-	out << "distortion_size " << distortion.rows() << endl;
-	out << "distortion_vector " << endl << distortion << endl;
-
-
-	for (int stre = 0, stre_total = number_cali_items - 1; stre < stre_total; stre++){
-		image_index = mapping_from_limited_to_full_images[stre];
-		pattern_index = mapping_from_limited_to_full_patterns[stre];
-
-		out << "EXTERNAL image, pattern, reproj " << image_index << " " << pattern_index << " " << reproj_error_per_board[image_index][pattern_index] << endl;
-		out << external_parameters[image_index][pattern_index] << endl;
-	}
-
-
-	//has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
-	out << "has-calibration-estimate " << endl;
-	for (int i = 0; i < number_images; i++){
-		for (int j = 0; j < number_patterns; j++){
-			out << has_calibration_estimate[i][j] << " ";
-		}
-		out << endl;
-	}
-	out.close();
-
-	filename = write_dir + "two_d_data.txt";
-	out.open(filename.c_str());
-	for (int m = 0; m < number_cali_items - 1; m++){
-		out << "New-board " << twod_points_wo_blanks[m].size() << endl;
-		for (int s = 0; s < int(twod_points_wo_blanks[m].size()); s++){
-			out << twod_points_wo_blanks[m][s].x << " " << twod_points_wo_blanks[m][s].y  << endl;
-		}
-	}
-	out.close();
-
-	filename = write_dir + "three_d_data.txt";
-	out.open(filename.c_str());
-	for (int m = 0; m < number_cali_items - 1; m++){
-		out << "New-board " << twod_points_wo_blanks[m].size() << endl;
-		for (int s = 0; s < int(twod_points_wo_blanks[m].size()); s++){
-			out << threed_points_wo_blanks[m][s].x << " " << threed_points_wo_blanks[m][s].y  << " " << threed_points_wo_blanks[m][s].z << endl;
-		}
-	}
-	out.close();
-
-
-	filename = write_dir + "image_points_first_image.txt";
-	out.open(filename.c_str());
-	/// external points.
-	for (int i = 0; i < 1; i++){
-		cout << "i "  << i << endl;
-		for (int p = 0; p < number_patterns; p++){
-
-			if (patterns_present[i][p] == true){ /// 4 points per board.  Will this be enough?  We'll see.
-				{
-
-					cout << "Image, Pattern " << i << ", " << p << endl;
-
-					out << "EXTERNAL " << endl;
-
-					//cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << " Total samples " << last_added << endl;
-					for (int j = 0; j < 4; j++){
-						out << two_d_point_coordinates_dense[i](p*4 + j, 0) << " " << two_d_point_coordinates_dense[i](p*4 + j, 1) << endl;
-					}
-				}
-			}
-		}
-	}
-
-
-
-
-	for (int i = 0; i < P_class->max_internal_patterns; i++){
-		if (id_bool[i] == true){
-			out << "INTERNAL " << i << endl;
-			for (int j =0 ; j < 4; j++){
-				//twod_points_wo_blanks[last_added][i].x;
-				out << internal_two_d_point_coordinates_dense[0](i*4 + j, 0) << " " << internal_two_d_point_coordinates_dense[0](i*4 + j, 1) << endl;
-			}
-		}
-	}
-
-	out << -1 << endl;
-	out.close();
-
-
-
-
-	images.clear();
-}
+//void CameraCali::CalibrateStrawberrySet(string write_dir){
+//
+//
+//	/// want to recover pose after calibration ...need a map.
+//	vector<int> mapping_from_limited_to_full_images;
+//	vector<int> mapping_from_limited_to_full_patterns;
+//	// create a collection of the points for each image -- hopefully this will work. map -- .
+//	vector< vector< cv::Point2f> > twod_points_wo_blanks;
+//	vector< vector< cv::Point3f> > threed_points_wo_blanks;
+//
+//
+//
+//	// work on this!  Add the patterns as well and find a way to write.
+//
+//	/// take all of the points we have for the one image, with the estimate of the internal parameters, and see what we get!
+//	// class members to use here
+//	//vector<MatrixXd> internal_two_d_point_coordinates_dense;
+//	//vector<vector<bool> > internal_ids_present;
+//	//double pixel_width;
+//	//P_class->three_d_points_internal[4*current_index + j].x
+//
+//	/// need to run valgrind to find out what is going on here ....
+//
+//
+//	//	twod_points_wo_blanks.push_back(vector< cv::Point2f>(count_internal_ids_present*4));
+//	//	threed_points_wo_blanks.push_back(vector< cv::Point3f>(count_internal_ids_present*4));
+//	//	// then, we can also do the rest of the external items too, and grab all of that good data.  For now, just internals.
+//	//	cout << "Filled in ... " << count_internal_ids_present*4 << endl;
+//	//
+//	//	/// the first one will be from the internal pattern ....
+//	//
+//	int last_added = 0;
+//	int s = 0;
+//	//	for (int i = 0; i < P_class->max_internal_patterns; i++){
+//	//		if (id_bool[i] == true){
+//	//			for (int j =0 ; j < 4; j++){
+//	//				//twod_points_wo_blanks[last_added][i].x;
+//	//				twod_points_wo_blanks[last_added][s].x = internal_two_d_point_coordinates_dense[0](i*4 + j, 0);
+//	//				twod_points_wo_blanks[last_added][s].y = internal_two_d_point_coordinates_dense[0](i*4 + j, 1);
+//	//
+//	//				threed_points_wo_blanks[last_added][s].x = P_class->three_d_points_internal[i*4 + j].x;
+//	//				threed_points_wo_blanks[last_added][s].y = P_class->three_d_points_internal[i*4 + j].y;
+//	//				threed_points_wo_blanks[last_added][s].z = P_class->three_d_points_internal[i*4 + j].z;
+//	//				s++;
+//	//			}
+//	//		}
+//	//	}
+//
+//
+//	int number_images = images.size();
+//	int number_squares = P_class->NumberSquares();
+//	int number_patterns = P_class->NumberPatterns();
+//
+//	has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
+//	//int s;
+//	//	//	number_images = 2;
+//	cv::Size image_size;
+//	//	int last_added;
+//	//	has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
+//	//
+//
+//	//rows = images[0].rows;
+//	//cols = images[0].cols;
+//
+//
+//	/// external points.
+//	for (int i = 0; i < number_images; i++){
+//		cout << "i "  << i << endl;
+//		rows = images[i].rows;
+//		cols = images[i].cols;
+//		for (int p = 0; p < number_patterns; p++){
+//
+//			if (patterns_present[i][p] == true){ /// 4 points per board.  Will this be enough?  We'll see.
+//				//if (boards_detected[i][p] == true)
+//				{   // why both?
+//					has_calibration_estimate[i][p] = true;
+//					cout << "Image, Pattern " << i << ", " << p << endl;
+//					//cout << "Points per " << points_per_board[i][p] << endl;
+//					//cout << "Board number " << p << " detected" << endl;
+//					mapping_from_limited_to_full_images.push_back(i);
+//					mapping_from_limited_to_full_patterns.push_back(p);
+//
+//					/// each board is a new observation, as is each image.  Get to finer resolution-figuring or transformations later if there are two on the same image.
+//					twod_points_wo_blanks.push_back(vector< cv::Point2f>(4));
+//					threed_points_wo_blanks.push_back(vector< cv::Point3f>(4));
+//
+//					/// then, walk through all of the possibles ONLY AT THIS PATTERN/BOARD.
+//					s = 0;
+//					last_added = twod_points_wo_blanks.size();
+//					last_added--;
+//					//cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << " Total samples " << last_added << endl;
+//					for (int j = 0; j < 4; j++){
+//						//cout << "Pattern indices in calibrate " << p*4 + j << endl;
+//						twod_points_wo_blanks[last_added][s].x = two_d_point_coordinates_dense[i](p*4 + j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
+//						twod_points_wo_blanks[last_added][s].y = two_d_point_coordinates_dense[i](p*4 + j, 1);
+//
+//						threed_points_wo_blanks[last_added][s].x = P_class->three_d_points[p*4 + j].x;
+//						threed_points_wo_blanks[last_added][s].y = P_class->three_d_points[p*4 + j].y;
+//						threed_points_wo_blanks[last_added][s].z = P_class->three_d_points[p*4 + j].z;
+//
+//						s++;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//
+//	vector<vector< cv::Point2f> > twod_points_wo_blanks_internal;
+//	vector< vector< cv::Point3f> > threed_points_wo_blanks_internal;
+//
+//
+//
+//	twod_points_wo_blanks_internal.push_back(vector< cv::Point2f>(count_internal_ids_present*4));
+//	threed_points_wo_blanks_internal.push_back(vector< cv::Point3f>(count_internal_ids_present*4));
+//	// then, we can also do the rest of the external items too, and grab all of that good data.  For now, just internals.
+//	cout << "Filled in ... " << count_internal_ids_present*4 << endl;
+//
+//	/// the first one will be from the internal pattern ....
+//
+//	last_added = twod_points_wo_blanks.size();
+//	last_added--;
+//
+//	last_added = 0;
+//	s = 0;
+//	for (int i = 0; i < P_class->max_internal_patterns; i++){
+//		if (id_bool[i] == true){
+//			for (int j =0 ; j < 4; j++){
+//				//twod_points_wo_blanks[last_added][i].x;
+//				twod_points_wo_blanks_internal[last_added][s].x = internal_two_d_point_coordinates_dense[0](i*4 + j, 0);
+//				twod_points_wo_blanks_internal[last_added][s].y = internal_two_d_point_coordinates_dense[0](i*4 + j, 1);
+//
+//				threed_points_wo_blanks_internal[last_added][s].x = P_class->three_d_points_internal[i*4 + j].x;
+//				threed_points_wo_blanks_internal[last_added][s].y = P_class->three_d_points_internal[i*4 + j].y;
+//				threed_points_wo_blanks_internal[last_added][s].z = P_class->three_d_points_internal[i*4 + j].z;
+//				s++;
+//			}
+//		}
+//	}
+//
+//	//twod_points_wo_blanks_internal.push_back(twod_points_wo_blanks[twod_points_wo_blanks.size() - 1]);
+//	//threed_points_wo_blanks_internal.push_back(threed_points_wo_blanks[twod_points_wo_blanks.size() - 1]);
+//
+//
+//
+//
+//	image_size = Size(cols, rows);
+//
+//
+//	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
+//
+//	cv::Mat distCoeffs = cv::Mat::zeros(4, 1, CV_64F);
+//
+//
+//	vector<cv::Mat> rvecs, tvecs;
+//
+//	vector<cv::Mat> rvecs_internal, tvecs_internal;
+//
+//	cameraMatrix.at<double>(0, 0) = pixel_width;
+//	cameraMatrix.at<double>(1, 1) = pixel_width;;
+//
+//	cameraMatrix.at<double>(0, 2) = cols/2;
+//	cameraMatrix.at<double>(1, 2) = rows/2;
+//
+//	//	cout << "initial camera matrix " << endl;
+//	//
+//	//	for (int i = 0; i < 3; i++){
+//	//		for (int j = 0; j < 3; j++){
+//	//			cout << cameraMatrix.at<double>(i, j) << " ";
+//	//		}
+//	//		cout << endl;
+//	//	}
+//
+//	cout << "Running calibration " << endl;
+//	//cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
+//
+//	double rms = 0;
+//	char ch;
+//	//	cout << "Before first " << endl; cin >> ch;
+//	//	rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
+//	//							CV_CALIB_RATIONAL_MODEL);
+//
+//
+//	//if (text_file.size() == 0){
+//
+//	// experiment -- write input
+//	//rms = cv::calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
+//
+//	//cout << "rms " << rms << endl;
+//
+//
+//	//rms = calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
+//	//		CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
+//	//		CALIB_FIX_FOCAL_LENGTH);
+//
+//	rms = calibrateCamera(threed_points_wo_blanks_internal, twod_points_wo_blanks_internal, image_size, cameraMatrix, distCoeffs, rvecs_internal, tvecs_internal,
+//			CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
+//			CALIB_FIX_FOCAL_LENGTH);
+//
+//	//rms = calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
+//	//					CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
+//	//					CALIB_FIX_FOCAL_LENGTH);
+//
+//	cout << "rms " << rms << endl;
+//
+//	// want to reproject and see how bad it is ... this is not really giving us that satisfaction.
+//	int number_from_external = twod_points_wo_blanks.size();
+//
+//	cout << "Before external" << endl;
+//	for (int i = 0; i < number_from_external; i++){
+//		cv::Mat rv; cv::Mat tv;
+//		solvePnP(threed_points_wo_blanks[i], twod_points_wo_blanks[i], cameraMatrix, distCoeffs, rv, tv, false);
+//
+//		rvecs.push_back(rv);
+//		tvecs.push_back(tv);
+//
+//	}
+//
+//	cout << "After external" << endl;
+//	rvecs.push_back(rvecs_internal[0]);
+//	tvecs.push_back(tvecs_internal[0]);
+//
+//
+//	//bool solvePnP(InputArray objectPoints, InputArray imagePoints, InputArray cameraMatrix, InputArray distCoeffs, OutputArray rvec, OutputArray tvec, bool useExtrinsicGuess=false, int flags=SOLVEPNP_ITERATIVE )
+//	//SOLVEPNP_ITERATIVE Iterative method is based on Levenberg-Marquardt optimization. In this case the function finds such a pose that minimizes reprojection error, that is the sum of squared distances between the observed projections imagePoints and the projected (using projectPoints() ) objectPoints .
+//	//SOLVEPNP_P3P Method is based on the paper of X.S. Gao, X.-R. Hou, J. Tang, H.-F. Chang “Complete Solution Classification for the Perspective-Three-Point Problem”. In this case the function requires exactly four object and image points.
+//
+//
+//
+//
+//	/// write calibration details now.  Also, transfer to the Eigen format.
+//
+//	for (int i = 0; i < 3; i++){
+//		for (int j = 0; j < 3; j++){
+//			internal_parameters(i, j) = cameraMatrix.at<double>(i, j);
+//		}
+//	}
+//
+//	distortion.resize(distCoeffs.rows);
+//	for (int i = 0; i < distCoeffs.rows; i++){
+//		distortion(i) = distCoeffs.at<double>(i, 0);
+//
+//	}
+//
+//	cout << "distortion " << distortion << endl;
+//	cout << "Camera matrix " << endl << cameraMatrix << endl;
+//
+//	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
+//	vector< vector <double> > tempRt(3, vector<double>(4, 0));
+//
+//
+//	double reproj_error = 0;
+//	vector<cv::Point2f> imagePoints2;
+//	double err;
+//	int correct_image;
+//	int correct_pattern;
+//
+//	for (int i = 0; i < number_images; i++){
+//		reproject_cam_cali_images.push_back(images[i].clone());
+//	}
+//
+//	//vector< vector<cv::Point2f> > reproj_image_points;
+//
+//	// TODO keep these repo errors per image/per pattern ... then do not need to redo.
+//	// These will form a basis of which hypotheses to use first when we start tightening things up.
+//	// ESPECIALLY when there are two or more patterns per frame.
+//	//
+//
+//	/// internal only
+//	int number_cali_items = twod_points_wo_blanks.size();
+//	for (int m = number_cali_items - 1; m < number_cali_items; m++){
+//
+//		cv::projectPoints( cv::Mat(threed_points_wo_blanks[m]), rvecs[m], tvecs[m], cameraMatrix,  // project
+//				distCoeffs, imagePoints2);
+//		err = cv::norm(cv::Mat(twod_points_wo_blanks[m]), cv::Mat(imagePoints2), CV_L2);              // difference
+//		reproj_error        += err*err;
+//
+//		//reproj_image_points.push_back(imagePoints2);
+//		//		correct_image = mapping_from_limited_to_full_images[m];
+//		//		correct_pattern = mapping_from_limited_to_full_patterns[m];
+//		//		reproj_error_per_board[correct_image][correct_pattern] = err*err;
+//
+//		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
+//			line(reproject_cam_cali_images[0], twod_points_wo_blanks[m][j],imagePoints2[j], Scalar(255, 0, 255), 6 );
+//		}
+//
+//	}
+//
+//
+//
+//	vector<double> temp_repro(number_patterns, 0);
+//	reproj_error_per_board.resize(number_images, temp_repro);
+//
+//	for (int m = 0; m < number_cali_items - 1; m++){
+//
+//		cv::projectPoints( cv::Mat(threed_points_wo_blanks[m]), rvecs[m], tvecs[m], cameraMatrix,  // project
+//				distCoeffs, imagePoints2);
+//		err = cv::norm(cv::Mat(twod_points_wo_blanks[m]), cv::Mat(imagePoints2), CV_L2);              // difference
+//		reproj_error        += err*err;
+//
+//		//reproj_image_points.push_back(imagePoints2);
+//		correct_image = mapping_from_limited_to_full_images[m];
+//		correct_pattern = mapping_from_limited_to_full_patterns[m];
+//		reproj_error_per_board[correct_image][correct_pattern] = err*err;
+//
+//		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
+//			line(reproject_cam_cali_images[correct_image], twod_points_wo_blanks[m][j],imagePoints2[j], Scalar(255, 0, 255), 10 );
+//		}
+//
+//	}
+//
+//
+//
+//	////////////////////// External -- write into class variables ///////////////////////////////////////////
+//	/// need to prep the matrix of rotations ...
+//	Matrix4d I;  I.setIdentity();
+//
+//	// initialize
+//	vector<Matrix4d> patterns_base(number_patterns, I);
+//	// whether or not the board is present tells us whether to look at the value there.
+//	external_parameters.resize(number_images, patterns_base);
+//
+//	int image_index;
+//	int pattern_index;
+//
+//
+//
+//	/// convert from the calibration to saved values.
+//	/// So the information is going to be with respect treating each observation as if it is from individual images.
+//	// Here, we are going to rearrange.
+//	for (int stre = 0, stre_total = number_cali_items - 1; stre < stre_total; stre++){
+//
+//		cv::Rodrigues(rvecs[stre], rotMatrix);
+//
+//		image_index = mapping_from_limited_to_full_images[stre];
+//		pattern_index = mapping_from_limited_to_full_patterns[stre];
+//
+//
+//		for (int i = 0; i < 3; i++){
+//			for (int j = 0; j < 3; j++){
+//				external_parameters[image_index][pattern_index](i, j) = rotMatrix.at<double>(i, j);
+//			}
+//
+//			external_parameters[image_index][pattern_index](i, 3) = tvecs[stre].at<double>(i);
+//		}
+//	}
+//
+//
+//	//	/////////////////////////////// UNDISTORT, WRITE REPROJECTION ////////////////////////////////////
+//	cv::Mat view, rview, map1, map2;
+//	//	cv::Mat gray;
+//	string filename;
+//	cv::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
+//			cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, image_size, 1, image_size, 0),
+//			image_size, CV_16SC2, map1, map2);
+//
+//	for (int i = 0; i < number_images; i++){
+//		cout << "Writing external " << i << endl;
+//		cv::remap(reproject_cam_cali_images[i], rview, map1, map2, cv::INTER_LINEAR);
+//
+//		if (i > 1){
+//			filename  = write_dir + "/ext" + ToString<int>(i) + ".jpg";
+//			cv::imwrite(filename.c_str(), rview);
+//
+//			Mat im_small;
+//			Size si;
+//
+//			si.width = rview.cols/8;
+//			si.height = rview.rows/8;
+//
+//			resize(rview, im_small, si);
+//
+//			imwrite(filename.c_str(), im_small);
+//		}
+//	}
+//
+//
+//	cout << "internal parameters in function : " << internal_parameters << endl;
+//	///////////////////////////////// WRITE CALIBRATION INFORMATION ///////////////////////////
+//	std::ofstream out;
+//	filename = write_dir + "cali_results.txt";
+//	out.open(filename.c_str());
+//
+//	out << "Number_patterns " << number_cali_items - 1 << endl;
+//	out << "rms " << rms << endl;
+//	out << "internal_matrix " << endl;
+//	for (int i = 0; i < 3; i++){
+//		for (int j = 0; j < 3; j++){
+//			out << internal_parameters(i, j) << " ";
+//		}
+//		out << endl;
+//	}
+//
+//
+//	//<< internal_parameters << endl;
+//	out << "distortion_size " << distortion.rows() << endl;
+//	out << "distortion_vector " << endl << distortion << endl;
+//
+//
+//	for (int stre = 0, stre_total = number_cali_items - 1; stre < stre_total; stre++){
+//		image_index = mapping_from_limited_to_full_images[stre];
+//		pattern_index = mapping_from_limited_to_full_patterns[stre];
+//
+//		out << "EXTERNAL image, pattern, reproj " << image_index << " " << pattern_index << " " << reproj_error_per_board[image_index][pattern_index] << endl;
+//		out << external_parameters[image_index][pattern_index] << endl;
+//	}
+//
+//
+//	//has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
+//	out << "has-calibration-estimate " << endl;
+//	for (int i = 0; i < number_images; i++){
+//		for (int j = 0; j < number_patterns; j++){
+//			out << has_calibration_estimate[i][j] << " ";
+//		}
+//		out << endl;
+//	}
+//	out.close();
+//
+//	filename = write_dir + "two_d_data.txt";
+//	out.open(filename.c_str());
+//	for (int m = 0; m < number_cali_items - 1; m++){
+//		out << "New-board " << twod_points_wo_blanks[m].size() << endl;
+//		for (int s = 0; s < int(twod_points_wo_blanks[m].size()); s++){
+//			out << twod_points_wo_blanks[m][s].x << " " << twod_points_wo_blanks[m][s].y  << endl;
+//		}
+//	}
+//	out.close();
+//
+//	filename = write_dir + "three_d_data.txt";
+//	out.open(filename.c_str());
+//	for (int m = 0; m < number_cali_items - 1; m++){
+//		out << "New-board " << twod_points_wo_blanks[m].size() << endl;
+//		for (int s = 0; s < int(twod_points_wo_blanks[m].size()); s++){
+//			out << threed_points_wo_blanks[m][s].x << " " << threed_points_wo_blanks[m][s].y  << " " << threed_points_wo_blanks[m][s].z << endl;
+//		}
+//	}
+//	out.close();
+//
+//
+//	filename = write_dir + "image_points_first_image.txt";
+//	out.open(filename.c_str());
+//	/// external points.
+//	for (int i = 0; i < 1; i++){
+//		cout << "i "  << i << endl;
+//		for (int p = 0; p < number_patterns; p++){
+//
+//			if (patterns_present[i][p] == true){ /// 4 points per board.  Will this be enough?  We'll see.
+//				{
+//
+//					cout << "Image, Pattern " << i << ", " << p << endl;
+//
+//					out << "EXTERNAL " << endl;
+//
+//					//cout << "LINE 430: Size of current two d " << twod_points_wo_blanks[last_added].size() << " Total samples " << last_added << endl;
+//					for (int j = 0; j < 4; j++){
+//						out << two_d_point_coordinates_dense[i](p*4 + j, 0) << " " << two_d_point_coordinates_dense[i](p*4 + j, 1) << endl;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//
+//
+//
+//	for (int i = 0; i < P_class->max_internal_patterns; i++){
+//		if (id_bool[i] == true){
+//			out << "INTERNAL " << i << endl;
+//			for (int j =0 ; j < 4; j++){
+//				//twod_points_wo_blanks[last_added][i].x;
+//				out << internal_two_d_point_coordinates_dense[0](i*4 + j, 0) << " " << internal_two_d_point_coordinates_dense[0](i*4 + j, 1) << endl;
+//			}
+//		}
+//	}
+//
+//	out << -1 << endl;
+//	out.close();
+//
+//
+//
+//
+//	images.clear();
+//}
 
 void CameraCali::CopyToMats(Mat& CameraMatrix, Mat& dis){
 
@@ -5281,834 +5281,6 @@ void CameraCali::CopyToMats(Mat& CameraMatrix, Mat& dis){
 	}
 }
 
-//
-//double CameraCali::ComputeReprojectionErrorOneImagePattern(Matrix4d& ExtParameters, int camera_number, int image_number,
-//		int pattern_number,
-//		int type, string write_directory, bool write, int equation_number, bool is_strawberry, Matrix3d* IntParameters){
-//
-//	// something is wonky here .... double check.  eliminate write.
-//	// will have to read from the dense points ... there's a known number of points per board.  Start here .  Once this works,
-//	// try to calibrate with this function.
-//	cout << "Aprime " << endl << ExtParameters << endl;
-//
-//	int number_points = points_per_board[image_number][pattern_number];
-//	cout << "Number points! " << number_points << endl;
-//	if (number_points == 0){
-//		cout << "Number points is zero! " << number_points << endl;
-//		exit(1);
-//	}
-//
-//	//	// TODO keep these repo errors per image/per pattern ... then do not need to redo.
-//	vector< cv::Point2f>  twod_points_wo_blanks(number_points);
-//	vector< cv::Point3f>  threed_points_wo_blanks(number_points);
-//	vector<cv::Point2f> imagePoints2;
-//	double err;
-//
-//	int s = 0;
-//
-//	for (int j = P_class->min_max_id_squares[pattern_number].first; j <= P_class->min_max_id_squares[pattern_number].second; j++){
-//		if (points_present[image_number].at(j) == true){
-//			//cout << "s, j " << s << ", " << j << endl;
-//			/// invalid write here .   Check it out.
-//			twod_points_wo_blanks[s].x = two_d_point_coordinates_dense[image_number](j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
-//			twod_points_wo_blanks[s].y = two_d_point_coordinates_dense[image_number](j, 1);
-//
-//			threed_points_wo_blanks[s].x = P_class->three_d_points[j].x;
-//			threed_points_wo_blanks[s].y = P_class->three_d_points[j].y;
-//			threed_points_wo_blanks[s].z = P_class->three_d_points[j].z;
-//
-//			s++;
-//		}
-//	}
-//
-//
-//
-//
-//	cout << "first 2d point " << twod_points_wo_blanks[0] << endl;
-//	cout << "first 3d point " << threed_points_wo_blanks[0] << endl;
-//
-//	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-//
-//	int n_dist = distortion.rows();
-//	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
-//	cv::Mat rvec;
-//	cv::Mat tvec = cv::Mat(3, 1, CV_64F);
-//	cv::Mat distCoeffs = cv::Mat::zeros(n_dist, 1, CV_64F);
-//
-//
-//	// convert this matrix to the OpenCV format ....
-//
-//	if (IntParameters == 0){
-//		for (int r = 0; r < 3; r++){
-//			for (int c = 0; c < 3; c++){
-//				rotMatrix.at<double>(r, c) = ExtParameters(r, c);
-//				cameraMatrix.at<double>(r, c) = internal_parameters(r, c);
-//			}
-//			tvec.at<double>(r, 0) = ExtParameters(r, 3);
-//		}
-//
-//	}	else {
-//		Matrix3d IP = *IntParameters;
-//
-//		for (int r = 0; r < 3; r++){
-//			for (int c = 0; c < 3; c++){
-//				rotMatrix.at<double>(r, c) = ExtParameters(r, c);
-//				cameraMatrix.at<double>(r, c) = IP(r, c);
-//			}
-//			tvec.at<double>(r, 0) = ExtParameters(r, 3);
-//		}
-//
-//		//cout << "Used IP! " << endl << IP << endl;
-//		//char jn; cin >> jn;
-//
-//	}
-//	cout << "internal matrix " << endl << cameraMatrix << endl;
-//	cout << "rotation matrix " << endl << rotMatrix << endl;
-//	cout << "translation    " << endl << tvec << endl;
-//
-//	cv::Rodrigues(rotMatrix, rvec);
-//
-//	for (int i = 0; i < n_dist; i++){
-//		distCoeffs.at<double>(i, 0) = distortion(i);
-//	}
-//
-//
-//	double reproj_error = 0;
-//
-//
-//	cv::projectPoints( cv::Mat(threed_points_wo_blanks), rvec, tvec, cameraMatrix,  // project
-//			distCoeffs, imagePoints2);
-//	err = cv::norm(cv::Mat(twod_points_wo_blanks), cv::Mat(imagePoints2), CV_L2);              // difference
-//	reproj_error        += err*err;
-//
-//	// scale by the number of points ....
-//	reproj_error = reproj_error / double(number_points);
-//
-//
-//	if (write){
-//		// different colors for the different types.
-//		Scalar line_color(0, 0, 0);
-//
-//		line_color = P_class->Color(pattern_number);
-//
-//		//		switch (type){
-//		//		case 0: {
-//		//			line_color = Scalar(255, 0, 0);
-//		//		} break;
-//		//		case 1: {
-//		//			line_color = Scalar(0, 255, 0);
-//		//		} break;
-//		//		case 2: {
-//		//			line_color = Scalar(0, 0, 255);
-//		//		} break;
-//		//		default: {
-//		//			line_color = Scalar(255, 0, 255);
-//		//		}
-//		//
-//		//		}
-//
-//
-//		//Mat im_copy = images[image_number].clone();
-//		cout << "Size of im names " << im_names.size() << endl;
-//		Mat im_copy = imread(im_names[image_number].c_str(), IMREAD_COLOR);
-//		int number_p = imagePoints2.size();
-//
-//		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
-//			line(im_copy, twod_points_wo_blanks[j],imagePoints2[j], line_color, 2 );
-//		}
-//
-//		if (is_strawberry){
-//			for (int j = 0, jn = imagePoints2.size() - 1; j < jn; j++){
-//				line(im_copy, imagePoints2[j],imagePoints2[j + 1], line_color, 10 );
-//			}
-//
-//			line(im_copy, imagePoints2[0],imagePoints2[number_p - 1], line_color, 10 );
-//		}
-//
-//
-//		string filename;
-//
-//		filename = write_directory + "Equation" + ToString<int>(equation_number);
-//
-//		if (is_strawberry){
-//			filename = filename + ".jpg";
-//
-//			// resize
-//			Mat im_small;
-//			Size si;
-//
-//			si.width = im_copy.cols/8;
-//			si.height = im_copy.rows/8;
-//
-//			resize(im_copy, im_small, si);
-//
-//			imwrite(filename.c_str(), im_small);
-//
-//		}	else {
-//			filename = filename + ".png";
-//			imwrite(filename.c_str(), im_copy);
-//		}
-//
-//
-//	}
-//
-//	return reproj_error;
-//
-//}
 
 
 
-
-//double CameraCali::ComputeReprojectionErrorOneImagePattern(Matrix3d& IntParameters, Matrix4d& ExtParameters, int camera_number, int image_number, int pattern_number,
-//		int type, string write_directory, bool write, int equation_number){
-//
-//	// something is wonky here .... double check.  eliminate write.
-//	// will have to read from the dense points ... there's a known number of points per board.  Start here .  Once this works,
-//	// try to calibrate with this function.
-//	cout << "Aprime " << endl << ExtParameters << endl;
-//
-//	int number_points = points_per_board[image_number][pattern_number];
-//	cout << "Number points! " << number_points << endl;
-//	if (number_points == 0){
-//		cout << "Number points is zero! " << number_points << endl;
-//		exit(1);
-//	}
-//
-////	// TODO keep these repo errors per image/per pattern ... then do not need to redo.
-//	vector< cv::Point2f>  twod_points_wo_blanks(number_points);
-//	vector< cv::Point3f>  threed_points_wo_blanks(number_points);
-//	vector<cv::Point2f> imagePoints2;
-//		double err;
-//
-//	int s = 0;
-//
-//	for (int j = P_class->min_max_id_squares[pattern_number].first; j <= P_class->min_max_id_squares[pattern_number].second; j++){
-//		if (points_present[image_number].at(j) == true){
-//			//cout << "s, j " << s << ", " << j << endl;
-//			/// invalid write here .   Check it out.
-//			twod_points_wo_blanks[s].x = two_d_point_coordinates_dense[image_number](j, 0);    /// twod points w/o blanks is NOT per image to make internal cali work.
-//			twod_points_wo_blanks[s].y = two_d_point_coordinates_dense[image_number](j, 1);
-//
-//			threed_points_wo_blanks[s].x = P_class->three_d_points[j].x;
-//			threed_points_wo_blanks[s].y = P_class->three_d_points[j].y;
-//			threed_points_wo_blanks[s].z = P_class->three_d_points[j].z;
-//
-//			s++;
-//		}
-//	}
-//
-//
-//	cout << "first 2d point " << twod_points_wo_blanks[0] << endl;
-//	cout << "first 3d point " << threed_points_wo_blanks[0] << endl;
-//
-//	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-//
-//	int n_dist = distortion.rows();
-//	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
-//	cv::Mat rvec;
-//	cv::Mat tvec = cv::Mat(3, 1, CV_64F);
-//	cv::Mat distCoeffs = cv::Mat::zeros(n_dist, 1, CV_64F);
-//
-//
-//	// convert this matrix to the OpenCV format ....
-//	for (int r = 0; r < 3; r++){
-//		for (int c = 0; c < 3; c++){
-//			rotMatrix.at<double>(r, c) = ExtParameters(r, c);
-//			cameraMatrix.at<double>(r, c) = internal_pa(r, c);
-//		}
-//		tvec.at<double>(r, 0) = ExtParameters(r, 3);
-//	}
-//	cout << "internal matrix " << endl << cameraMatrix << endl;
-//	cout << "rotation matrix " << endl << rotMatrix << endl;
-//	cout << "translation    " << endl << tvec << endl;
-//
-//	cv::Rodrigues(rotMatrix, rvec);
-//
-//	for (int i = 0; i < n_dist; i++){
-//		distCoeffs.at<double>(i, 0) = distortion(i);
-//	}
-//
-//
-//	double reproj_error = 0;
-//
-//
-//	cv::projectPoints( cv::Mat(threed_points_wo_blanks), rvec, tvec, cameraMatrix,  // project
-//			distCoeffs, imagePoints2);
-//	err = cv::norm(cv::Mat(twod_points_wo_blanks), cv::Mat(imagePoints2), CV_L2);              // difference
-//	reproj_error        += err*err;
-//
-//	// scale by the number of points ....
-//	reproj_error = reproj_error / double(number_points);
-//
-//
-//	if (write){
-//		// different colors for the different types.
-//		Scalar line_color(0, 0, 0);
-//
-//		switch (type){
-//		case 0: {
-//			line_color = Scalar(255, 0, 0);
-//		} break;
-//		case 1: {
-//			line_color = Scalar(0, 255, 0);
-//		} break;
-//		case 2: {
-//			line_color = Scalar(0, 0, 255);
-//		} break;
-//
-//		}
-//
-//
-//		Mat im_copy = images[image_number].clone();
-//
-//		for (int j = 0, jn = imagePoints2.size(); j < jn; j++){
-//			line(im_copy, twod_points_wo_blanks[j],imagePoints2[j], line_color, 2 );
-//		}
-//
-//		string filename = write_directory + "Equation" + ToString<int>(equation_number) + ".png";
-//
-//		imwrite(filename.c_str(), im_copy);
-//	}
-//
-//	return reproj_error;
-//
-//}
-
-
-// X vector<vector<bool> > points_present;
-//	X vector<MatrixXd> two_d_point_coordinates_dense; /// this is initialized to 0, 0.  points present tell us whether a point is there or not.
-//	X vector<vector<int> > points_per_board; // for the internal calibration, these need to be set up per board.  Later, we will combine per image.
-//	vector<vector<bool> > boards_detected; /// theoretically, more than one visible in each frame.  Deal with this possibility NOW -- worst case first.
-//	vector< vector<double> > reproj_error_per_board;
-//
-//	vector<vector<bool> > has_calibration_estimate;
-
-
-
-//void CameraCali::Compare(CameraCali* C){
-//
-//	bool difference_found = false;
-//	double diff;
-//	double diff_tol = 0.000001;
-//
-//	cout << "Scanning two_d_point_coordinates_dense + points_present " << endl;
-//
-//	// want to see how these are different....
-//	if (points_present.size() != C->points_present.size()){
-//		cout << "Difference in top-level points-present size " << points_present.size() << ", " << C->points_present.size() << endl;
-//	}	else {
-//		for (int j = 0; j < int(points_present.size()); j++){
-//			if (points_present[j].size() != C->points_present[j].size()){
-//				cout << "Difference in next-level points-present size " << j << ": " <<  points_present[j].size() << ", " << C->points_present[j].size() << endl;
-//			}	{
-//				for (int k = 0; k < int(points_present[j].size()); k++){
-//					if (points_present[j][k] != C->points_present[j][k]){
-//						cout << "points present indexing error at " << ", " << j << ", " << k << endl;
-//
-//						//two_d_point_coordinates_dense[i](global_index, 0) = charucoCorners[j].x;
-//						//							two_d_point_coordinates_dense[i](global_index, 1)
-//					}
-//
-//
-//
-//
-//					diff = pow(two_d_point_coordinates_dense[j](k, 0) - C->two_d_point_coordinates_dense[j](k, 0),2) +
-//							pow(two_d_point_coordinates_dense[j](k, 1) - C->two_d_point_coordinates_dense[j](k, 1),2);
-//
-//					if (sqrt(diff) > diff_tol){
-//						cout << "diff between dense two at " << ", " << j << ", " << k << " " << sqrt(diff) << endl;
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	cout << "Scanning points per board " << endl;
-//	if (points_per_board.size() != C->points_per_board.size()){
-//		cout << "Mismatch top-level points per board size " << points_per_board.size() << ", " << C->points_per_board.size() << endl;
-//	}	else {
-//		for (int i = 0; i < int(points_per_board.size()); i++){
-//			if (points_per_board[i].size() != C->points_per_board.size()){
-//				cout << "Mismatch second-level points per poard size " << points_per_board[i].size() << ", " << C->points_per_board.size() << endl;
-//			}	else {
-//
-//				for (int p = 0; p < int(points_per_board[i].size()); p++){
-//					if (points_per_board[i][p] != C->points_per_board[i][p]){
-//						cout << "points per board " << i << ", " << p << " are different " << points_per_board[i][p]  << ", " << C->points_per_board[i][p] << endl;
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	cout << "Scanning has cali estimate " << endl;
-//	if (has_calibration_estimate.size() != C->has_calibration_estimate.size()){
-//			cout << "Mismatch top-level has cali estimate " << has_calibration_estimate.size() << ", " << C->has_calibration_estimate.size() << endl;
-//		}	else {
-//			for (int i = 0; i < int(has_calibration_estimate.size()); i++){
-//				if (has_calibration_estimate[i].size() != C->has_calibration_estimate.size()){
-//					cout << "Mismatch second-level has_calibration_estimate size " << has_calibration_estimate[i].size() << ", " << C->has_calibration_estimate.size() << endl;
-//				}	else {
-//
-//					for (int p = 0; p < int(has_calibration_estimate[i].size()); p++){
-//						if (has_calibration_estimate[i][p] != C->has_calibration_estimate[i][p]){
-//							cout << "has_calibration_estimate " << i << ", " << p << " are different " << has_calibration_estimate[i][p]  << ", " << C->has_calibration_estimate[i][p] << endl;
-//						}
-//					}
-//				}
-//			}
-//		}
-//
-//	cout << "Scanning two d + three d dense " << endl;
-//	//vector< vector< cv::Point2f> >
-//	if ((twod_points_wo_blanks_class.size() != C->twod_points_wo_blanks_class.size()) || (threed_points_wo_blanks_class.size() != C->threed_points_wo_blanks_class.size())){
-//		cout << "Difference in top-level twod wo blanks size size " << twod_points_wo_blanks_class.size() << ", " << C->twod_points_wo_blanks_class.size() << endl;
-//	}	else {
-//
-//		for (int i  = 0; i < int(twod_points_wo_blanks_class.size()); i++){
-//			if ((twod_points_wo_blanks_class[i].size() != C->twod_points_wo_blanks_class[i].size()) ||(threed_points_wo_blanks_class[i].size() != C->threed_points_wo_blanks_class[i].size()) ){
-//				cout << "Difference in next level twod size " << i << endl;
-//
-//			}	else {
-//				for (int j=  0; j < int(twod_points_wo_blanks_class[i].size()); j++){
-//
-////					if (twod_points_wo_blanks_class[i][j].x != C->twod_points_wo_blanks_class[i][j].x){
-////						cout << "2d points diff " << twod_points_wo_blanks_class[i][j].x << ", " << C->twod_points_wo_blanks_class[i][j].x << " diff " << abs() << endl;
-////					}
-//					diff = pow(twod_points_wo_blanks_class[i][j].x - C->twod_points_wo_blanks_class[i][j].x, 2) +
-//							pow(twod_points_wo_blanks_class[i][j].y - C->twod_points_wo_blanks_class[i][j].y, 2);
-//
-//					if (sqrt(diff) > diff_tol){
-//						cout << "diff between 2d wo blanks at " << ", " << i << ", " << j << endl;
-//					}
-//
-//					diff = pow(threed_points_wo_blanks_class[i][j].x - C->threed_points_wo_blanks_class[i][j].x, 2) +
-//							pow(threed_points_wo_blanks_class[i][j].y - C->threed_points_wo_blanks_class[i][j].y, 2) +
-//							pow(threed_points_wo_blanks_class[i][j].z - C->threed_points_wo_blanks_class[i][j].z, 2);
-//
-//					if (sqrt(diff) > diff_tol){
-//						cout << "diff between 3d wo blanks at " << ", " << i << ", " << j << endl;
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	cout << "Scanning internal " << endl;
-//	Matrix3d diff_mat = internal_parameters-C->internal_parameters;
-//	diff = diff_mat.norm();
-//
-//	cout << "internal constraints diff " << diff << endl;
-//
-//	/// try to calibrate, here.  What's the difference?
-//
-//	if (C->images.size() == 0 || images.size() == 0){
-//		cout << "error!  No images in C " << endl;
-//	}	else {
-//
-//		cv::Size image_size = Size(images[0].cols, images[0].rows);
-//
-//
-//		cv::Mat cameraMatrix0 = cv::Mat::eye(3, 3, CV_64F);
-//
-//		cv::Mat distCoeffs0 = cv::Mat::zeros(4, 1, CV_64F);
-//
-//
-//		vector<cv::Mat> rvecs0, tvecs0;
-//
-//		cameraMatrix0.at<double>(0, 0) = 1000;
-//		cameraMatrix0.at<double>(1, 1) = 1000;
-//
-//		cameraMatrix0.at<double>(0, 2) = images[0].cols/2;
-//		cameraMatrix0.at<double>(1, 2) = images[0].rows/2;
-//
-//
-//		cv::Mat cameraMatrix1 = cv::Mat::eye(3, 3, CV_64F);
-//
-//		cv::Mat distCoeffs1 = cv::Mat::zeros(4, 1, CV_64F);
-//
-//
-//		vector<cv::Mat> rvecs1, tvecs1;
-//
-//		cameraMatrix1.at<double>(0, 0) = 1000;
-//		cameraMatrix1.at<double>(1, 1) = 1000;
-//
-//		cameraMatrix1.at<double>(0, 2) = images[0].cols/2;
-//		cameraMatrix1.at<double>(1, 2) = images[0].rows/2;
-//
-////		double rms1 = cv::calibrateCamera(C->threed_points_wo_blanks_class, C->twod_points_wo_blanks_class, image_size, cameraMatrix1,
-////								distCoeffs1, rvecs1, tvecs1, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
-////
-////						cout << "C rms " << rms1 << endl;
-////						cout << "C matrix " << endl << cameraMatrix1 << endl;
-//
-//		double rms1 = cv::calibrateCamera(threed_points_wo_blanks_class, C->twod_points_wo_blanks_class, image_size, cameraMatrix1,
-//				distCoeffs1, rvecs1, tvecs1, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
-//
-//		cout << "rms " << rms1 << endl;
-//		cout << "matrix " << endl << cameraMatrix1 << endl;
-//
-//
-//		double rms0 = cv::calibrateCamera(threed_points_wo_blanks_class, twod_points_wo_blanks_class, image_size, cameraMatrix0,
-//				distCoeffs0, rvecs0, tvecs0, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
-//
-//		cout << "rms " << rms0 << endl;
-//		cout << "CCV matrix " << endl << cameraMatrix0 << endl;
-//
-//
-//
-//
-//	}
-//
-//	// DO this
-////	if (points_per_board[j][k] != C->points_per_board[j][k]){
-////							cout << "points per board indexing error at " << ", " << j << ", " << k << endl;
-////							cout << points_per_board[j][k] << ", " << C->points_per_board[j][k] << endl;
-////						}
-//
-//
-//	char ch;  cin >> ch;
-//}
-
-//
-//
-//void CaliObjectOpenCV2::CalibrateFlexibleExternal(std::ofstream& out, string write_directory){
-//
-//	// need to make the points 3D
-//
-//	vector< cv::Point3f> corners(chess_h*chess_w);
-//	string filename;
-//
-//
-//	cout << "Calibrating using " << all_points.size() << " patterns " << endl;
-//
-//	int counter = 0;
-//	for( int i = 0; i < chess_h; ++i ){
-//		for( int j = 0; j < chess_w; ++j, counter++ ){
-//			corners[counter] = (cv::Point3f(float( j*mm_width ), float( i*mm_height ), 0));
-//		}
-//	}
-//
-//	// b/c all of the positions are the same ....
-//	// create map ....
-//	vector<bool> pattern_detected;
-//	vector<int> mapping_from_limited_to_full;
-//	vector< vector< cv::Point2f> > all_points_wo_blanks;
-//
-//	for (int i = 0; i < int(all_points.size()); i++){
-//		if (all_points[i].size() > 0){
-//			mapping_from_limited_to_full.push_back(i);
-//			all_points_wo_blanks.push_back(all_points[i]);
-//			all_3d_corners.push_back(corners);
-//			pattern_detected.push_back(true);
-//		}	else {
-//			pattern_detected.push_back(false);
-//		}
-//
-//	}
-//
-//	cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-//
-//	cv::Mat distCoeffs = cv::Mat::zeros(4, 1, CV_64F);
-//	//cv::Mat distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
-//
-//	vector<cv::Mat> rvecs, tvecs;
-//
-//	if (image_size.width > 640){
-//		cameraMatrix.at<double>(0, 0) = 2500;
-//		cameraMatrix.at<double>(1, 1) = 2500;
-//	}	else {
-//		cameraMatrix.at<double>(0, 0) = 1800;
-//		cameraMatrix.at<double>(1, 1) = 1800;
-//		cameraMatrix.at<double>(0, 0) = 1000;
-//		cameraMatrix.at<double>(1, 1) = 1000;
-//
-//		cameraMatrix.at<double>(0, 0) = 600;
-//		cameraMatrix.at<double>(1, 1) = 600;
-//	}
-//	cameraMatrix.at<double>(0, 2) = image_size.width/2;
-//	cameraMatrix.at<double>(1, 2) = image_size.height/2;
-//
-//	cout << "initial camera matrix " << endl;
-//
-//	for (int i = 0; i < 3; i++){
-//		for (int j = 0; j < 3; j++){
-//			cout << cameraMatrix.at<double>(i, j) << " ";
-//		}
-//		cout << endl;
-//	}
-//
-//	cout << "Running calibration " << endl;
-//	cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
-//	//LevMarCameraCaliNoDistortion(all_points, all_3d_corners, out);
-//	//double rms = cv::calibrateCamera(all_3d_corners, all_points, image_size, cameraMatrix, distCoeffs, rvecs, tvecs, CV_CALIB_USE_INTRINSIC_GUESS,
-//	//		cv::TermCriteria( cv::TermCriteria::COUNT, 2, DBL_EPSILON) );  //, CV_CALIB_RATIONAL_MODEL );
-//	//CV_CALIB_FIX_PRINCIPAL_POINT |
-//	//double rms = cv::calibrateCamera(all_3d_corners, all_points, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//	//		CV_CALIB_USE_INTRINSIC_GUESS| CV_CALIB_RATIONAL_MODEL);
-//
-//
-//	// this one does not use the initial guess
-//	//double rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//	//		CV_CALIB_RATIONAL_MODEL);
-//
-//	double rms = 0;
-//	char ch;
-////	cout << "Before first " << endl; cin >> ch;
-////	rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-////							CV_CALIB_RATIONAL_MODEL);
-//
-//
-//	if (text_file.size() == 0){
-//		// submitted Transactions paper has rational model
-//		//rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//		//		CV_CALIB_RATIONAL_MODEL);
-//
-//		rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs);
-//
-//	}	else {
-//		ifstream in(text_file.c_str());
-//		string temp;
-//		in >> cameraMatrix.at<double>(0, 0);
-//		in >> temp;
-//		in >> cameraMatrix.at<double>(0, 2);
-//		in >> temp;
-//		in >> cameraMatrix.at<double>(1, 1);
-//		in >> cameraMatrix.at<double>(1, 2);
-//		in >> temp >> temp >> temp;
-//		in.close();
-//
-//		cout << "initial camera matrix " << endl;
-//
-//		for (int i = 0; i < 3; i++){
-//			for (int j = 0; j < 3; j++){
-//				cout << cameraMatrix.at<double>(i, j) << " ";
-//			}
-//			cout << endl;
-//		}
-//
-////		cout << "Before first " << endl; cin >> ch;
-////		rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-////						CV_CALIB_RATIONAL_MODEL);
-//
-//		//cout << "Before second " << endl; cin >> ch;
-//		// submitted Transactions paper has rational model
-//		//rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//		//		CV_CALIB_RATIONAL_MODEL| CV_CALIB_USE_INTRINSIC_GUESS);
-//
-//	//	rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//	//					CV_CALIB_USE_INTRINSIC_GUESS);
-//		// OpenCV versions
-//		rms = cv::calibrateCamera(all_3d_corners, all_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs,
-//								CALIB_USE_INTRINSIC_GUESS);
-//	}
-//
-//
-//	cout << "rms " << rms << endl;
-//	cout << "camera matrix " << endl;
-//
-//
-//	for (int i = 0; i < 3; i++){
-//		for (int j = 0; j < 3; j++){
-//			cout << cameraMatrix.at<double>(i, j) << " ";
-//		}
-//		cout << endl;
-//	}
-//
-//	cout << "Distortion " << endl;
-//	for (int i = 0; i < distCoeffs.rows; i++){
-//		cout << distCoeffs.at<double>(i, 0) << " ";
-//	}
-//	cout << endl;
-//
-//
-//	out << "Internal images used: " << number_internal_images_written << endl;
-//	out << "External images used: " << external_images.size() << endl;
-//	out << "rms " << rms << endl;
-//	out << "camera matrix " << endl;
-//	for (int i = 0; i < 3; i++){
-//		for (int j = 0; j < 3; j++){
-//			out << cameraMatrix.at<double>(i, j) << " ";
-//		}
-//		out << endl;
-//	}
-//
-//	out << "Distortion " << endl;
-//	for (int i = 0; i < distCoeffs.rows; i++){
-//		out << distCoeffs.at<double>(i, 0) << " ";
-//	}
-//	out << endl;
-//
-//	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
-//	vector< vector <double> > tempRt(3, vector<double>(4, 0));
-//
-//	A.resize(3, vector<double>(3, 0));
-//	k.resize(8, 0);
-//	for (int i = 0; i < 3; i++){
-//		for (int j = 0; j < 3; j++){
-//			A[i][j] = cameraMatrix.at<double>(i, j);
-//		}
-//	}
-//
-//	for (int i = 0; i < distCoeffs.rows; i++){
-//		k[i] = distCoeffs.at<double>(i, 0);
-//	}
-//	cout << "Line 13378 " << endl;
-//	//char ch; cin >> ch;
-//
-//	double reproj_error = 0;
-//	vector<cv::Point2f> imagePoints2;
-//	double err;
-//
-//	for (int m = number_internal_images_written; m < int(all_points_wo_blanks.size()); m++){
-//
-//		cv::projectPoints( cv::Mat(all_3d_corners[m]), rvecs[m], tvecs[m], cameraMatrix,  // project
-//				distCoeffs, imagePoints2);
-//		err = cv::norm(cv::Mat(all_points_wo_blanks[m]), cv::Mat(imagePoints2), CV_L2);              // difference
-//		reproj_error        += err*err;
-//
-//
-//		// su
-//	}
-//
-//	out << endl << "Summed reproj error " << reproj_error << endl << endl;
-//
-//	//Matrix temp;
-//	for (int m = number_internal_images_written; m < int(all_points.size()); m++){
-//		Rts.push_back(vector<vector <double> >());
-//	}
-//
-////	cout << "Line 1364 " << endl;
-////	cout << "number internal images written " << number_internal_images_written << endl;
-////	cout << "Number of total pattterns " << all_points_wo_blanks.size() << endl;
-////	cout << "Number rvecs " << rvecs.size() << endl;
-////	cout << "Number Rts " << Rts.size() << endl;
-////	cin >> ch;
-//	// we only want these for the external images ....
-//	for (int m = number_internal_images_written; m < int(all_points_wo_blanks.size()); m++){
-//
-//
-//		cv::Rodrigues(rvecs[m], rotMatrix);
-//		//cout << "after conversion " << endl; cin >> ch;
-//
-//		for (int i = 0; i < 3; i++){
-//			for (int j = 0; j < 3; j++){
-//				tempRt[i][j] = rotMatrix.at<double>(i, j);
-//			}
-//
-//			tempRt[i][3] = tvecs[m].at<double>(i);
-//		}
-////		cout << "after tempRT " << endl; cin >> ch;
-////
-////		cout << "mapping " << mapping_from_limited_to_full.at(m) << endl; cin >> ch;
-//
-//		//Rts.push_back(tempRt);
-//		Rts[mapping_from_limited_to_full.at(m) - number_internal_images_written] = tempRt;
-//		//cout << "RTs " << endl; cin >> ch;
-//
-//		out << "Rt for cam " << mapping_from_limited_to_full[m] - number_internal_images_written << endl;
-//		for (int i = 0; i < 3; i++){
-//			for (int j = 0; j < 4; j++){
-//				out << tempRt[i][j] << " ";
-//			}
-//			out << endl;
-//		}
-//
-//		out << endl;
-//	}
-//
-//	cout << "Finish with cali ... " << endl;
-//	//cin >> ch;
-//
-//	cv::Mat view, rview, map1, map2;
-//	cv::Mat gray;
-//	cv::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
-//			cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, image_size, 1, image_size, 0),
-//			image_size, CV_16SC2, map1, map2);
-//
-//	for (int i = 0; i < int(external_images.size()); i++){
-//		cout << "Writing external " << i << endl;
-//		cv::remap(external_images[i], rview, map1, map2, cv::INTER_LINEAR);
-//
-//		//cv::cvtColor(rview, gray, CV_BGR2GRAY);
-//		//cv::cvtColor(gray, rview, CV_GRAY2BGR);
-//		filename  = write_directory + "/ext" + ToString<int>(i) + ".png";
-//		cv::imwrite(filename.c_str(), rview);
-//	}
-//}
-//
-
-void FindChessboardCorners(){
-	//
-	//im = external_images[i];
-	//	cv::cvtColor(im, gimage, CV_BGR2GRAY);
-	//
-	//	//corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf,  CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE | CV_CALIB_CB_FILTER_QUADS);
-	//	// OpenCV version differences
-	//	corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf,  CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK + CALIB_CB_FILTER_QUADS);
-	//
-	//	if (!corner_found){
-	//		cout << "Trying default option " << endl;
-	//		corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf);
-	//	}
-	//
-	//	if (!corner_found){
-	//		cout << "Trying  option one" << endl;
-	//		//corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf, CV_CALIB_CB_NORMALIZE_IMAGE);
-	//		corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf,  CALIB_CB_NORMALIZE_IMAGE);
-	//	}
-	//
-	//	if (!corner_found){
-	//		cout << "Trying  option two" << endl;
-	//		//corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf, CV_CALIB_CB_FILTER_QUADS);
-	//		corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf,  CALIB_CB_FILTER_QUADS);
-	//	}
-	//
-	//	if (!corner_found){
-	//		cout << "Trying  option three" << endl;
-	//		//corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf, CV_CALIB_CB_ADAPTIVE_THRESH);
-	//		corner_found = cv::findChessboardCorners(gimage, boardsize, pointBuf,  CALIB_CB_ADAPTIVE_THRESH);
-	//	}
-	//
-	//	if (corner_found) {
-	//
-	//		// need to flip the orientation, possibly ...
-	//		first_point = pointBuf[0];
-	//		last_point = pointBuf[chess_w*chess_h - 1];
-	//
-	//		if (first_point.y < last_point.y){
-	//			//if (first_point.x > last_point.x){
-	//			cout << "WRONG ORIENTATION! " << endl;
-	//
-	//
-	//			for (int k=0; k<corner_count; k++) {
-	//
-	//				flipped_points[k] = pointBuf[chess_w*chess_h - 1 - k];
-	//
-	//			}
-	//
-	//			pointBuf.swap(flipped_points);
-	//
-	//		}
-	//
-	//		some_found = true;
-	//		// refine the corner positions
-	//		cv::cornerSubPix( gimage, pointBuf, cv::Size(11,11),
-	//				cv::Size(-1,-1), cv::TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1 ));
-	//
-	//
-	//		if (draw_corners){
-	//			// draw detected corner points in the current frame
-	//			cv::drawChessboardCorners(external_images[i], boardsize, cv::Mat(pointBuf), true);
-	//		}
-	//
-	//		all_points.push_back(pointBuf);
-	//
-	//
-	//		cout << "Number of patterns " << all_points.size() << endl;
-	//	}	else {
-	//		all_points.push_back(vector<cv::Point2f>());
-	//	}
-	//}
-	//
-}

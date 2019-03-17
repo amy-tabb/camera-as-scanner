@@ -1,9 +1,19 @@
 # camera-as-scanner
 
 
-**TODO**
+**TODO** get rid of OpenMP, not needed in this version.
 
 Currently
+
+This code uses the OpenCV 4.0, the OpenCV 4.0 extra modules and is written in C++.  
+
+To get the OpenCV4.0 extra modules to build, our experience is that you need to build *both* OpenCV and the extra modules together from source.  Instructions are here:
+
+[OpenCV contributed modules on Github](https://github.com/opencv/opencv_contrib)
+
+This code has been tested on Ubuntu 16.04 and Ubuntu 18.04.  You are welcome to convert it to Windows, but I have not.  While OpenCV is available from distribution repositories, my long experience with it is has always been to build from the source to get the best results.
+
+**Is getting all of this to work on your system too much of a pain and you are interested in a Docker release?  Let me know!  The squeaky wheel gets the grease.  Email above.**
 
  This code is dependent on the >= OpenCV-3.* libraries and OpenMP library (libgomp). These libraries should be in the include path, or specified in your IDE.
 

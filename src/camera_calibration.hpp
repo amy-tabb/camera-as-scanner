@@ -134,15 +134,12 @@ protected:
 
 class CameraCali{
 public:
-	// there are multiple patterns which may or may not be viewable in an image.  The particular pattern is indexed first, then whether the point was discovered or not is indexed second.
-	// the default is that all are empty.
 
-	// so the patterns create an ordering of the points ... 0 ... n-1. #1 n to 2n.  We have a map in PatternsCreated in case there is a pattern with an unusual number of squares.
 	vector<vector<bool> > points_present; //charuco
 	vector<vector<bool> > patterns_present; //aruco
-	vector<MatrixXd> two_d_point_coordinates_dense; /// this is initialized to 0, 0.  points present tell us whether a point is there or not.
-	vector<vector<int> > points_per_board; // for the internal calibration, these need to be set up per board.  Later, we will combine per image.
-	vector<vector<bool> > boards_detected; /// theoretically, more than one visible in each frame.  Deal with this possibility NOW -- worst case first.
+	vector<MatrixXd> two_d_point_coordinates_dense;
+	vector<vector<int> > points_per_board;
+	vector<vector<bool> > boards_detected;
 	vector< vector<double> > reproj_error_per_board;
 
 	vector<vector<bool> > has_calibration_estimate;
@@ -173,54 +170,19 @@ public:
 	vector<MatrixXd> two_d_point_coordinates_segmentation_external;
 	vector<MatrixXd> two_d_point_coordinates_segmentation_internal;
 
-	//?? how should do this, with gaps or not, how best to organize this so that it makes sense?
-	// probably with gaps, so that it matches points present for each image.  To calibrate, just line up with a fresh copy, no gaps.
-	// vector< vector< cv::Point2f> > internal_points;
-
 	CameraCali(string read_dir, PatternsCreated* P);
-
-	//void FindCornersCharuco(string write_dir);
-
-	//void FindCornersAruco(string write_dir);
-
-	//void ReadCorners(string read_dir);
-
-	//void ReadCalibration(string read_dir);
-
-	// only for really bad problems
-	//void Compare(CameraCali* C);
 
 	void CalibrateBasic(string write_dir);
 
-	void CalibrateStrawberrySet(string write_dir);
-
-	//double ComputeReprojectionErrorOneImagePattern(Matrix4d& ExtParameters, int camera_number, int image_number,
-	//		int pattern_number, int type, string write_directory, bool write, int equation_number, bool is_strawberry, Matrix3d* IntParameters = 0);
-
-//	void ReadExifInformationStrawberry(string read_dir);
-
 	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir);
-
-	//?
-	void ReadStrawberryInternalCorners(string read_dir);
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 
-
-
-	// use
 	void FindCornersArucoGeneral(string write_dir);
 
-	//use
 	void CalibrateArucoSinglyAndUndistort(string write_dir);
 
 };
-
-//string CreatePaddedNumberString(int number, int length);
-
-//int CreateStrawberryImagesCharucoExp(vector<Mat>& images, int squaresX, int squaresY, int squareLength, int markerLength,
-	//	int margins, int id_start_number);
-
 
 
 #endif /* CAMERA_CALIBRATION_HPP_ */
