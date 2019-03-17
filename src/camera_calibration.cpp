@@ -482,6 +482,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 
 		}
 
+		im_short_names = im_names;
 		new_names.swap(im_names);
 	}
 
@@ -701,15 +702,17 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 			}
 		}
 
-		filename = write_dir + "internal_initial_detect" + ToString<int>(i) + ".jpg";
+		//filename = write_dir + "internal_initial_detect" + ToString<int>(i) + ".jpg";
+		filename =  write_dir + "aruco_detect" + im_short_names[i];
 		imwrite(filename.c_str(), imageCopy);
+
 
 	}
 
 	out.close();
 }
 
-void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
+void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homography_scaling){
 
 
 	/// want to recover pose after calibration ...need a map.
@@ -718,7 +721,6 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 
 
 	int number_images = images.size();
-	//int number_squares = P_class->NumberSquares();
 	int number_patterns = P_class->max_internal_patterns;
 
 	has_calibration_estimate.resize(number_images, vector<bool>(number_patterns, false));
@@ -726,14 +728,12 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 	cv::Size image_size;
 
 
-
 	string filename = write_dir + "results.txt";
 	std::ofstream out;
 	out.open(filename.c_str());
 
 	/// start a text file with all of the information --- internal, distortion, external.
-
-	double homography_scaling  = 10;
+	out << "Scaling " << homography_scaling << endl;
 
 	int max_x = 0;
 	int max_y = 0;
@@ -900,7 +900,8 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 		cv::remap(imageCopy, rview, map1, map2, cv::INTER_LINEAR);
 		/// here -- also need to undistort the points -- then homography.  In which space to do this, since the image is so big??
 
-		filename  = write_dir + "/undistorted" + ToString<int>(i) + ".jpg";
+		//filename  = write_dir + "/undistorted" + ToString<int>(i) + ".jpg";
+		filename =  write_dir + "undistorted" + im_short_names[i];
 		cv::imwrite(filename.c_str(), rview);
 
 		// homography /////////////////////
@@ -930,7 +931,8 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir){
 		/// this image needs to be as big as the 3d space... -- in other words, the largest coordinate in the 3d coords.
 
 		warpPerspective(rview, img1_warp, H, img1_warp.size());
-		filename  = write_dir + "/warped" + ToString<int>(i) + ".jpg";
+		//filename  = write_dir + "/warped" + ToString<int>(i) + ".jpg";
+		filename =  write_dir + "warped" + im_short_names[i];
 		cv::imwrite(filename.c_str(), img1_warp);
 
 	}

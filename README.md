@@ -1,8 +1,6 @@
 # camera-as-scanner
 
 
-**TODO** get rid of OpenMP, not needed in this version.
-
 Currently
 
 This code uses the OpenCV 4.0, the OpenCV 4.0 extra modules, Eigen, and is written in C++.  

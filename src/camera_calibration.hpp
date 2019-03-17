@@ -144,6 +144,7 @@ public:
 
 	vector<vector<bool> > has_calibration_estimate;
 	vector<string> im_names;
+	vector<string> im_short_names;
 
 	//vector<vector<bool> > internal_points_present;
 	vector<MatrixXd> internal_two_d_point_coordinates_dense;
@@ -180,7 +181,7 @@ public:
 
 	void FindCornersArucoGeneral(string write_dir);
 
-	void CalibrateArucoSinglyAndUndistort(string write_dir);
+	void CalibrateArucoSinglyAndUndistort(string write_dir, double homograph_scaling);
 
 };
 

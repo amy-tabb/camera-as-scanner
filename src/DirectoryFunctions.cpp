@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -22,16 +23,18 @@ bool SortbyLength(string s0, string s1){
 	}
 }
 
+
+
 bool IsDirectory(string dir_name){
 
-	DIR * dir = opendir (dir_name.c_str());
+	bool is_dir = true;
 
-	bool is_dir = dir != NULL;
+	struct stat info;
+	if( stat( dir_name.c_str(), &info ) != 0 ){
+		is_dir = false;
+	}
 
-	closedir (dir);
 	return is_dir;
-
-
 }
 
 void ReadDirectory(string dir_name, vector<string>& content_names){
