@@ -1,11 +1,11 @@
-ExifTool Version Number         : 10.80
+ExifTool Version Number         : 10.10
 File Name                       : IMG_0434.JPG
-Directory                       : /home/atabb/DemoData/PlantaeSeminar/iphone6/images
+Directory                       : /home/atabb/DemoData/Calibration/iphone6_test/images
 File Size                       : 1364 kB
-File Modification Date/Time     : 2018:11:21 08:55:20-05:00
-File Access Date/Time           : 2018:11:21 09:36:39-05:00
-File Inode Change Date/Time     : 2018:11:21 08:55:44-05:00
-File Permissions                : r--------
+File Modification Date/Time     : 2018:11:20 20:22:11-05:00
+File Access Date/Time           : 2019:03:16 20:32:22-04:00
+File Inode Change Date/Time     : 2019:03:16 20:23:55-04:00
+File Permissions                : rw-rw----
 File Type                       : JPEG
 File Type Extension             : jpg
 MIME Type                       : image/jpeg
@@ -40,7 +40,6 @@ Run Time Flags                  : Valid
 Run Time Value                  : 9057350990416
 Run Time Scale                  : 1000000000
 Run Time Epoch                  : 0
-Acceleration Vector             : -0.2239321022 0.04402251915 -0.957751572
 Sub Sec Time Original           : 282
 Sub Sec Time Digitized          : 282
 Flashpix Version                : 0100

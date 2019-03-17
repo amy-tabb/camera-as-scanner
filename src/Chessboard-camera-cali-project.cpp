@@ -26,36 +26,16 @@ void EnsureDirHasTrailingBackslash(string& write_directory){
 
 int main(int argc, char **argv) {
 
-	/// One case:
-	/// case B: aruco tags, same pattern.
-	//      image filename, directory with the cali object specs, as well as the sensor specs, write directory
+	// TODO, major cleanup.
+	// Need OpenMP, need Eigen, OpenCV
+	// Make filenames in results match that of the input.
 
 
-	/// arguments: executable_name type read_directory write_directory image_name(caseB only)
-
-	string scasea = "a";
-	string scaseb = "b";
 	//bool caseA = false;  bool caseB = false;
 	string read_directory = "";
 	string write_directory = "";
 	string image_filename = "";
 
-
-//	if (argc > 2){
-//		if (scasea.compare(string(argv[1])) == 0){
-//			caseA = true;
-//		}	else {
-//			if (scaseb.compare(string(argv[1])) == 0){
-//				caseB = true;
-//			}
-//		}
-//	}
-//
-//	if (!caseA && !caseB){
-//		cout << "Bad case entered.  Quitting." << argv[1] << endl;
-//		exit(1);
-//		// TODO -- example of good argument strings.
-//	}
 
 	/// do caseB first.
 	{
