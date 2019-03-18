@@ -46,6 +46,8 @@ This code has been tested on Ubuntu 16.04 and Ubuntu 18.04.  You are welcome to 
 
 4. Required libraries are: opencv_core, opencv_highgui, opencv_imgproc, opencv_imgcodecs, opencv_calib3d, opencv_aruco.
 
+5. Build the project.
+
 
 ## Running
 
@@ -58,7 +60,7 @@ Our manuscript **TODO** explains these items in detail.
 
 ## Read directory format
 
-Examples of read and write directories are given within this repository.  A read and write directory is `iphone` and `iphone_results`, respectively.  A calibration pattern that can be used for printing is `iphone/created_template.png`, or one can use companion repository [amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write).  
+Examples of read and write directories are given within the [amy-tabb/camera-as-scanner-data](https://github.com/amy-tabb/camera-as-scanner-data) repository.  A read and write directory is `iphone` and `iphone_results`, respectively.  A calibration pattern that can be used for printing is `iphone/created_template.png`, or one can use companion repository [amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write).  
 
 - `calibration_object_info.txt` contains one line: `squarelength 25.5 mm` in the examples.  To find the correct vaue for squarelength, measure one square on the printed calibration pattern.  Edit the file appropriately.
 - `sensor_size.txt` contains two lines: `sensor_width 4.80 mm`, `sensor_height 3.60 mm`.  Values for your camera can be found from the manufacturer's website.  Note that EXIFtag information is usually not accurate.
