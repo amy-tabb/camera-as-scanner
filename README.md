@@ -1,9 +1,29 @@
 # camera-as-scanner
 
 
-Currently
+Comments/Bugs/Problems: amy.tabb@ars.usda.gov
 
-This code uses the OpenCV 4.0, the OpenCV 4.0 extra modules, Eigen, and is written in C++.  
+Code for taking measurements from images of an object on top of a calibration pattern.
+
+~March 2019.  
+
+
+# Underlying ideas; how and when to cite this work
+
+This README file is to accompany code produced by Amy Tabb as a companion to a paper:
+**TODO**
+
+
+Code release citation:
+
+**TODO**
+
+
+If you use this code in project that results in a publication, please cite at a minimum the paper above.  Otherwise, there are no restrictions in your use of this code.  However, no guarantees are expressed or implied.
+
+## Dependencies
+
+This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++.
 
 To get the OpenCV4.0 extra modules to build, our experience is that you need to build *both* OpenCV and the extra modules together from source.  Instructions are here:
 
@@ -13,68 +33,58 @@ This code has been tested on Ubuntu 16.04 and Ubuntu 18.04.  You are welcome to 
 
 **Is getting all of this to work on your system too much of a pain and you are interested in a Docker release?  Let me know!  The squeaky wheel gets the grease.  Email above.**
 
- This code is dependent on the >= OpenCV-3.* libraries and OpenMP library (libgomp). These libraries should be in the include path, or specified in your IDE.
-
-    Compiler flags: we use OpenMP for parallelization and the C++11 standard. Note that Eclipse's indexer marks some items from C++11 as errors (but still compiles).
-
-The flags needed using the gnu compiler, openmp, and the C++11 standard are: -fopenmp -std=gnu++11
-
-though depending on the compiler used, you may need different flags
-
-   
-    
-# Compiling, Linking, Running
-Basic instructions for compilation and linking:
-
-1. This code has been written and tested on Ubuntu 14.04 and Ubuntu 16.04, using Eclipse CDT as the IDE, and is written in C/C++.  
+## Building 
 
 
-2. This code is dependent on the >= OpenCV-3.* libraries and OpenMP library (libgomp).  These libraries should be in the include path, or specified in your IDE.
+ 1. Clone the git repository.  `cd` to the desired directory, then from the command line  -- ` git clone ` the repository name.
+ 
+ 2. If you use the [Eclipse CDT IDE](https://www.eclipse.org/cdt/), you can import the project directly after cloning.  You may have to alter the include directory for opencv4.  
 
+2. **Note the OpenCV 4.x requires a >C++11 compiler!  I enable the GNU version with a flag : `-std=gnu++11.`  There other ways of doing this, as well as other choices of compiler.**
 
-3. Compiler flags: we use OpenMP for parallelization and the C++11 standard.  Note that Eclipse's indexer marks some items from C++11 as errors (but still compiles).  
+3.  Check the include directory for [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page), Eigen is a header-only library. 
 
-The flags needed using the gnu compiler, openmp, and the C++11 standard are: `-fopenmp  -std=gnu++11`
+4. Required libraries are: opencv_core, opencv_highgui, opencv_imgproc, opencv_imgcodecs, opencv_calib3d, opencv_aruco.
 
-though depending on the compiler used, you may need different [flags](https://www.dartmouth.edu/~rc/classes/intro_openmp/compile_run.html)
-	
-4. 	libraries needed for linking are:
-- gomp   [OpenMP]
-- opencv_core [OpenCV]
-- opencv_highgui
-- opencv_imgproc
-- opencv_imgcodecs
-- opencv_aruco
-
-5. **Note before going further -- if in Ubuntu, you need to `apt-get install build-essential` to get C++ compiler(s) that are OpenMP enabled.  If you are on a Mac, you will need something comparable to build-essential.**
-	
-6. Easy way to build in Ubuntu with [Eclipse CDT](https://www.eclipse.org/cdt/) with git support (Egit): 
-- `git clone` into the directory of choice.  
-- Create new Managed C++ project, for the directory, select the directory where the `camera-as-scanner` was cloned into.
-- The compiler and linker flags for OpenCV 4.0 will be imported, though you may have to alter the include paths.  Build and you're ready to run!
-
-7. Easy way to build without Eclipse CDT:
-
-**TODO**
-
-```
-g++ src/*.cpp -o curve_skel -fopenmp -std=gnu++11 -Wall -I/usr/local/include -lgomp -lopencv_core -lopencv_imgproc -lopencv_imgcodecs
-```
-
-The executable `curve_skel` is created.  If you used method 6., the location will be in `Debug`.
 
 ## Running
 
-Run the program with two arguments: the directory of test infomation, and the write directory.  Consequently, if the name of the executable is `camera-as-scanner-project`, to run:
+The program takes three arguments: 
+- the read directory
+- the write directory
+- the scaling factor (number of pixels per millimeter)
 
-```
-./camera-as-scanner-project read-directory write-directory
-```
+Our manuscript **TODO** explains these items in detail.
 
-## Input format
+## Read directory format
 
-The read directory needs to have a particular format.  An example is included in **TODO**.  It is:
-- images, a directory of the images to correct with this method.
-- **TODO** , text files.
+Examples of read and write directories are given within this repository.  A read and write directory is `iphone` and `iphone_results`, respectively.  A calibration pattern that can be used for printing is `iphone/created_template.png`, or one can use companion repository [amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write).  
 
-## Output format
+- `calibration_object_info.txt` contains one line: `squarelength 25.5 mm` in the examples.  To find the correct vaue for squarelength, measure one square on the printed calibration pattern.  Edit the file appropriately.
+- `sensor_size.txt` contains two lines: `sensor_width 4.80 mm`, `sensor_height 3.60 mm`.  Values for your camera can be found from the manufacturer's website.  Note that EXIFtag information is usually not accurate.
+- `specification_file.txt` contains the information generated from companion repository [amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write):
+
+	
+	squaresX 12
+	squaresY 15
+	squareLength 200
+	markerLength 100
+	margins 100
+	arc_code 11
+	
+
+Note that if you use the pattern from the examples provided in this repository, you can copy the `specification_file.txt`.
+-  `images` is the directory of image files.
+
+#Write directory format
+
+For each image in the `images` directory, the program will produce the following file, where `FILENAME` is the original image filename:
+
+- `aruco_detectFILENAME`: image with aruco tag detections overlaid.
+- `undistortedFILENAME`: image after undistortion opertion.  This is useful to detect; if the calibration quality is poor, straight lines in reality will *not* be straight.
+- `warpedFILENAME`: image after applying transformation such that the image's coordinate system represents the calibration pattern's coordinate system, up to a scaling factor (as selected by the user -- last parameter). 
+
+Text file `results.txt` records the scaling factor selected by the user.  From this, one can take two-dimensional measurements from the image (under the assumptions of planarity).  Say the scaling factor was 5, and a section is 50 pixels wide.  Assuming the units were millimeters and the object planar, the object is 10 mm wide.
+
+`results.txt` also lists the calibration information for each image.
+
