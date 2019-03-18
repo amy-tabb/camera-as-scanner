@@ -1,47 +1,46 @@
 ExifTool Version Number         : 10.10
-File Name                       : IMG_0434.JPG
-Directory                       : /home/atabb/DemoData/Calibration/iphone6_test/images
-File Size                       : 1364 kB
-File Modification Date/Time     : 2018:11:20 20:22:11-05:00
-File Access Date/Time           : 2019:03:16 20:32:22-04:00
-File Inode Change Date/Time     : 2019:03:16 20:23:55-04:00
-File Permissions                : rw-rw----
+File Name                       : IMG_0462.JPG
+Directory                       : /home/atabb/DemoData/Calibration/iphone6_light/images
+File Size                       : 1483 kB
+File Modification Date/Time     : 2019:03:17 19:33:27-04:00
+File Access Date/Time           : 2019:03:17 21:13:59-04:00
+File Inode Change Date/Time     : 2019:03:17 21:13:49-04:00
+File Permissions                : rwxrwxrwx
 File Type                       : JPEG
 File Type Extension             : jpg
 MIME Type                       : image/jpeg
-JFIF Version                    : 1.01
 Exif Byte Order                 : Big-endian (Motorola, MM)
 Make                            : Apple
 Camera Model Name               : iPhone 6
-Orientation                     : Horizontal (normal)
+Orientation                     : Rotate 90 CW
 X Resolution                    : 72
 Y Resolution                    : 72
 Resolution Unit                 : inches
-Software                        : 12.0
-Modify Date                     : 2018:11:06 14:21:08
+Software                        : 12.1.4
+Modify Date                     : 2019:03:17 19:33:27
 Y Cb Cr Positioning             : Centered
-Exposure Time                   : 1/40
+Exposure Time                   : 1/60
 F Number                        : 2.2
 Exposure Program                : Program AE
-ISO                             : 32
+ISO                             : 40
 Exif Version                    : 0221
-Date/Time Original              : 2018:11:06 14:21:08
-Create Date                     : 2018:11:06 14:21:08
+Date/Time Original              : 2019:03:17 19:33:27
+Create Date                     : 2019:03:17 19:33:27
 Components Configuration        : Y, Cb, Cr, -
-Shutter Speed Value             : 1/40
+Shutter Speed Value             : 1/60
 Aperture Value                  : 2.2
-Brightness Value                : 4.98967393
+Brightness Value                : 5.439075549
 Exposure Compensation           : 0
 Metering Mode                   : Multi-segment
 Flash                           : Auto, Did not fire
 Focal Length                    : 4.2 mm
 Subject Area                    : 1631 1223 1795 1077
 Run Time Flags                  : Valid
-Run Time Value                  : 9057350990416
+Run Time Value                  : 1107232845333
 Run Time Scale                  : 1000000000
 Run Time Epoch                  : 0
-Sub Sec Time Original           : 282
-Sub Sec Time Digitized          : 282
+Sub Sec Time Original           : 783
+Sub Sec Time Digitized          : 783
 Flashpix Version                : 0100
 Color Space                     : sRGB
 Exif Image Width                : 3264
@@ -52,9 +51,12 @@ Exposure Mode                   : Auto
 White Balance                   : Auto
 Focal Length In 35mm Format     : 29 mm
 Scene Capture Type              : Standard
+Lens Info                       : 4.15mm f/2.2
+Lens Make                       : Apple
+Lens Model                      : iPhone 6 back camera 4.15mm f/2.2
 Compression                     : JPEG (old-style)
-Thumbnail Offset                : 1692
-Thumbnail Length                : 15133
+Thumbnail Offset                : 1772
+Thumbnail Length                : 14019
 Image Width                     : 3264
 Image Height                    : 2448
 Encoding Process                : Baseline DCT, Huffman coding
@@ -64,14 +66,14 @@ Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
 Aperture                        : 2.2
 Image Size                      : 3264x2448
 Megapixels                      : 8.0
-Run Time Since Power Up         : 2:30:57
+Run Time Since Power Up         : 0:18:27
 Scale Factor To 35 mm Equivalent: 7.0
-Shutter Speed                   : 1/40
-Create Date                     : 2018:11:06 14:21:08.282
-Date/Time Original              : 2018:11:06 14:21:08.282
-Thumbnail Image                 : (Binary data 15133 bytes, use -b option to extract)
+Shutter Speed                   : 1/60
+Create Date                     : 2019:03:17 19:33:27.783
+Date/Time Original              : 2019:03:17 19:33:27.783
+Thumbnail Image                 : (Binary data 14019 bytes, use -b option to extract)
 Circle Of Confusion             : 0.004 mm
 Field Of View                   : 63.7 deg
 Focal Length                    : 4.2 mm (35 mm equivalent: 29.0 mm)
 Hyperfocal Distance             : 1.82 m
-Light Value                     : 9.2
+Light Value                     : 9.5
