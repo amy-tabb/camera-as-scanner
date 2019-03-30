@@ -118,7 +118,6 @@ public:
 	vector<string> im_names;
 	vector<string> im_short_names;
 
-	//vector<vector<bool> > internal_points_present;
 	vector<MatrixXd> internal_two_d_point_coordinates_dense;
 	int count_internal_ids_present;
 	vector<bool> id_bool;
@@ -144,8 +143,6 @@ public:
 	vector<MatrixXd> two_d_point_coordinates_segmentation_internal;
 
 	CameraCali(string read_dir, PatternsCreated* P);
-
-	void CalibrateBasic(string write_dir);
 
 	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir, string write_directory);
 
