@@ -1,2 +1,0 @@
-sensor_width 4.80 mm
-sensor_height 3.60 mm
