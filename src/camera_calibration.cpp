@@ -255,12 +255,9 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 		double_to_single.push_back(current_index);
 	}
-	cout << "After 3d points " << endl;
 
 	double internal_mm =  squareLength[0];
 
-
-	cout << "Before create images " << endl;
 	// detect pattern locations on the image..
 	vector<Mat> images;
 
@@ -269,23 +266,15 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 	filename = read_dir + "created_template.png";
 	imwrite(filename.c_str(), images[0]);
 
-	cout << "After create image " << endl;
 
+	// defaults work well.
 	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
-
-
-	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-	if(!readOk) {
-		cout << "Invalid detector parameters file, quitting" << endl;
-		exit(1);
-	}
-
+	//detectorParams->cornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX;
 
 	vector< int > ids;
 	vector< vector< Point2f > > corners, rejected;
 	aruco::detectMarkers(images[0], dictionary, corners, ids, detectorParams, rejected);
 
-	//int number_internal_ids = sX*sY;
 
 	Mat imageCopy;
 
@@ -597,15 +586,10 @@ Scalar PatternsCreated::Color(int index){
 void CameraCali::FindCornersArucoGeneral(string write_dir){
 
 	/// first, need to find the patterns.
+	// defaults work well.
 	Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::create();
+	//detectorParams->cornerRefinementMethod = aruco::CORNER_REFINE_SUBPIX;
 
-	bool readOk = readDetectorParameters(string("../src/detector_params.yml"), detectorParams);
-	if(!readOk) {
-		cout << "Cannot read in Calibrate -- Invalid detector parameters file" << endl;
-		exit(1);
-	}else {
-		cout << "Read the detector parameters ..." << endl;
-	}
 
 	int number_squares = P_class->NumberSquares();
 
@@ -1225,76 +1209,7 @@ void CameraCali::CopyToMats(Mat& CameraMatrix, Mat& dis){
 }
 
 
-//nmarkers: 1024
-//adaptiveThreshWinSizeMin: 3
-//adaptiveThreshWinSizeMax: 23
-//adaptiveThreshWinSizeStep: 10
-//adaptiveThreshWinSize: 21
-//adaptiveThreshConstant: 7
-//minMarkerPerimeterRate: 0.03
-//maxMarkerPerimeterRate: 4.0
-//polygonalApproxAccuracyRate: 0.05
-//minCornerDistance: 10.0
-//minDistanceToBorder: 3
-//minMarkerDistance: 10.0
-//minMarkerDistanceRate: 0.05
-//cornerRefinementWinSize: 5
-//cornerRefinementMaxIterations: 30
-//cornerRefinementMinAccuracy: 0.1
-//markerBorderBits: 1
-//perspectiveRemovePixelPerCell: 8
-//perspectiveRemoveIgnoredMarginPerCell: 0.13
-//maxErroneousBitsInBorderRate: 0.04
-//minOtsuStdDev: 5.0
-//errorCorrectionRate: 0.6
 
-void enterDetectorParameters(Ptr<aruco::DetectorParameters> &params) {
-	//nmarkers: 1024
-	//adaptiveThreshWinSize: 21
-
-	//minMarkerDistance: 10.0
-
-	//adaptiveThreshWinSizeMin: 3
-	params->adaptiveThreshWinSizeMin = 3;
-	//adaptiveThreshWinSizeMax: 23
-	params->adaptiveThreshWinSizeMax = 23;
-	//adaptiveThreshWinSizeStep: 10
-	params->adaptiveThreshWinSizeStep = 10;
-	//adaptiveThreshConstant: 7
-	params->adaptiveThreshConstant = 7;
-	//minMarkerPerimeterRate: 0.03
-	params->minMarkerPerimeterRate = 0.03;
-	//maxMarkerPerimeterRate: 4.0
-	params->maxMarkerPerimeterRate = 4.0;
-	//polygonalApproxAccuracyRate: 0.05
-	params->polygonalApproxAccuracyRate = 0.05;
-	//minCornerDistance: 10.0
-	params->minCornerDistanceRate = 10.0;
-	//minDistanceToBorder: 3
-	params->minDistanceToBorder = 3;
-	//minMarkerDistanceRate: 0.05
-	params->minMarkerDistanceRate = 0.05;
-	//fs["doCornerRefinement"] >> params->doCornerRefinement;
-	//cornerRefinementWinSize: 5
-	params->cornerRefinementWinSize = 5;
-	//cornerRefinementMaxIterations: 30
-	params->cornerRefinementMaxIterations = 30;
-	//cornerRefinementMinAccuracy: 0.1
-	params->cornerRefinementMinAccuracy = 0.1;
-	//markerBorderBits: 1
-	params->markerBorderBits = 1;
-	//perspectiveRemovePixelPerCell: 8
-	params->perspectiveRemovePixelPerCell = 8;
-	//perspectiveRemoveIgnoredMarginPerCell: 0.13
-	params->perspectiveRemoveIgnoredMarginPerCell = 0.13;
-	//maxErroneousBitsInBorderRate: 0.04
-	params->maxErroneousBitsInBorderRate = 0.04;
-	//minOtsuStdDev: 5.0
-	params->minOtsuStdDev = 5.0;
-	//errorCorrectionRate: 0.6
-	params->errorCorrectionRate = 0.6;
-
-}
 
 
 

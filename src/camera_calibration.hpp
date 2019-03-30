@@ -64,8 +64,6 @@ using std::pair;
 
 // double to single mapping -- take 0 9 to number
 
-void enterDetectorParameters(Ptr<aruco::DetectorParameters> &params);
-
 class PatternsCreated{
 public:
 	vector<vector<int> > double_to_single;
