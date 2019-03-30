@@ -64,54 +64,21 @@ using std::pair;
 
 // double to single mapping -- take 0 9 to number
 
-static bool readDetectorParameters(string filename, Ptr<aruco::DetectorParameters> &params) {
-	FileStorage fs(filename, FileStorage::READ);
-	if(!fs.isOpened())
-		return false;
-	fs["adaptiveThreshWinSizeMin"] >> params->adaptiveThreshWinSizeMin;
-	fs["adaptiveThreshWinSizeMax"] >> params->adaptiveThreshWinSizeMax;
-	fs["adaptiveThreshWinSizeStep"] >> params->adaptiveThreshWinSizeStep;
-	fs["adaptiveThreshConstant"] >> params->adaptiveThreshConstant;
-	fs["minMarkerPerimeterRate"] >> params->minMarkerPerimeterRate;
-	fs["maxMarkerPerimeterRate"] >> params->maxMarkerPerimeterRate;
-	fs["polygonalApproxAccuracyRate"] >> params->polygonalApproxAccuracyRate;
-	fs["minCornerDistanceRate"] >> params->minCornerDistanceRate;
-	fs["minDistanceToBorder"] >> params->minDistanceToBorder;
-	fs["minMarkerDistanceRate"] >> params->minMarkerDistanceRate;
-	//fs["doCornerRefinement"] >> params->doCornerRefinement;
-	fs["cornerRefinementWinSize"] >> params->cornerRefinementWinSize;
-	fs["cornerRefinementMaxIterations"] >> params->cornerRefinementMaxIterations;
-	fs["cornerRefinementMinAccuracy"] >> params->cornerRefinementMinAccuracy;
-	fs["markerBorderBits"] >> params->markerBorderBits;
-	fs["perspectiveRemovePixelPerCell"] >> params->perspectiveRemovePixelPerCell;
-	fs["perspectiveRemoveIgnoredMarginPerCell"] >> params->perspectiveRemoveIgnoredMarginPerCell;
-	fs["maxErroneousBitsInBorderRate"] >> params->maxErroneousBitsInBorderRate;
-	fs["minOtsuStdDev"] >> params->minOtsuStdDev;
-	fs["errorCorrectionRate"] >> params->errorCorrectionRate;
-	return true;
-}
-
-
 class PatternsCreated{
 public:
 	vector<vector<int> > double_to_single;
 	vector< cv::Point3f> three_d_points;
-	vector< cv::Point3f> three_d_points_internal; // for strawberry case-- TODO get rid of
+	vector< cv::Point3f> three_d_points_internal;
 	Ptr<aruco::Dictionary> dictionary;
-	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards; /// for refining the estimate of corner locations -- todo get rid of
 	vector< vector<int> > display_colors;
 	vector<pair<int, int> > min_max_id_pattern;
 	vector<pair<int, int> > min_max_id_squares;
 	bool single_aruco_markers;
 	vector<int> single_aruco_ids;
 	int max_internal_patterns;
-	int internalx, internaly; /// remove todo
+	int internalx, internaly;
 
-	//PatternsCreated(string read_dir);
 	PatternsCreated(string read_dir, string write_directory, bool aruco_markers);
-
-	// remove
-	void DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen);
 
 	int MappingArucoIDToPatternNumber(int id);
 
@@ -135,7 +102,6 @@ protected:
 class CameraCali{
 public:
 
-	vector<vector<bool> > points_present; //charuco
 	vector<vector<bool> > patterns_present; //aruco
 	vector<MatrixXd> two_d_point_coordinates_dense;
 	vector<vector<int> > points_per_board;
@@ -146,7 +112,6 @@ public:
 	vector<string> im_names;
 	vector<string> im_short_names;
 
-	//vector<vector<bool> > internal_points_present;
 	vector<MatrixXd> internal_two_d_point_coordinates_dense;
 	int count_internal_ids_present;
 	vector<bool> id_bool;
@@ -173,9 +138,7 @@ public:
 
 	CameraCali(string read_dir, PatternsCreated* P);
 
-	void CalibrateBasic(string write_dir);
-
-	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir);
+	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir, string write_directory);
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 

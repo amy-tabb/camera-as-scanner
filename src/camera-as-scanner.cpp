@@ -51,15 +51,20 @@ int main(int argc, char **argv) {
 
 		string id_directory = read_directory + "images/";
 
+		cout << "Setting up camera calibration class ... " << endl;
 		CameraCali* C = new CameraCali(id_directory, &P_Class);
 
-		C->ReadExifInformationForAllImages(id_directory, read_directory);
+		cout << endl << "Reading EXIF information for all images " << endl;
+		C->ReadExifInformationForAllImages(id_directory, read_directory, write_directory);
 
+		cout << endl << "Finding aruco patterns in each image " << endl;
 		C->FindCornersArucoGeneral(write_directory);
 
+		cout << endl << "Calibrating each image and warping." << endl;
 		C->CalibrateArucoSinglyAndUndistort(write_directory, homography_scaling);
 
 
+		cout << endl << "The code run is now complete!  Processed images are prefixed with warped. " << endl;
 		delete C;
 
 	return 0;
