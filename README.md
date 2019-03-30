@@ -21,6 +21,13 @@ Code release citation:
 
 If you use this code in project that results in a publication, please cite at a minimum the paper above.  Otherwise, there are no restrictions in your use of this code.  However, no guarantees are expressed or implied.
 
+# Related repositories
+
+[amy-tabb/camera-as-scanner-data](https://github.com/amy-tabb/camera-as-scanner-data)
+
+[amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write)
+
+
 ## Dependencies
 
 This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++. It also uses the `exiftool` executable.
