@@ -64,33 +64,7 @@ using std::pair;
 
 // double to single mapping -- take 0 9 to number
 
-static bool readDetectorParameters(string filename, Ptr<aruco::DetectorParameters> &params) {
-	FileStorage fs(filename, FileStorage::READ);
-	if(!fs.isOpened())
-		return false;
-	fs["adaptiveThreshWinSizeMin"] >> params->adaptiveThreshWinSizeMin;
-	fs["adaptiveThreshWinSizeMax"] >> params->adaptiveThreshWinSizeMax;
-	fs["adaptiveThreshWinSizeStep"] >> params->adaptiveThreshWinSizeStep;
-	fs["adaptiveThreshConstant"] >> params->adaptiveThreshConstant;
-	fs["minMarkerPerimeterRate"] >> params->minMarkerPerimeterRate;
-	fs["maxMarkerPerimeterRate"] >> params->maxMarkerPerimeterRate;
-	fs["polygonalApproxAccuracyRate"] >> params->polygonalApproxAccuracyRate;
-	fs["minCornerDistanceRate"] >> params->minCornerDistanceRate;
-	fs["minDistanceToBorder"] >> params->minDistanceToBorder;
-	fs["minMarkerDistanceRate"] >> params->minMarkerDistanceRate;
-	//fs["doCornerRefinement"] >> params->doCornerRefinement;
-	fs["cornerRefinementWinSize"] >> params->cornerRefinementWinSize;
-	fs["cornerRefinementMaxIterations"] >> params->cornerRefinementMaxIterations;
-	fs["cornerRefinementMinAccuracy"] >> params->cornerRefinementMinAccuracy;
-	fs["markerBorderBits"] >> params->markerBorderBits;
-	fs["perspectiveRemovePixelPerCell"] >> params->perspectiveRemovePixelPerCell;
-	fs["perspectiveRemoveIgnoredMarginPerCell"] >> params->perspectiveRemoveIgnoredMarginPerCell;
-	fs["maxErroneousBitsInBorderRate"] >> params->maxErroneousBitsInBorderRate;
-	fs["minOtsuStdDev"] >> params->minOtsuStdDev;
-	fs["errorCorrectionRate"] >> params->errorCorrectionRate;
-	return true;
-}
-
+void enterDetectorParameters(Ptr<aruco::DetectorParameters> &params);
 
 class PatternsCreated{
 public:
