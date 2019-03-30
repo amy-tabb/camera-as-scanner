@@ -147,7 +147,7 @@ public:
 
 	void CalibrateBasic(string write_dir);
 
-	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir);
+	void ReadExifInformationForAllImages(string image_read_dir, string parent_dir, string write_directory);
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 

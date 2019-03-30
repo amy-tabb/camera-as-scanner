@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
 		CameraCali* C = new CameraCali(id_directory, &P_Class);
 
-		C->ReadExifInformationForAllImages(id_directory, read_directory);
+		C->ReadExifInformationForAllImages(id_directory, read_directory, write_directory);
 
 		C->FindCornersArucoGeneral(write_directory);
 

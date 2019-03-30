@@ -497,7 +497,7 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 }
 
 
-void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string parent_dir){
+void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string parent_dir, string write_directory){
 
 	vector<string> im_names;
 	string filename;
@@ -517,23 +517,23 @@ void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string p
 
 	string command;
 	double focal_length = 0;
+	string write_filename = write_directory + "exif_temp.txt";
 
 	for (int i = 0, n = im_names.size(); i < n; i++){
 
 		filename = image_read_dir + im_names[i];
 
-		command = "exiftool " + filename + " > ../ex.txt";
+		command = "exiftool " + filename + " > " + write_filename;
 		system(command.c_str());
 
 		//	double SONY_sensor_width = 23.5;
 		//	double SONY_sensor_height = 15.6;
 		//	double focal_length = 16.0;
 
-		filename = "../ex.txt";
 
 		// find focalLength
 		fieldString = "Length";
-		return_string = FindValueOfFieldInFile(filename, fieldString, true);
+		return_string = FindValueOfFieldInFile(write_filename, fieldString, true);
 
 		focal_length = FromString<double>(return_string);
 
