@@ -23,13 +23,35 @@ If you use this code in project that results in a publication, please cite at a 
 
 ## Dependencies
 
-This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++.
+This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++. It also uses the `exiftool` exectabale.
+
+### Tested operating system
+
+This code has been tested on Ubuntu 16.04 and Ubuntu 18.04.  You are welcome to convert it to Windows, but I have not.  While OpenCV is available from distribution repositories, my long experience with it is has always been to build from the source to get the best results.
+
+### OpenCV 4.0
 
 To get the OpenCV4.0 extra modules to build, our experience is that you need to build *both* OpenCV and the extra modules together from source.  Instructions are here:
 
 [OpenCV contributed modules on Github](https://github.com/opencv/opencv_contrib)
 
-This code has been tested on Ubuntu 16.04 and Ubuntu 18.04.  You are welcome to convert it to Windows, but I have not.  While OpenCV is available from distribution repositories, my long experience with it is has always been to build from the source to get the best results.
+### Exiftools
+
+On Ubuntu, install `exiftool` as follows:
+
+```
+sudo apt-get install exiftool
+```
+
+or
+
+```
+libimage-exiftool-perl
+```
+
+To test, make sure that the `exiftool` can be run from directory where you are setting up the `camera-as-scanner` project.
+
+
 
 **Is getting all of this to work on your system too much of a pain and you are interested in a Docker release?  Let me know!  The squeaky wheel gets the grease.  Email above.**
 
@@ -56,7 +78,7 @@ The program takes three arguments:
 - the write directory
 - the scaling factor (number of pixels per millimeter)
 
-Our manuscript **TODO** explains these items in detail.
+Our manuscript explains these items in detail.  If you're in a hurry, use 10 for the scaling factor.
 
 ## Read directory format
 
@@ -66,19 +88,19 @@ Examples of read and write directories are given within the [amy-tabb/camera-as-
 - `sensor_size.txt` contains two lines: `sensor_width 4.80 mm`, `sensor_height 3.60 mm`.  Values for your camera can be found from the manufacturer's website.  Note that EXIFtag information is usually not accurate.
 - `specification_file.txt` contains the information generated from companion repository [amy-tabb/aruco-pattern-write](https://github.com/amy-tabb/aruco-pattern-write):
 
-	
+	```
 	squaresX 12
 	squaresY 15
 	squareLength 200
 	markerLength 100
 	margins 100
 	arc_code 11
-	
+	```
 
 Note that if you use the pattern from the examples provided in this repository, you can copy the `specification_file.txt`.
 -  `images` is the directory of image files.
 
-#Write directory format
+## Write directory format
 
 For each image in the `images` directory, the program will produce the following file, where `FILENAME` is the original image filename:
 
