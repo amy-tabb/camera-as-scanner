@@ -50,7 +50,6 @@ int CreateTemplateArucoImages(vector<Mat>& images, int squaresX, int squaresY, i
 			y0 = y*squareLength + margins/2;
 
 			Rect R = Rect(x0, y0, markerLength, markerLength);
-			//cout << "x0, y0 " << x0 << ", " << y0 << endl;
 
 			markerImg.copyTo(boardImage(R));
 		}
@@ -92,7 +91,6 @@ string FindValueOfFieldInFile(string filename, string fieldTag, bool seperator){
 
 		in >> token;
 
-		//cout << "token "  << token << endl;
 
 		if (token.compare(fieldTag) == 0){
 			found = true;
@@ -200,16 +198,13 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 	//historical, from other code.
 	number_boards = 1;
-	cout << "After read " << number_boards << endl;
-	//}
-	in.close();
 
-	cout << "After squares " << endl;
+	in.close();
 
 	int_number_markers = 0;
 
 	number_total_squares = sX*sY;
-	cout << "Number total squares " << number_total_squares << endl;
+	//cout << "Number total squares " << number_total_squares << endl;
 
 	filename = read_dir + "calibration_object_info.txt";
 	in.open(filename.c_str());
@@ -231,7 +226,6 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 	in.close();
 
 
-	cout << "Before 3d points " << endl;
 	// convert everything to the class members.
 	//////////////////////// double to single.//////////////////////////////
 	double mm;
@@ -299,9 +293,6 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 		double distance_between_squares = internal_mm*double(sL)/double(mL);
 
-		cout << "Current settings, square length, distance bewteen squares froms start to finish " << internal_mm << ", " << distance_between_squares << endl;
-
-
 
 		int current_index;
 		int x_value, y_value;
@@ -313,7 +304,6 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 
 		for (int i = 0, in = ids.size(); i < in; i++){
-			cout << "Pattern creation, in this order: " << ids[i] << endl;
 			current_index = ids[i];
 			current_corners = corners[i];
 
@@ -348,15 +338,6 @@ PatternsCreated::PatternsCreated(string read_dir, string write_directory, bool a
 
 		filename = write_directory + "internal_with_morelabels.png";
 		cv::imwrite(filename, imageCopy);
-
-
-
-		cout << "A test ... what is the value of id 23 after everyone goes through? " << endl;
-		current_index = 23;
-		for (int j = 0; j < 4; j++){
-			string coords = ToString<float>(three_d_points_internal[4*current_index + j].x) + ", " + ToString<float>(three_d_points_internal[4*current_index + j].y);
-			cout << coords << endl;
-		}
 
 
 	}	else {
@@ -420,7 +401,6 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 	Mat im;
 
 	string ext_dir = read_dir + "/external/";
-	cout << "Ext dir! " << ext_dir << endl;
 
 	bool dir_exists = IsDirectory(ext_dir);
 	if (dir_exists){
@@ -463,8 +443,8 @@ CameraCali::CameraCali(string read_dir, PatternsCreated* P){
 			images.resize(new_names.size());
 		}
 
-		// this now works great!
-#pragma omp parallel for
+		// leave parallel for in here in case I add OpenMP support later.
+//#pragma omp parallel for
 		for (int i = 0; i < number_external_images_max; i++){
 
 			images[i] = imread(new_names[i].c_str(), IMREAD_COLOR);
@@ -538,7 +518,6 @@ void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string p
 		focal_length = FromString<double>(return_string);
 
 		pixel_width = double(images[i].cols)*focal_length/sensor_width;
-		cout << "pixel width " << pixel_width << endl;
 
 		focal_lengths.push_back(focal_length);
 		pix_widths.push_back(pixel_width);
@@ -641,15 +620,12 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 
 		// detect markers and estimate pose
 		aruco::detectMarkers(images[i], P_class->dictionary, corners, ids, detectorParams, rejected);
-		cout << "After detect " << endl;
 
 		if(ids.size() > 0) {
 			aruco::drawDetectedMarkers(imageCopy, corners, ids, Scalar(0, 255, 255));
-			cout << "Id size " << ids.size() << endl;
 			/// walk through the ids -- only process those that are in the range we're interested in.
 			for (int id_count = 0, idn = ids.size(); id_count < idn; id_count++){
 
-				cout << "Current id " << ids[id_count] << endl;
 				// if this particular arUco pattern is within the internal range ...
 				if (ids[id_count] < P_class->max_internal_patterns){
 
@@ -734,8 +710,6 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 		}
 	}
 
-	cout << "max_x, max_y " << max_x <<", " << max_y << endl;
-
 	Mat img1_warp = cv::Mat::zeros(homography_scaling*max_y, homography_scaling*max_x, CV_8UC3);
 
 	for (int i = 0; i < number_images; i++){
@@ -748,8 +722,6 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 		out << "image " << i << endl;
 		out << "focal length  " << focal_lengths[i] << endl;
 
-
-		cout << "i "  << i << endl;
 		rows = images[i].rows;
 		cols = images[i].cols;
 		//int last_added = 0;
@@ -821,7 +793,7 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 		cameraMatrix.at<double>(1, 2) = rows/2;
 
 
-		cout << "Running calibration " << endl;
+		cout << "Running calibration for image " << i << endl;
 
 		double rms = 0;
 
@@ -829,13 +801,13 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 				CALIB_USE_INTRINSIC_GUESS| CALIB_ZERO_TANGENT_DIST| CALIB_FIX_PRINCIPAL_POINT | CALIB_FIX_K3 | CALIB_FIX_ASPECT_RATIO |
 				CALIB_FIX_FOCAL_LENGTH);
 
-		cout << "rms " << rms << endl;
+		//cout << "rms " << rms << endl;
 
 
 		cv::Mat rv; cv::Mat tv;
 		solvePnP(threed_points_wo_blanks[0], twod_points_wo_blanks[0], cameraMatrix, distCoeffs, rv, tv, false);
 
-		cout << "After external" << endl;
+		//cout << "After external" << endl;
 
 
 		rvecs.push_back(rv);
@@ -900,16 +872,16 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 
 
 		// H will find the homography AKA transformation onto the plane where pixels == some representation in mm.
-		cout << "matches " << endl;
-		for (int m = 0; m < 4; m++){
-			cout << "i" << i << " " << undistorted_points[m].x << "," << undistorted_points[m].y << " 3d ";
-			cout << caliObjectPointsPlanar[m].x << ", " << caliObjectPointsPlanar[m].y << endl;
 
-
-		}
+//		for (int m = 0; m < 4; m++){
+//			cout << "i" << i << " " << undistorted_points[m].x << "," << undistorted_points[m].y << " 3d ";
+//			cout << caliObjectPointsPlanar[m].x << ", " << caliObjectPointsPlanar[m].y << endl;
+//
+//
+//		}
 
 		Mat H = findHomography(undistorted_points, caliObjectPointsPlanar);
-		out << "H:" << endl << H << endl;
+		//out << "H:" << endl << H << endl;
 
 
 		/// this image needs to be as big as the 3d space... -- in other words, the largest coordinate in the 3d coords.
@@ -950,7 +922,7 @@ void CameraCali::CalibrateBasic(string write_dir){
 
 	int rows = 0; int cols;
 	for (int i = 0; i < number_images; i++){
-		cout << "i "  << i << endl;
+		//cout << "i "  << i << endl;
 		rows = images[i].rows;
 		cols = images[i].cols;
 		for (int p = 0; p < number_patterns; p++){
@@ -959,7 +931,7 @@ void CameraCali::CalibrateBasic(string write_dir){
 				{   // why both?
 					has_calibration_estimate[i][p] = true;
 					//cout << "Image, Pattern " << i << ", " << p << endl;
-					cout << "Points per " << points_per_board[i][p] << endl;
+					//cout << "Points per " << points_per_board[i][p] << endl;
 					//cout << "Board number " << p << " detected" << endl;
 					mapping_from_limited_to_full_images.push_back(i);
 					mapping_from_limited_to_full_patterns.push_back(p);
@@ -988,9 +960,6 @@ void CameraCali::CalibrateBasic(string write_dir){
 		}
 	}
 
-	// keep around for debugging.
-	//twod_points_wo_blanks_class = twod_points_wo_blanks;
-	//threed_points_wo_blanks_class = threed_points_wo_blanks;
 
 	image_size = Size(cols, rows);
 
@@ -1008,14 +977,14 @@ void CameraCali::CalibrateBasic(string write_dir){
 	cameraMatrix.at<double>(0, 2) = cols/2;
 	cameraMatrix.at<double>(1, 2) = rows/2;
 
-	cout << "Running calibration " << endl;
+	cout << "Running calibration for image i** " << endl;
 	//cout << "Number of dist coefficients  = " << distCoeffs.rows << endl;
 
 	double rms = 0;
 
 	rms = cv::calibrateCamera(threed_points_wo_blanks, twod_points_wo_blanks, image_size, cameraMatrix, distCoeffs, rvecs, tvecs, CALIB_FIX_K3 | CALIB_USE_INTRINSIC_GUESS);
 
-	cout << "rms " << rms << endl;
+	//cout << "rms " << rms << endl;
 
 
 	/// write calibration details now.  Also, transfer to the Eigen format.
@@ -1032,8 +1001,8 @@ void CameraCali::CalibrateBasic(string write_dir){
 
 	}
 
-	cout << "distortion " << distortion << endl;
-	cout << "Camera matrix " << endl << cameraMatrix << endl;
+	//cout << "distortion " << distortion << endl;
+	//cout << "Camera matrix " << endl << cameraMatrix << endl;
 
 	cv::Mat rotMatrix = cv::Mat::eye(3, 3, CV_64F);
 	vector< vector <double> > tempRt(3, vector<double>(4, 0));
@@ -1116,7 +1085,7 @@ void CameraCali::CalibrateBasic(string write_dir){
 			image_size, CV_16SC2, map1, map2);
 
 	for (int i = 0; i < number_images; i++){
-		cout << "Writing external " << i << endl;
+		//cout << "Writing external " << i << endl;
 		cv::remap(reproject_cam_cali_images[i], rview, map1, map2, cv::INTER_LINEAR);
 
 		filename  = write_dir + "/ext" + ToString<int>(i) + ".png";
@@ -1124,7 +1093,7 @@ void CameraCali::CalibrateBasic(string write_dir){
 	}
 
 
-	cout << "internal parameters in function : " << internal_parameters << endl;
+	//cout << "internal parameters in function : " << internal_parameters << endl;
 	///////////////////////////////// WRITE CALIBRATION INFORMATION ///////////////////////////
 	std::ofstream out;
 	filename = write_dir + "cali_results.txt";
