@@ -907,8 +907,6 @@ void CameraCali::CopyToMats(Mat& CameraMatrix, Mat& dis){
 	}
 
 
-
-
 	for (int i = 0; i < distortion.rows(); i++){
 		dis.at<double>(i, 0) = distortion(i, 0);
 
