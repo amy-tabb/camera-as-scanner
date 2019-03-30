@@ -23,7 +23,7 @@ If you use this code in project that results in a publication, please cite at a 
 
 ## Dependencies
 
-This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++. It also uses the `exiftool` exectabale.
+This code uses the OpenCV 4.0, OpenCV 4.0 extra modules, Eigen and is written in C++. It also uses the `exiftool` executable.
 
 ### Tested operating system
 
