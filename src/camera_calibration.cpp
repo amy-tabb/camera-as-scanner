@@ -526,18 +526,6 @@ void CameraCali::ReadExifInformationForAllImages(string image_read_dir, string p
 
 }
 
-void PatternsCreated::DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen){
-
-	int np = NumberPatterns();
-
-	for (int i = 0, in = markers.size(); i < in; i++){
-		for (int j = 0;  j < np; j++){ // don't walk this one if it is already occupied.
-			if (markers[i] >= min_max_id_pattern[j].first && markers[i] <= min_max_id_pattern[j].second){
-				boards_seen[j] = true;
-			}
-		}
-	}
-}
 
 int PatternsCreated::MappingArucoIDToPatternNumber(int id){
 	int np = NumberPatterns();
@@ -601,10 +589,7 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 
 
 	int current_index;
-	int x_value = 0;
-	int y_value = 0;
 
-	//Mat gray;
 	for (int i = 0, nimages = images.size(); i < nimages; i++){
 		imageCopy = images[i].clone();
 
@@ -638,9 +623,6 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 
 					/// not all corners were found, so use id_count for this index.
 					current_corners = corners[id_count];
-					x_value = P_class->internalx - current_index%P_class->internalx - 1;
-					y_value = current_index/P_class->internalx;
-
 
 					for (int j = 0; j < 3; j++){
 						line(imageCopy, Point(current_corners[j].x,current_corners[j].y), Point(current_corners[j+1].x,current_corners[j+1].y), Scalar(255, 255, 0), 10);

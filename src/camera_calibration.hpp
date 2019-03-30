@@ -68,22 +68,17 @@ class PatternsCreated{
 public:
 	vector<vector<int> > double_to_single;
 	vector< cv::Point3f> three_d_points;
-	vector< cv::Point3f> three_d_points_internal; // for strawberry case-- TODO get rid of
+	vector< cv::Point3f> three_d_points_internal;
 	Ptr<aruco::Dictionary> dictionary;
-	vector<cv::Ptr<cv::aruco::CharucoBoard> > boards; /// for refining the estimate of corner locations -- todo get rid of
 	vector< vector<int> > display_colors;
 	vector<pair<int, int> > min_max_id_pattern;
 	vector<pair<int, int> > min_max_id_squares;
 	bool single_aruco_markers;
 	vector<int> single_aruco_ids;
 	int max_internal_patterns;
-	int internalx, internaly; /// remove todo
+	int internalx, internaly;
 
-	//PatternsCreated(string read_dir);
 	PatternsCreated(string read_dir, string write_directory, bool aruco_markers);
-
-	// remove
-	void DetermineBoardsPresentFromMarkerList(vector<int>& markers, vector<bool>& boards_seen);
 
 	int MappingArucoIDToPatternNumber(int id);
 
@@ -107,7 +102,6 @@ protected:
 class CameraCali{
 public:
 
-	vector<vector<bool> > points_present; //charuco
 	vector<vector<bool> > patterns_present; //aruco
 	vector<MatrixXd> two_d_point_coordinates_dense;
 	vector<vector<int> > points_per_board;
