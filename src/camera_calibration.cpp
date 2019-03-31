@@ -550,7 +550,7 @@ Scalar PatternsCreated::Color(int index){
 
 
 
-void CameraCali::FindCornersArucoGeneral(string write_dir){
+void CameraCali::FindCornersArucoGeneral(string write_dir, bool write_intermediate){
 
 	/// first, need to find the patterns.
 	// defaults work well.
@@ -644,9 +644,11 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 			}
 		}
 
-		//filename = write_dir + "internal_initial_detect" + ToString<int>(i) + ".jpg";
-		filename =  write_dir + "aruco_detect" + im_short_names[i];
-		imwrite(filename.c_str(), imageCopy);
+
+		if (write_intermediate){
+			filename =  write_dir + "aruco_detect" + im_short_names[i];
+			imwrite(filename.c_str(), imageCopy);
+		}
 
 
 	}
@@ -654,7 +656,7 @@ void CameraCali::FindCornersArucoGeneral(string write_dir){
 	out.close();
 }
 
-void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homography_scaling){
+void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homography_scaling, bool write_intermediate){
 
 
 	/// want to recover pose after calibration ...need a map.
@@ -838,9 +840,11 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 		cv::remap(imageCopy, rview, map1, map2, cv::INTER_LINEAR);
 		/// here -- also need to undistort the points -- then homography.  In which space to do this, since the image is so big??
 
-		//filename  = write_dir + "/undistorted" + ToString<int>(i) + ".jpg";
-		filename =  write_dir + "undistorted" + im_short_names[i];
+
+		if (write_intermediate){
+			filename =  write_dir + "undistorted" + im_short_names[i];
 		cv::imwrite(filename.c_str(), rview);
+		}
 
 		// homography /////////////////////
 
@@ -853,14 +857,7 @@ void CameraCali::CalibrateArucoSinglyAndUndistort(string write_dir, double homog
 
 
 
-		// H will find the homography AKA transformation onto the plane where pixels == some representation in mm.
 
-//		for (int m = 0; m < 4; m++){
-//			cout << "i" << i << " " << undistorted_points[m].x << "," << undistorted_points[m].y << " 3d ";
-//			cout << caliObjectPointsPlanar[m].x << ", " << caliObjectPointsPlanar[m].y << endl;
-//
-//
-//		}
 
 		Mat H = findHomography(undistorted_points, caliObjectPointsPlanar);
 		//out << "H:" << endl << H << endl;
