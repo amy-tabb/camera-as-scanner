@@ -10,7 +10,10 @@ Code for taking measurements from images of an object on top of a calibration pa
 
 # Underlying ideas; how and when to cite this work
 
-This README file is to accompany code produced by Amy Tabb as a companion to a paper:
+Computer vision explanation: This code takes an image of an object on top of an aruco calibration pattern, calibrates the camera using the detected aruco information as well as EXIF tag information, and undistorts and computes the homography from the current location of the aruco calibration pattern in the image to its location in physical space.  Then the image is warped to match the coordinate system of the aruco coordinate system, scaled by a user-selected parameter. 
+
+This README file is to accompany code produced by Amy Tabb as a companion to a paper.  The paper provides a full protocol to use the code:
+
 To be announced.  Email for a draft.
 
 
