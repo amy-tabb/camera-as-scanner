@@ -33,39 +33,45 @@ int main(int argc, char **argv) {
 	string image_filename = "";
 	double homography_scaling;
 
+	bool write_intermediate = false;
 
-		if (argc != 4){
-			cout << "The arguments are the programname, the read-directory, the write-directory, and scaling factor (pixels per mm). " << endl;
-			cout << "You only provided " << argc-1 << " arguments instead of 4.  Quitting " << endl;
-			exit(1);
-		}
-		read_directory = argv[1];
-		write_directory = argv[2];
-		homography_scaling = FromString<double>(argv[3]);
+	if (argc < 4 ||  argc > 5){
+		cout << "The arguments are the programname, the read-directory, the write-directory, scaling factor (pixels per mm), ";
+		cout << " and optionally, a flag to indicate whether intermediate results are written" << endl;
+		cout << "You only provided " << argc << " arguments instead of 4 or 5.  Quitting " << endl;
+		exit(1);
+	}
+	read_directory = argv[1];
+	write_directory = argv[2];
+	homography_scaling = FromString<double>(argv[3]);
 
-		EnsureDirHasTrailingBackslash(read_directory);
-		EnsureDirHasTrailingBackslash(write_directory);
+	if (argc == 5){
+	write_intermediate = FromString<bool>(argv[4]);
+	}
 
-
-		PatternsCreated P_Class(read_directory, write_directory, true);
-
-		string id_directory = read_directory + "images/";
-
-		cout << "Setting up camera calibration class ... " << endl;
-		CameraCali* C = new CameraCali(id_directory, &P_Class);
-
-		cout << endl << "Reading EXIF information for all images " << endl;
-		C->ReadExifInformationForAllImages(id_directory, read_directory, write_directory);
-
-		cout << endl << "Finding aruco patterns in each image " << endl;
-		C->FindCornersArucoGeneral(write_directory);
-
-		cout << endl << "Calibrating each image and warping." << endl;
-		C->CalibrateArucoSinglyAndUndistort(write_directory, homography_scaling);
+	EnsureDirHasTrailingBackslash(read_directory);
+	EnsureDirHasTrailingBackslash(write_directory);
 
 
-		cout << endl << "The code run is now complete!  Processed images are prefixed with warped. " << endl;
-		delete C;
+	PatternsCreated P_Class(read_directory, write_directory, true);
+
+	string id_directory = read_directory + "images/";
+
+	cout << "Setting up camera calibration class ... " << endl;
+	CameraCali* C = new CameraCali(id_directory, &P_Class);
+
+	cout << endl << "Reading EXIF information for all images " << endl;
+	C->ReadExifInformationForAllImages(id_directory, read_directory, write_directory);
+
+	cout << endl << "Finding aruco patterns in each image " << endl;
+	C->FindCornersArucoGeneral(write_directory, write_intermediate);
+
+	cout << endl << "Calibrating each image and warping." << endl;
+	C->CalibrateArucoSinglyAndUndistort(write_directory, homography_scaling, write_intermediate);
+
+
+	cout << endl << "The code run is now complete!  Processed images are prefixed with warped. " << endl;
+	delete C;
 
 	return 0;
 }

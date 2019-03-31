@@ -142,9 +142,9 @@ public:
 
 	void CopyToMats(Mat& CameraMatrix, Mat& dis);
 
-	void FindCornersArucoGeneral(string write_dir);
+	void FindCornersArucoGeneral(string write_dir, bool write_intermediate);
 
-	void CalibrateArucoSinglyAndUndistort(string write_dir, double homograph_scaling);
+	void CalibrateArucoSinglyAndUndistort(string write_dir, double homograph_scaling, bool write_intermediate);
 
 };
 
