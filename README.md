@@ -11,12 +11,12 @@ Code for taking measurements from images of an object on top of a calibration pa
 # Underlying ideas; how and when to cite this work
 
 This README file is to accompany code produced by Amy Tabb as a companion to a paper:
-**TODO**
+To be announced.  Email for a draft.
 
 
 Code release citation:
 
-**TODO**
+To be announced.
 
 
 If you use this code in project that results in a publication, please cite at a minimum the paper above.  Otherwise, there are no restrictions in your use of this code.  However, no guarantees are expressed or implied.
@@ -84,8 +84,22 @@ The program takes three arguments:
 - the read directory
 - the write directory
 - the scaling factor (number of pixels per millimeter)
+- and optionally, a Boolean variable (0 for no, 1 for yes) indicating whether or not intermediate image files are written.
 
 Our manuscript explains these items in detail.  If you're in a hurry, use 10 for the scaling factor.
+
+Example valid run commands are:
+
+```
+./camera-as-scanner-project /home/your-name/read_directory /home/your-name/write_directory 10 
+```
+or
+
+
+```
+./camera-as-scanner-project /home/your-name/read_directory /home/your-name/write_directory 10 1 
+```
+
 
 ## Read directory format
 
@@ -111,8 +125,8 @@ Note that if you use the pattern from the examples provided in this repository, 
 
 For each image in the `images` directory, the program will produce the following file, where `FILENAME` is the original image filename:
 
-- `aruco_detectFILENAME`: image with aruco tag detections overlaid.
-- `undistortedFILENAME`: image after undistortion opertion.  This is useful to detect; if the calibration quality is poor, straight lines in reality will *not* be straight.
+- `aruco_detectFILENAME`: image with aruco tag detections overlaid (only if the optional intermediate write image file variable is true).
+- `undistortedFILENAME`: image after undistortion opertion.  This is useful to detect; if the calibration quality is poor, straight lines in reality will *not* be straight. (only if the optional intermediate write image file variable is true.)
 - `warpedFILENAME`: image after applying transformation such that the image's coordinate system represents the calibration pattern's coordinate system, up to a scaling factor (as selected by the user -- last parameter). 
 
 Text file `results.txt` records the scaling factor selected by the user.  From this, one can take two-dimensional measurements from the image (under the assumptions of planarity).  Say the scaling factor was 5, and a section is 50 pixels wide.  Assuming the units were millimeters and the object planar, the object is 10 mm wide.
