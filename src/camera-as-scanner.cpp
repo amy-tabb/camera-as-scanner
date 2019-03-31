@@ -25,6 +25,19 @@ void EnsureDirHasTrailingBackslash(string& write_directory){
 
 }
 
+bool CheckExistenceOfDirectory(string write_directory){
+
+	bool exists= true;
+	struct stat info;
+	if( stat( write_directory.c_str(), &info ) != 0 ){
+		cout << "Path to directory is wrong and/or cannot access " << write_directory << endl;
+		exists = false;
+	}
+
+	return exists;
+
+}
+
 int main(int argc, char **argv) {
 
 
@@ -45,8 +58,32 @@ int main(int argc, char **argv) {
 	write_directory = argv[2];
 	homography_scaling = FromString<double>(argv[3]);
 
+	/// check that both directories exist first.
+	if (!CheckExistenceOfDirectory(read_directory)){
+		exit(1);
+	}
+
+	if (!CheckExistenceOfDirectory(write_directory)){
+		exit(1);
+	}
+
+
 	if (argc == 5){
-	write_intermediate = FromString<bool>(argv[4]);
+		// some basic checking on arguments.
+		string s = string(argv[4]);
+		if (s.size() != 1){
+			cout << "Error on last argument.  Boolean value should be 0 or 1.  You entered " << argv[4] << endl;
+			exit(1);
+		}
+
+		int temp_write = FromString<int>(argv[4]);
+
+		if (temp_write != 0 || temp_write != 1){
+			cout << "Error on last argument.  Boolean value should be 0 or 1.  You entered " << argv[4] << endl;
+			exit(1);
+		}
+
+		write_intermediate = FromString<bool>(argv[4]);
 	}
 
 	EnsureDirHasTrailingBackslash(read_directory);
