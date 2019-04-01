@@ -19,7 +19,14 @@ To be announced.  Email for a draft.
 
 Code release citation:
 
-To be announced.
+@misc{tabb2019code_using,
+	title = {Code from: {Using} cameras for precise measurement of two-dimensional plant features},
+	url = {https://data.nal.usda.gov/dataset/code-using-cameras-precise-measurement-two-dimensional-plant-features},
+	urldate = {2019-04-01},
+	publisher = {Ag Data Commons},
+	author = {Tabb, Amy},
+	year = {2019},
+}
 
 
 If you use this code in project that results in a publication, please cite at a minimum the paper above.  Otherwise, there are no restrictions in your use of this code.  However, no guarantees are expressed or implied.
