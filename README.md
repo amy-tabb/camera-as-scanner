@@ -65,7 +65,7 @@ sudo apt-get install exiftool
 or
 
 ```
-libimage-exiftool-perl
+sudo apt-get install libimage-exiftool-perl
 ```
 
 To test, make sure that the `exiftool` can be run from directory where you are setting up the `camera-as-scanner` project.
