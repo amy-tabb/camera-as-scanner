@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : Chessboard-camera-cali-project.cpp
+// Name        : camera-as-scanner.cpp
 // Author      : Amy Tabb
 // Version     :
 // Copyright   : MIT
