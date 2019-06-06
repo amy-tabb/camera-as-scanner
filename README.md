@@ -12,10 +12,21 @@ Code for taking measurements from images of an object on top of a calibration pa
 
 Computer vision explanation: This code takes an image of an object on top of an aruco calibration pattern, calibrates the camera using the detected aruco information as well as EXIF tag information, and undistorts and computes the homography from the current location of the aruco calibration pattern in the image to its location in physical space.  Then the image is warped to match the coordinate system of the aruco coordinate system, scaled by a user-selected parameter. 
 
-This README file is to accompany code produced by Amy Tabb as a companion to a paper.  The paper provides a full protocol to use the code:
+This README file is to accompany code produced by Amy Tabb as a companion to a paper.  The paper, currently in pre-print, provides a full protocol to use the code:
 
-To be announced.  Email for a draft.
+[arXiv](https://arxiv.org/abs/1904.13187)
 
+Paper citation:
+```
+@article{tabb_using_2019,
+	title = {Using cameras for precise measurement of two-dimensional plant features},
+	url = {https://arxiv.org/abs/1904.13187v1},
+	urldate = {2019-05-02},
+	author = {Tabb, Amy and Holguín, Germán A. and Naegele, Rachel},
+	month = apr,
+	year = {2019},
+}
+```
 
 Code release citation:
 
