@@ -14,7 +14,7 @@ Computer vision explanation: This code takes an image of an object on top of an 
 
 This README file is to accompany code produced by Amy Tabb as a companion to a paper.  The paper, currently in pre-print, provides a full protocol to use the code:
 
-[arXiv](https://arxiv.org/abs/1904.13187)
+[Using cameras for precise measurement of two-dimensional plant features (arXiv)](https://arxiv.org/abs/1904.13187)
 
 Paper citation:
 ```
