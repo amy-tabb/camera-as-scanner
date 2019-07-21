@@ -7,6 +7,8 @@ Code for taking measurements from images of an object on top of a calibration pa
 
 ~March 2019.  
 
+[![DOI](https://zenodo.org/badge/176039903.svg)](https://zenodo.org/badge/latestdoi/176039903)
+
 
 # Underlying ideas; how and when to cite this work
 
